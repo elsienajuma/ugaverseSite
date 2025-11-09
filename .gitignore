@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Python http server cache
+__pycache__/
+
+# Large media (keep out of GitHub repo)
+videos/*.mp4
+*.mp4
