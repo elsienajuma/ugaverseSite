@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Ugaverse Studios | Destination</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container site-header__inner">
+            <a class="logo" href="index.html" aria-label="Ugaverse home">ugaverse</a>
+            <button class="nav-toggle" id="hamburger" type="button" aria-expanded="false" aria-controls="destination-navigation">
+                <span class="sr-only">Open navigation</span>
+                <span class="nav-toggle__line" aria-hidden="true"></span>
+                <span class="nav-toggle__line" aria-hidden="true"></span>
+                <span class="nav-toggle__line" aria-hidden="true"></span>
+            </button>
+            <nav class="site-nav" id="mobileNav" aria-label="Destination navigation">
+                <ul class="site-nav__list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#hero-video">Immersive view</a></li>
+                    <li><a href="#slideshow-section">Gallery</a></li>
+                    <li><a href="#map-section">Directions</a></li>
+                    <li><a href="#contact-section">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="destination-page" id="main-content">
+        <section class="container destination-hero" id="hero-video">
+            <div class="destination-hero__content">
+                <p class="eyebrow">Immersive destination</p>
+                <div class="destination-heading-row">
+                    <h1 id="destination-name">Loading...</h1>
+                    <button class="like-button" id="likeBtn" title="Like this experience" type="button">
+                        <img src="icons/like.svg" alt="Like this experience">
+                    </button>
+                </div>
+                <p class="hero-sub" id="destination-subtitle">Loading...</p>
+                <p class="location"><a href="#map-section" class="location-link" id="destination-location">Loading...</a></p>
+                <div class="destination-actions">
+                    <button class="button button--primary" type="button" id="view-details-btn">View details</button>
+                    <a class="button button--outline" href="#" target="_blank" rel="noopener noreferrer" id="make-tour-link">Make your own tour</a>
+                </div>
+            </div>
+
+            <div class="destination-media-card">
+                <div class="destination-media-frame" id="media-frame">
+                    <iframe id="ugaverse-player" src="viewer.html?id=ndere" allow="autoplay; fullscreen; gyroscope; accelerometer" frameborder="0"></iframe>
+                </div>
+                <p class="video-caption">Touch and drag to look around</p>
+            </div>
+        </section>
+
+        <section class="container destination-content-grid">
+            <article class="destination-summary-card">
+                <p class="eyebrow eyebrow--blue">About this experience</p>
+                <p id="destination-description">Loading...</p>
+            </article>
+
+            <aside class="destination-side-card" id="contact-section">
+                <p class="eyebrow eyebrow--blue">Get in touch</p>
+                <p class="destination-contact-link"><a href="#" id="whatsapp-link" target="_blank" rel="noopener noreferrer">Chat with us</a></p>
+                <p class="destination-contact-link"><a href="#" id="phone-link">+256 790 773275</a></p>
+                <p class="destination-contact-note">Need a tailored experience for your space? Start a conversation with the Ugaverse team.</p>
+            </aside>
+        </section>
+
+        <section class="container destination-section-card" id="slideshow-section" style="display: none;">
+            <div class="destination-section-head">
+                <p class="eyebrow eyebrow--blue">Gallery</p>
+                <h2>More views</h2>
+            </div>
+            <div class="photo-slideshow">
+                <div class="slideshow-container" id="slideshow-container">
+                    <button class="slide-btn prev" id="prevBtn" type="button" aria-label="Previous slide">‹</button>
+                    <button class="slide-btn next" id="nextBtn" type="button" aria-label="Next slide">›</button>
+                    <div class="slide-indicators" id="slide-indicators"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container destination-section-card" id="amenities-section" style="display: none;">
+            <div class="destination-section-head">
+                <p class="eyebrow eyebrow--blue">What to expect</p>
+                <h2>Highlights</h2>
+            </div>
+            <ul class="destination-amenities-list" id="amenities-list"></ul>
+        </section>
+
+        <section class="container destination-section-card map-section" id="map-section" style="display: none;">
+            <div class="destination-section-head">
+                <p class="eyebrow eyebrow--blue">Directions</p>
+                <h2>Visit or plan a trip</h2>
+            </div>
+            <div class="map-container" id="map-container"></div>
+            <p class="back-link"><a href="#hero-video">Back to immersive view ↑</a></p>
+        </section>
+
+        <section class="container destination-cta">
+            <div>
+                <p class="eyebrow">Ready to create something similar?</p>
+                <h2>Bring your own space online with an immersive experience.</h2>
+            </div>
+            <a class="button button--primary" href="https://forms.google.com/" target="_blank" rel="noopener noreferrer">Start a project</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer__inner">
+            <div>
+                <a class="logo" href="index.html" aria-label="Ugaverse home">ugaverse</a>
+                <p>Immersive digital experiences for destinations and physical spaces.</p>
+            </div>
+            <div class="site-footer__links">
+                <a href="index.html#services">Services</a>
+                <a href="index.html#demos">Who we work with</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <p class="site-footer__legal">© <span data-current-year>2026</span> Ugaverse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/destination-data.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const destinationId = urlParams.get('id') || 'ndere';
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+        const likeBtn = document.getElementById('likeBtn');
+        const likeImg = likeBtn.querySelector('img');
+        let isLiked = false;
+
+        hamburger?.addEventListener('click', () => {
+            const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+            hamburger.setAttribute('aria-expanded', String(!isOpen));
+            mobileNav.classList.toggle('is-open', !isOpen);
+        });
+
+        document.querySelectorAll('.site-nav__list a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger?.setAttribute('aria-expanded', 'false');
+                mobileNav?.classList.remove('is-open');
+            });
+        });
+
+        likeBtn?.addEventListener('click', () => {
+            isLiked = !isLiked;
+            likeImg.src = isLiked ? 'icons/liked.svg' : 'icons/like.svg';
+        });
+
+        async function loadDestination() {
+            try {
+                const destinations = await UgaverseData.loadDestinations();
+                const destination = UgaverseData.getDestinationById(destinations, destinationId);
+
+                if (!destination) {
+                    document.getElementById('destination-name').textContent = 'Destination not found';
+                    document.getElementById('destination-subtitle').textContent = 'The requested experience is unavailable.';
+                    document.getElementById('destination-description').textContent = 'Please choose another experience from the home page.';
+                    document.getElementById('destination-location').textContent = 'Try another destination↓';
+                    document.getElementById('view-details-btn').style.display = 'none';
+                    return;
+                }
+
+                const normalizedDestination = UgaverseData.normalizeDestination(destination);
+                document.getElementById('page-title').textContent = `Ugaverse Studios | ${normalizedDestination.name}`;
+                document.getElementById('destination-name').textContent = normalizedDestination.name;
+                document.getElementById('destination-subtitle').textContent = normalizedDestination.subtitle;
+                document.getElementById('destination-location').textContent = `${normalizedDestination.location || 'Visit us'}↓`;
+                document.getElementById('destination-description').textContent = normalizedDestination.description;
+
+                const viewDetailsBtn = document.getElementById('view-details-btn');
+                viewDetailsBtn.style.display = 'inline-flex';
+                viewDetailsBtn.style.opacity = '1';
+                if (normalizedDestination.contact?.detailsUrl && normalizedDestination.contact.detailsUrl !== '#') {
+                    viewDetailsBtn.onclick = () => window.open(normalizedDestination.contact.detailsUrl, '_blank', 'noopener,noreferrer');
+                } else {
+                    viewDetailsBtn.style.opacity = '0.5';
+                    viewDetailsBtn.onclick = null;
+                }
+
+                const whatsapp = normalizedDestination.contact?.whatsapp || '';
+                const phone = normalizedDestination.contact?.phone || '';
+                document.getElementById('make-tour-link').href = whatsapp ? `https://wa.me/${whatsapp}` : '#';
+                document.getElementById('whatsapp-link').href = whatsapp ? `https://wa.me/${whatsapp}` : '#';
+                document.getElementById('phone-link').href = phone ? `tel:${phone}` : '#';
+                document.getElementById('phone-link').textContent = phone || '+256 790 773275';
+
+                const mediaFrame = document.getElementById('media-frame');
+                const hasVideo = Boolean(normalizedDestination.videos && normalizedDestination.videos.length > 0);
+                const hasPanorama = Boolean(normalizedDestination.panorama && normalizedDestination.panorama.length > 0);
+
+                if (hasVideo || hasPanorama) {
+                    mediaFrame.innerHTML = '<iframe id="ugaverse-player" allow="autoplay; fullscreen; gyroscope; accelerometer" frameborder="0"></iframe>';
+                    const playerFrame = document.getElementById('ugaverse-player');
+                    const targetPage = hasVideo ? 'player.html' : 'viewer.html';
+                    playerFrame.src = `${targetPage}?id=${normalizedDestination.id}`;
+                } else {
+                    mediaFrame.innerHTML = '<div class="destination-media-placeholder"><p>Immersive media is being prepared for this experience.</p></div>';
+                }
+
+                const slideshowSection = document.getElementById('slideshow-section');
+                const slideshowContainer = document.getElementById('slideshow-container');
+                const indicatorsContainer = document.getElementById('slide-indicators');
+                const existingSlides = slideshowContainer.querySelectorAll('.slide');
+                existingSlides.forEach(slide => slide.remove());
+                indicatorsContainer.innerHTML = '';
+
+                if (normalizedDestination.gallery && normalizedDestination.gallery.length > 0) {
+                    slideshowSection.style.display = 'block';
+                    normalizedDestination.gallery.forEach((imgSrc, index) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'slide' + (index === 0 ? ' active' : '');
+                        const slideImg = document.createElement('img');
+                        slideImg.src = UgaverseData.resolveAssetPath(imgSrc);
+                        slideImg.alt = normalizedDestination.name;
+                        slideImg.onerror = () => {
+                            slideImg.hidden = true;
+                        };
+                        slide.appendChild(slideImg);
+                        slideshowContainer.insertBefore(slide, document.getElementById('prevBtn'));
+
+                        const indicator = document.createElement('span');
+                        indicator.className = 'indicator' + (index === 0 ? ' active' : '');
+                        indicator.dataset.slide = index;
+                        indicatorsContainer.appendChild(indicator);
+                    });
+                    initSlideshow();
+                } else {
+                    slideshowSection.style.display = 'none';
+                }
+
+                const amenitiesSection = document.getElementById('amenities-section');
+                const amenitiesList = document.getElementById('amenities-list');
+                if (normalizedDestination.amenities && normalizedDestination.amenities.length > 0) {
+                    amenitiesSection.style.display = 'block';
+                    amenitiesList.innerHTML = '';
+                    normalizedDestination.amenities.forEach(amenity => {
+                        const li = document.createElement('li');
+                        if (typeof amenity === 'string') {
+                            li.textContent = amenity;
+                        } else if (amenity.link) {
+                            li.innerHTML = `${amenity.text} (<a href="${amenity.link}" target="_blank" class="menu-link">${amenity.linkText}</a>)`;
+                        }
+                        amenitiesList.appendChild(li);
+                    });
+                } else {
+                    amenitiesSection.style.display = 'none';
+                }
+
+                const mapEmbed = normalizedDestination.mapEmbed;
+                if (mapEmbed) {
+                    const mapSection = document.getElementById('map-section');
+                    const mapContainer = document.getElementById('map-container');
+                    mapSection.style.display = 'block';
+                    mapContainer.innerHTML = `<iframe src="${mapEmbed}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+                } else {
+                    document.getElementById('map-section').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading destination:', error);
+                document.getElementById('destination-name').textContent = 'Error loading destination';
+            }
+        }
+
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentSlide = 0;
+
+            function showSlide(n) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+
+                currentSlide = (n + slides.length) % slides.length;
+
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+            }
+
+            prevBtn?.addEventListener('click', () => showSlide(currentSlide - 1));
+            nextBtn?.addEventListener('click', () => showSlide(currentSlide + 1));
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => showSlide(index));
+            });
+
+            setInterval(() => showSlide(currentSlide + 1), 5000);
+        }
+
+        loadDestination();
+    </script>
+</body>
+</html>

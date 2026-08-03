@@ -1,0 +1,350 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ugaverse - 360° Image Viewer</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; background: #000; }
+    .scene-container { 
+      width: 100%; 
+      height: 100%; 
+      border-radius: 12px; 
+      overflow: hidden; 
+      position: relative;
+    }
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      gap: 12px;
+      transition: opacity 0.3s ease;
+      align-items: center;
+    }
+    .control-btn {
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .control-btn:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    .control-btn svg {
+      width: 24px;
+      height: 24px;
+      position: relative;
+    }
+    .image-selector {
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      outline: none;
+      min-width: 120px;
+    }
+    .image-selector option {
+      background: #1a1a1a;
+      color: white;
+    }
+    .loading-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #FFD700;
+      border-radius: 12px;
+      padding: 20px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .loading-overlay.hidden {
+      display: none;
+    }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 215, 0, 0.2);
+      border-top: 3px solid #FFD700;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-overlay span {
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <audio id="background-music" preload="auto" autoplay loop muted></audio>
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+    <span>Loading 360° image...</span>
+  </div>
+  <div class="scene-container">
+    <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <img id="image" crossorigin="anonymous">
+      </a-assets>
+      <a-sky src="#image" rotation="0 -90 0"></a-sky>
+      <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true; mouseEnabled: true; minPolarAngle: 60; maxPolarAngle: 120; magicWindowTrackingEnabled: false" mouse-cursor></a-camera>
+    </a-scene>
+    <div class="controls">
+      <select class="image-selector" id="image-selector" style="display: none;">
+      </select>
+      <button class="control-btn" id="sound-toggle" title="Toggle sound">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path id="sound-icon" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+          <path id="mute-x" d="M14.89 9.55l-1.44 1.44 1.44 1.44" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display: none"/>
+        </svg>
+      </button>
+      <button class="control-btn" id="fullscreen-toggle" title="Toggle fullscreen">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="js/destination-data.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const image = document.getElementById('image');
+      const imageSelector = document.getElementById('image-selector');
+      const soundToggle = document.getElementById('sound-toggle');
+      const fullscreenToggle = document.getElementById('fullscreen-toggle');
+      const soundIcon = document.getElementById('sound-icon');
+      const loadingOverlay = document.getElementById('loading-overlay');
+      const camera = document.querySelector('a-camera');
+      const scene = document.querySelector('a-scene');
+      const bgMusic = document.getElementById('background-music');
+      let sensorTimeout;
+      let sensorWorking = false;
+      let intentionalPause = false;
+      let currentDestination = null;
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const destinationId = urlParams.get('id') || 'ndere';
+      
+      console.log('Loading image for destination:', destinationId);
+      
+      async function loadDestination() {
+        try {
+          const destinations = await UgaverseData.loadDestinations();
+          const destination = UgaverseData.getDestinationById(destinations, destinationId);
+          
+          if (!destination) {
+            console.error('Destination not found:', destinationId);
+            loadingOverlay.innerHTML = '<span style="color: #FF6B6B;">Destination not found</span>';
+            return;
+          }
+          
+          if (destination.immersive?.type !== 'image') {
+            console.error('This destination does not have a 360 image');
+            loadingOverlay.innerHTML = '<span style="color: #FF6B6B;">No 360 image available</span>';
+            return;
+          }
+          
+          currentDestination = destination;
+          const panoramaItems = Array.isArray(destination.panorama) && destination.panorama.length
+            ? destination.panorama
+            : (Array.isArray(destination.immersive?.images) ? destination.immersive.images : []);
+          
+          if (panoramaItems.length > 0) {
+            imageSelector.style.display = 'block';
+            imageSelector.innerHTML = '';
+            panoramaItems.forEach((img) => {
+              const option = document.createElement('option');
+              option.value = img.file;
+              option.textContent = img.name || 'Scene';
+              imageSelector.appendChild(option);
+            });
+            const firstImage = panoramaItems[0].file || destination.immersive?.file || '';
+            image.src = UgaverseData.resolveAssetPath(firstImage);
+            console.log('Loading first image from:', firstImage);
+          } else if (destination.immersive?.file || destination.coverImage) {
+            imageSelector.style.display = 'none';
+            image.src = UgaverseData.resolveAssetPath(destination.immersive?.file || destination.coverImage);
+            console.log('Loading image from:', destination.immersive?.file || destination.coverImage);
+          }
+          
+          if (destination.audio) {
+            bgMusic.src = UgaverseData.resolveAssetPath(destination.audio);
+            console.log('Loading audio from:', bgMusic.src);
+          }
+          
+        } catch (error) {
+          console.error('Error loading destination data:', error);
+          loadingOverlay.innerHTML = '<span style="color: #FF6B6B;">Error loading destination</span>';
+        }
+      }
+      
+      loadDestination();
+      
+      // Image selection handler
+      imageSelector.addEventListener('change', (e) => {
+        const selectedImage = e.target.value;
+        console.log('Switching to image:', selectedImage);
+        loadingOverlay.classList.remove('hidden');
+        
+        const sky = document.querySelector('a-sky');
+        
+        sky.setAttribute('src', UgaverseData.resolveAssetPath(selectedImage));
+        
+        // Listen for material texture update
+        sky.addEventListener('materialtextureloaded', function onLoaded() {
+          loadingOverlay.classList.add('hidden');
+          console.log('Image switched to:', selectedImage);
+          sky.removeEventListener('materialtextureloaded', onLoaded);
+        });
+      });
+      
+      // Sensor watchdog: detect if sensors are silent/broken
+      function onSensorDetected(event) {
+        // Check if we actually received sensor data
+        if (event.alpha !== null || event.beta !== null || event.gamma !== null) {
+          clearTimeout(sensorTimeout);
+          sensorWorking = true;
+          console.log('✅ Motion sensors (accelerometer) detected and working');
+          // Enable motion tracking automatically
+          const lookControls = camera.getAttribute('look-controls');
+          camera.setAttribute('look-controls', Object.assign({}, lookControls, {
+            magicWindowTrackingEnabled: true
+          }));
+        }
+      }
+      
+      function forceTouchOnlyMode() {
+        console.log('⚠️ Motion sensors silent - using mouse/touch-only mode');
+        // Ensure mouse/touch is enabled (already set in HTML)
+        const lookControls = camera.getAttribute('look-controls');
+        camera.setAttribute('look-controls', Object.assign({}, lookControls, {
+          magicWindowTrackingEnabled: false,
+          touchEnabled: true,
+          mouseEnabled: true
+        }));
+      }
+      
+      // Hide loading overlay when image is loaded
+      image.addEventListener('load', () => {
+        loadingOverlay.classList.add('hidden');
+        console.log('360° image loaded successfully');
+      });
+      
+      // Handle image load errors
+      image.addEventListener('error', () => {
+        loadingOverlay.innerHTML = '<span style="color: #FF6B6B;">Failed to load image</span>';
+        console.error('Failed to load 360° image');
+      });
+      
+      // Scene loaded - start sensor watchdog
+      scene.addEventListener('loaded', function() {
+        // Start sensor watchdog: 300ms deadline
+        sensorTimeout = setTimeout(() => {
+          if (!sensorWorking) {
+            forceTouchOnlyMode();
+          }
+        }, 300);
+        
+        // Listen for any orientation event to confirm sensors work
+        window.addEventListener('deviceorientation', onSensorDetected, { once: true });
+      });
+      
+      // Update sound icon based on mute state
+      function updateSoundIcon(muted) {
+        if (muted) {
+          soundIcon.setAttribute('d', 'M3 9v6h4l5 5V4L7 9H3z');
+          document.getElementById('mute-x').style.display = 'block';
+          soundToggle.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+        } else {
+          soundIcon.setAttribute('d', 'M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z');
+          document.getElementById('mute-x').style.display = 'none';
+          soundToggle.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        }
+      }
+
+      // Initialize button state (music starts muted)
+      updateSoundIcon(true);
+      
+      if (!bgMusic) {
+        console.error('Background music element not found!');
+        return;
+      }
+      
+      bgMusic.volume = 0.4;
+      console.log('Background music loaded successfully');
+      
+      // Keep background music playing continuously once started
+      bgMusic.addEventListener('pause', () => {
+        if (!bgMusic.muted && !intentionalPause) {
+          bgMusic.play().catch(() => {});
+        }
+        if (intentionalPause) intentionalPause = false;
+      });
+      
+      // Handle visibility change - pause background music when tab is hidden
+      let wasMusicMuted = bgMusic ? bgMusic.muted : true;
+      document.addEventListener('visibilitychange', () => {
+        if (!bgMusic) return;
+        if (document.hidden) {
+          wasMusicMuted = bgMusic.muted;
+          intentionalPause = true;
+          bgMusic.pause();
+          console.log('Tab hidden - audio paused');
+        } else {
+          if (!wasMusicMuted) {
+            bgMusic.play().catch(() => {});
+            console.log('Tab visible - audio resumed');
+          }
+        }
+      });
+
+      // Fullscreen toggle
+      fullscreenToggle.addEventListener('click', () => {
+        const container = document.querySelector('.scene-container');
+        if (!document.fullscreenElement) {
+          container.requestFullscreen().catch(err => {
+            console.log('Error attempting to enable fullscreen:', err);
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      });
+      
+      // Sound toggle - controls only background music
+      soundToggle.addEventListener('click', () => {
+        bgMusic.muted = !bgMusic.muted;
+        if (!bgMusic.muted) {
+          bgMusic.play().catch(e => console.log('Background music play error:', e));
+        } else {
+          bgMusic.pause();
+        }
+        updateSoundIcon(bgMusic.muted);
+        console.log('Sound toggled:', bgMusic.muted ? 'MUTED' : 'PLAYING');
+      });
+
+      // Controls remain visible at all times
+    });
+  </script>
+</body>
+</html>

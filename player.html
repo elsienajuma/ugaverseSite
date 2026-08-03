@@ -21,6 +21,7 @@
       display: flex;
       gap: 12px;
       transition: opacity 0.3s ease;
+      align-items: center;
     }
     .control-btn {
       background: rgba(0,0,0,0.5);
@@ -34,6 +35,7 @@
       align-items: center;
       justify-content: center;
       transition: background 0.2s;
+      flex-shrink: 0;
     }
     .control-btn:hover {
       background: rgba(0,0,0,0.8);
@@ -49,70 +51,240 @@
       height: 24px;
       position: relative;
     }
+    .video-selector {
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      outline: none;
+      min-width: 120px;
+    }
+    .video-selector option {
+      background: #1a1a1a;
+      color: white;
+    }
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #FFD700;
+      border-radius: 12px;
+      padding: 20px 40px;
+      cursor: pointer;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .play-overlay.show {
+      display: flex;
+    }
+    .play-overlay svg {
+      width: 60px;
+      height: 60px;
+      fill: #FFD700;
+    }
+    .play-overlay span {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
+  <audio id="background-music" preload="auto" autoplay loop muted></audio>
+  <div class="play-overlay" id="play-overlay">
+    <svg viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <span>Click to Load Video</span>
+  </div>
   <div class="scene-container">
-    <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false">
+    <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" device-orientation-permission-ui="enabled: true">
       <a-assets>
-        <video id="video" src="../videos/WebDemo.mp4" preload="auto" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+        <video id="video" src="videos/player-test.mp4" preload="auto" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline muted></video>
       </a-assets>
       <a-videosphere src="#video" rotation="0 -90 0"></a-videosphere>
-      <a-camera look-controls="reverseMouseDrag: true" mouse-cursor></a-camera>
+      <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true; mouseEnabled: true; minPolarAngle: 60; maxPolarAngle: 120" mouse-cursor></a-camera>
     </a-scene>
     <div class="controls">
+      <select class="video-selector" id="video-selector">
+        <option value="videos/player-test.mp4">Player test clip</option>
+      </select>
       <button class="control-btn" id="sound-toggle" title="Toggle sound">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path id="sound-icon" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
           <path id="mute-x" d="M14.89 9.55l-1.44 1.44 1.44 1.44" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display: none"/>
         </svg>
       </button>
-      <button class="control-btn" id="fullscreen-toggle" title="Toggle fullscreen">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-        </svg>
-      </button>
     </div>
   </div>
 
+  <script src="js/destination-data.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const video = document.getElementById('video');
+      const videoSelector = document.getElementById('video-selector');
       const soundToggle = document.getElementById('sound-toggle');
-      const fullscreenToggle = document.getElementById('fullscreen-toggle');
       const soundIcon = document.getElementById('sound-icon');
       const controls = document.querySelector('.controls');
+      const camera = document.querySelector('a-camera');
+      const scene = document.querySelector('a-scene');
+      const bgMusic = document.getElementById('background-music');
+      let sensorTimeout;
+      let sensorWorking = false;
+      let intentionalPause = false; // Track if pause was intentional
       
-      // Ensure video autoplays
-      video.play().catch(e => console.log('Autoplay prevented:', e));
+      // Device detection - determine if mobile or desktop
+      function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+               || window.innerWidth <= 768;
+      }
       
-      // Handle visibility change
-      let wasMuted = video.muted;
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          wasMuted = video.muted;
-          video.muted = true;
-          updateSoundIcon(true);
-        } else if (!wasMuted) {
-          video.muted = false;
-          updateSoundIcon(false);
+      // Get quality suffix based on device
+      const qualitySuffix = isMobile() ? '-2K' : '-4K';
+      console.log('Device detected:', isMobile() ? 'Mobile (2K)' : 'Desktop (4K)');
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const destinationId = urlParams.get('id');
+      
+      console.log('Loading destination:', destinationId);
+      
+      async function loadDestinationData() {
+        if (!destinationId) {
+          console.log('No destination requested; using the lightweight player test clip.');
+          return;
         }
-      });
 
-      // Handle window focus
-      window.addEventListener('blur', () => {
-        wasMuted = video.muted;
-        video.muted = true;
-        updateSoundIcon(true);
+        try {
+          const destinations = await UgaverseData.loadDestinations();
+          const destination = UgaverseData.getDestinationById(destinations, destinationId);
+          const videos = Array.isArray(destination?.videos) && destination.videos.length
+            ? destination.videos
+            : ((destination?.immersive && Array.isArray(destination.immersive.videos)) ? destination.immersive.videos : []);
+
+          if (videos.length === 0) {
+            console.log('Destination has no video scenes; using the lightweight player test clip.');
+            return;
+          }
+
+          videoSelector.innerHTML = '';
+          videos.forEach((item, index) => {
+            const option = document.createElement('option');
+            const sourcePath = isMobile() ? (item.mobile || item.desktop || '') : (item.desktop || item.mobile || '');
+            option.value = sourcePath;
+            option.textContent = item.name || `Scene ${index + 1}`;
+            videoSelector.appendChild(option);
+          });
+
+          if (destination?.audio) {
+            bgMusic.src = UgaverseData.resolveAssetPath(destination.audio);
+            console.log('Loading audio from:', bgMusic.src);
+          }
+
+          if (videos.length > 0) {
+            const initialSource = isMobile()
+              ? (videos[0].mobile || videos[0].desktop || '')
+              : (videos[0].desktop || videos[0].mobile || '');
+            video.src = UgaverseData.resolveAssetPath(initialSource);
+          } else {
+            video.src = UgaverseData.resolveAssetPath(video.src);
+          }
+        } catch (error) {
+          console.error('Error loading destination data:', error);
+        }
+      }
+      
+      loadDestinationData();
+      
+      // Video selection handler
+      videoSelector.addEventListener('change', (e) => {
+        const selectedValue = e.target.value;
+        const wasMuted = video.muted;
+        
+        const newVideoSrc = UgaverseData.resolveAssetPath(selectedValue.replace(/-(2K|4K)\.mp4$/, qualitySuffix + '.mp4'));
+        
+        video.src = newVideoSrc;
+        video.load();
+        
+        // Restore playback state
+        video.muted = wasMuted;
+        video.play().catch(err => console.log('Playback error:', err));
       });
       
-      window.addEventListener('focus', () => {
-        if (!wasMuted) {
-          video.muted = false;
-          updateSoundIcon(false);
+      // Sensor watchdog: detect if sensors are silent/broken
+      function onSensorDetected(event) {
+        // Check if we actually received sensor data
+        if (event.alpha !== null || event.beta !== null || event.gamma !== null) {
+          clearTimeout(sensorTimeout);
+          sensorWorking = true;
+          console.log('✅ Motion sensors (accelerometer) detected and working');
+          // Enable motion tracking automatically
+          const lookControls = camera.getAttribute('look-controls');
+          camera.setAttribute('look-controls', Object.assign({}, lookControls, {
+            magicWindowTrackingEnabled: true
+          }));
         }
+      }
+      
+      function forceTouchOnlyMode() {
+        console.log('⚠️ Motion sensors silent - using touch-only mode');
+        // Ensure touch is enabled (already set in HTML)
+        const lookControls = camera.getAttribute('look-controls');
+        camera.setAttribute('look-controls', Object.assign({}, lookControls, {
+          magicWindowTrackingEnabled: false,
+          touchEnabled: true,
+          mouseEnabled: true
+        }));
+      }
+      
+      // Play overlay for data-saver / low-power mode
+      const playOverlay = document.getElementById('play-overlay');
+      
+      // Check if video is loading/blocked after 500ms
+      setTimeout(() => {
+        if (video.paused || video.readyState < 2) {
+          playOverlay.classList.add('show');
+          console.log('⚠️ Video blocked - showing play button');
+        }
+      }, 500);
+      
+      // Handle play overlay click
+      playOverlay.addEventListener('click', () => {
+        video.play().catch(e => console.log('Play error:', e));
+        if (bgMusic) bgMusic.play().catch(e => console.log('Music play error:', e));
+        playOverlay.classList.remove('show');
       });
-
+      
+      // Hide overlay once video is playing
+      video.addEventListener('playing', () => {
+        playOverlay.classList.remove('show');
+      });
+      
+      // Ensure video loads and plays
+      scene.addEventListener('loaded', function() {
+        video.play().catch(e => {
+          console.log('Autoplay prevented:', e);
+          playOverlay.classList.add('show');
+        });
+        
+        // Start sensor watchdog: 300ms deadline
+        sensorTimeout = setTimeout(() => {
+          if (!sensorWorking) {
+            forceTouchOnlyMode();
+          }
+        }, 300);
+        
+        // Listen for any orientation event to confirm sensors work
+        window.addEventListener('deviceorientation', onSensorDetected, { once: true });
+      });
+      
       // Update sound icon based on mute state
       function updateSoundIcon(muted) {
         if (muted) {
@@ -126,35 +298,55 @@
         }
       }
 
-      // Sound toggle
-      soundToggle.addEventListener('click', () => {
-        video.muted = !video.muted;
-        updateSoundIcon(video.muted);
+      // Initialize button state (music starts muted)
+      updateSoundIcon(true);
+      
+      if (!bgMusic) {
+        console.error('Background music element not found!');
+        return;
+      }
+      
+      bgMusic.volume = 0.4;
+      console.log('Background music loaded successfully');
+      
+      // Keep background music playing continuously once started
+      bgMusic.addEventListener('pause', () => {
+        if (!bgMusic.muted && !intentionalPause) {
+          bgMusic.play().catch(() => {});
+        }
+        if (intentionalPause) intentionalPause = false;
       });
-
-      // Fullscreen toggle
-      fullscreenToggle.addEventListener('click', () => {
-        const container = document.querySelector('.scene-container');
-        if (!document.fullscreenElement) {
-          container.requestFullscreen().catch(err => {
-            console.log('Error attempting to enable fullscreen:', err);
-          });
+      
+      // Handle visibility change - pause background music when tab is hidden
+      let wasMusicMuted = bgMusic ? bgMusic.muted : true;
+      document.addEventListener('visibilitychange', () => {
+        if (!bgMusic) return;
+        if (document.hidden) {
+          wasMusicMuted = bgMusic.muted;
+          intentionalPause = true;
+          bgMusic.pause();
+          console.log('Tab hidden - audio paused');
         } else {
-          document.exitFullscreen();
+          if (!wasMusicMuted) {
+            bgMusic.play().catch(() => {});
+            console.log('Tab visible - audio resumed');
+          }
         }
       });
 
-      // Hide controls when mouse is idle
-      let timeout;
-      document.addEventListener('mousemove', () => {
-        controls.style.opacity = '1';
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          if (!video.paused) {
-            controls.style.opacity = '0';
-          }
-        }, 2000);
+      // Sound toggle - controls only background music
+      soundToggle.addEventListener('click', () => {
+        bgMusic.muted = !bgMusic.muted;
+        if (!bgMusic.muted) {
+          bgMusic.play().catch(e => console.log('Background music play error:', e));
+        } else {
+          bgMusic.pause();
+        }
+        updateSoundIcon(bgMusic.muted);
+        console.log('Sound toggled:', bgMusic.muted ? 'MUTED' : 'PLAYING');
       });
+
+      // Controls remain visible at all times
     });
   </script>
 </body>

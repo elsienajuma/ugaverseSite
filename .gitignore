@@ -12,6 +12,18 @@ Thumbs.db
 __pycache__/
 
 # Large media (keep out of GitHub repo)
-videos/*.mp4
 *.mp4
-!videos/WebDemo.mp4
+!videos/player-test.mp4
+
+# Archived and backup material
+Archived Project Media/
+backups/
+*.bak
+
+# Temporary and generated/local artifacts
+.temp_*
+*.tmp
+*.temp
+*.swp
+*.swo
+__pycache__/
