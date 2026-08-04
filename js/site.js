@@ -66,7 +66,7 @@ async function renderDemoGallery() {
                 subtitle: "Museums, cultural centres, attractions",
                 description: "Temporary placeholder copy for a destination that needs storytelling, context and location details in one place.",
                 sampleProject: "Ndere Cultural Centre",
-                image: "images/destinations/ndere/IMG_2530.jpg",
+                image: "projects/ndere/images/IMG_2530.jpg",
                 destinationId: "ndere"
             },
             {

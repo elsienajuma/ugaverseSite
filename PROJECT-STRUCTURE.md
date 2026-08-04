@@ -12,8 +12,10 @@ The active MVP is a plain static HTML, CSS, JavaScript, and JSON website.
 - `js/site.js` controls homepage navigation and industry/project cards.
 - `js/destination-data.js` loads and normalizes destination data.
 - `data/destinations.json` is the active destination data source.
-- `images/destinations/ndere/`, `immersive/ndere/`, and `audio/ndere/` contain the temporary Ndere test assets.
+- `projects/ndere/` contains the temporary Ndere project images, panoramas, and audio.
 - `videos/player-test.mp4` is the single lightweight development clip retained to verify the video player. It is not a public destination project.
+
+Project-specific media belongs under `projects/PROJECT_ID/`. Only projects with real files should have directories; future project folders are created when their media is added rather than kept as empty placeholders.
 
 Use a local HTTP server so browser `fetch()` requests can load the JSON data:
 
@@ -81,8 +83,7 @@ The archive is not a deployment dependency and must not be copied into the repos
 
 The active `.gitignore` excludes MP4 files by default and permits only `videos/player-test.mp4`. Large production media should eventually be served from suitable media/object storage rather than committed to Git.
 
-## Retained legacy and backups
+## Local backups
 
-- `home.html` is retained legacy/experimental work and is not the main entry point.
 - `backups/` is retained locally but ignored by Git.
 - `.temp_*` and `*.bak` files are ignored.
