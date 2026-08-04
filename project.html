@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Ugaverse Studios | Project</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container site-header__inner">
+            <a class="logo" href="index.html" aria-label="Ugaverse home">ugaverse</a>
+            <button class="nav-toggle" id="hamburger" type="button" aria-expanded="false" aria-controls="destination-navigation">
+                <span class="sr-only">Open navigation</span>
+                <span class="nav-toggle__line" aria-hidden="true"></span>
+                <span class="nav-toggle__line" aria-hidden="true"></span>
+                <span class="nav-toggle__line" aria-hidden="true"></span>
+            </button>
+            <nav class="site-nav" id="mobileNav" aria-label="Destination navigation">
+                <ul class="site-nav__list">
+                    <li><a href="index.html">Home</a></li>
+                    <li id="experience-nav-link"><a href="#hero-video">Immersive view</a></li>
+                    <li id="gallery-nav-link"><a href="#slideshow-section">Gallery</a></li>
+                    <li id="map-nav-link"><a href="#map-section">Directions</a></li>
+                    <li id="contact-nav-link"><a href="#contact-section">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="destination-page" id="main-content">
+        <section class="container destination-hero" id="hero-video">
+            <div class="destination-hero__content">
+                <p class="eyebrow">Immersive destination</p>
+                <div class="destination-heading-row">
+                    <h1 id="destination-name">Loading...</h1>
+                    <button class="like-button" id="likeBtn" title="Like this experience" type="button">
+                        <img src="icons/like.svg" alt="Like this experience">
+                    </button>
+                </div>
+                <p class="hero-sub" id="destination-subtitle">Loading...</p>
+                <p class="location"><a href="#map-section" class="location-link" id="destination-location">Loading...</a></p>
+                <div class="destination-actions">
+                    <button class="button button--primary" type="button" id="view-details-btn">View details</button>
+                    <a class="button button--outline" href="#" target="_blank" rel="noopener noreferrer" id="make-tour-link">Make your own tour</a>
+                </div>
+            </div>
+
+            <div class="destination-media-card" id="experience-section" style="display: none;">
+                <div class="destination-media-frame" id="media-frame"></div>
+                <p class="video-caption" id="experience-caption" style="display: none;">Touch and drag to look around</p>
+            </div>
+        </section>
+
+        <section class="container destination-content-grid">
+            <article class="destination-summary-card">
+                <p class="eyebrow eyebrow--blue">About this experience</p>
+                <p id="destination-description">Loading...</p>
+            </article>
+
+            <aside class="destination-side-card" id="contact-section">
+                <p class="eyebrow eyebrow--blue">Get in touch</p>
+                <p class="destination-contact-link"><a href="#" id="whatsapp-link" target="_blank" rel="noopener noreferrer">Chat with us</a></p>
+                <p class="destination-contact-link"><a href="#" id="phone-link">+256 790 773275</a></p>
+                <p class="destination-contact-note">Need a tailored experience for your space? Start a conversation with the Ugaverse team.</p>
+            </aside>
+        </section>
+
+        <section class="container destination-section-card" id="slideshow-section" style="display: none;">
+            <div class="destination-section-head">
+                <p class="eyebrow eyebrow--blue">Gallery</p>
+                <h2>More views</h2>
+            </div>
+            <div class="photo-slideshow">
+                <div class="slideshow-container" id="slideshow-container">
+                    <button class="slide-btn prev" id="prevBtn" type="button" aria-label="Previous slide">‹</button>
+                    <button class="slide-btn next" id="nextBtn" type="button" aria-label="Next slide">›</button>
+                    <div class="slide-indicators" id="slide-indicators"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container destination-section-card" id="amenities-section" style="display: none;">
+            <div class="destination-section-head">
+                <p class="eyebrow eyebrow--blue">What to expect</p>
+                <h2>Highlights</h2>
+            </div>
+            <ul class="destination-amenities-list" id="amenities-list"></ul>
+        </section>
+
+        <section class="container destination-section-card map-section" id="map-section" style="display: none;">
+            <div class="destination-section-head">
+                <p class="eyebrow eyebrow--blue">Directions</p>
+                <h2>Visit or plan a trip</h2>
+            </div>
+            <div class="map-container" id="map-container"></div>
+            <p class="back-link"><a href="#hero-video">Back to immersive view ↑</a></p>
+        </section>
+
+        <section class="container destination-cta">
+            <div>
+                <p class="eyebrow">Ready to create something similar?</p>
+                <h2>Bring your own space online with an immersive experience.</h2>
+            </div>
+            <a class="button button--primary" href="https://forms.google.com/" target="_blank" rel="noopener noreferrer">Start a project</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer__inner">
+            <div>
+                <a class="logo" href="index.html" aria-label="Ugaverse home">ugaverse</a>
+                <p>Immersive digital experiences for destinations and physical spaces.</p>
+            </div>
+            <div class="site-footer__links">
+                <a href="index.html#services">Services</a>
+                <a href="index.html#demos">Who we work with</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <p class="site-footer__legal">© <span data-current-year>2026</span> Ugaverse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/destination-data.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const destinationId = urlParams.get('id') || 'ndere';
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+        const likeBtn = document.getElementById('likeBtn');
+        const likeImg = likeBtn.querySelector('img');
+        let isLiked = false;
+
+        hamburger?.addEventListener('click', () => {
+            const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+            hamburger.setAttribute('aria-expanded', String(!isOpen));
+            mobileNav.classList.toggle('is-open', !isOpen);
+        });
+
+        document.querySelectorAll('.site-nav__list a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger?.setAttribute('aria-expanded', 'false');
+                mobileNav?.classList.remove('is-open');
+            });
+        });
+
+        likeBtn?.addEventListener('click', () => {
+            isLiked = !isLiked;
+            likeImg.src = isLiked ? 'icons/liked.svg' : 'icons/like.svg';
+        });
+
+        function setElementVisibility(element, visible, displayValue = '') {
+            if (!element) return;
+            element.style.display = visible ? displayValue : 'none';
+        }
+
+        function populateCoreProjectInfo(project) {
+            const projectName = project.name || 'Untitled project';
+            const subtitle = document.getElementById('destination-subtitle');
+            const location = document.getElementById('destination-location');
+
+            document.getElementById('page-title').textContent = `Ugaverse Studios | ${projectName}`;
+            document.getElementById('destination-name').textContent = projectName;
+            subtitle.textContent = project.subtitle || '';
+            setElementVisibility(subtitle, Boolean(project.subtitle));
+            location.textContent = project.location ? `${project.location}↓` : '';
+            setElementVisibility(location.closest('.location'), Boolean(project.location));
+            document.getElementById('destination-description').textContent = project.description || 'Project details are coming soon.';
+        }
+
+        function configureProjectActions(project) {
+            const viewDetailsBtn = document.getElementById('view-details-btn');
+            const makeTourLink = document.getElementById('make-tour-link');
+            const whatsappLink = document.getElementById('whatsapp-link');
+            const phoneLink = document.getElementById('phone-link');
+            const whatsapp = project.contact?.whatsapp || '';
+            const phone = project.contact?.phone || '';
+            const detailsUrl = project.contact?.detailsUrl || project.detailsUrl || '';
+
+            if (detailsUrl && detailsUrl !== '#') {
+                viewDetailsBtn.style.display = 'inline-flex';
+                viewDetailsBtn.onclick = () => window.open(detailsUrl, '_blank', 'noopener,noreferrer');
+            } else {
+                viewDetailsBtn.style.display = 'none';
+                viewDetailsBtn.onclick = null;
+            }
+
+            makeTourLink.href = whatsapp ? `https://wa.me/${whatsapp}` : '#';
+            setElementVisibility(makeTourLink, Boolean(whatsapp), 'inline-flex');
+            whatsappLink.href = whatsapp ? `https://wa.me/${whatsapp}` : '#';
+            setElementVisibility(whatsappLink.closest('.destination-contact-link'), Boolean(whatsapp));
+            phoneLink.href = phone ? `tel:${phone}` : '#';
+            phoneLink.textContent = phone;
+            setElementVisibility(phoneLink.closest('.destination-contact-link'), Boolean(phone));
+
+            const hasContact = Boolean(whatsapp || phone || project.contact?.email);
+            setElementVisibility(document.getElementById('contact-section'), hasContact);
+            setElementVisibility(document.getElementById('contact-nav-link'), hasContact);
+        }
+
+        function createSpecialistExperience(label, source) {
+            const block = document.createElement('div');
+            const frame = document.createElement('iframe');
+            block.className = 'project-experience-block';
+            frame.src = source;
+            frame.title = label;
+            frame.allow = 'autoplay; fullscreen; gyroscope; accelerometer';
+            frame.setAttribute('allowfullscreen', '');
+            block.appendChild(frame);
+            return block;
+        }
+
+        function createFlatVideoExperience(item, projectName) {
+            const source = typeof item === 'string' ? item : (item.src || item.file || '');
+            if (!source) return null;
+
+            const block = document.createElement('div');
+            const video = document.createElement('video');
+            block.className = 'project-experience-block';
+            video.controls = true;
+            video.playsInline = true;
+            video.preload = 'metadata';
+            video.src = UgaverseData.resolveAssetPath(source);
+            video.setAttribute('aria-label', item.name || item.title || `${projectName} video`);
+            if (typeof item === 'object' && item.poster) {
+                video.poster = UgaverseData.resolveAssetPath(item.poster);
+            }
+            block.appendChild(video);
+            return block;
+        }
+
+        function renderProjectExperiences(project) {
+            const experienceSection = document.getElementById('experience-section');
+            const mediaFrame = document.getElementById('media-frame');
+            const caption = document.getElementById('experience-caption');
+            const blocks = [];
+
+            project.flatVideos.forEach(item => {
+                const block = createFlatVideoExperience(item, project.name || 'Project');
+                if (block) blocks.push(block);
+            });
+            if (project.videos.length > 0) {
+                blocks.push(createSpecialistExperience(`${project.name || 'Project'} 360 video`, `player.html?id=${encodeURIComponent(project.id)}`));
+            }
+            if (project.panorama.length > 0) {
+                blocks.push(createSpecialistExperience(`${project.name || 'Project'} 360 panorama`, `viewer.html?id=${encodeURIComponent(project.id)}`));
+            }
+
+            mediaFrame.replaceChildren(...blocks);
+            const hasExperiences = blocks.length > 0;
+            const hasInteractiveExperience = project.videos.length > 0 || project.panorama.length > 0;
+            setElementVisibility(experienceSection, hasExperiences);
+            setElementVisibility(document.getElementById('experience-nav-link'), hasExperiences);
+            setElementVisibility(caption, hasInteractiveExperience);
+        }
+
+        function renderProjectGallery(project) {
+            const slideshowSection = document.getElementById('slideshow-section');
+            const slideshowContainer = document.getElementById('slideshow-container');
+            const indicatorsContainer = document.getElementById('slide-indicators');
+            slideshowContainer.querySelectorAll('.slide').forEach(slide => slide.remove());
+            indicatorsContainer.innerHTML = '';
+
+            if (!project.gallery.length) {
+                setElementVisibility(slideshowSection, false);
+                setElementVisibility(document.getElementById('gallery-nav-link'), false);
+                return;
+            }
+
+            setElementVisibility(slideshowSection, true, 'block');
+            setElementVisibility(document.getElementById('gallery-nav-link'), true);
+            project.gallery.forEach((image, index) => {
+                const imagePath = typeof image === 'string' ? image : image.src;
+                if (!imagePath) return;
+
+                const slide = document.createElement('div');
+                const slideImg = document.createElement('img');
+                slide.className = 'slide' + (index === 0 ? ' active' : '');
+                slideImg.src = UgaverseData.resolveAssetPath(imagePath);
+                slideImg.alt = typeof image === 'object' && image.alt ? image.alt : project.name;
+                slideImg.onerror = () => {
+                    slideImg.hidden = true;
+                };
+                slide.appendChild(slideImg);
+                slideshowContainer.insertBefore(slide, document.getElementById('prevBtn'));
+
+                const indicator = document.createElement('span');
+                indicator.className = 'indicator' + (index === 0 ? ' active' : '');
+                indicator.dataset.slide = index;
+                indicatorsContainer.appendChild(indicator);
+            });
+            initSlideshow();
+        }
+
+        function renderProjectHighlights(project) {
+            const amenitiesSection = document.getElementById('amenities-section');
+            const amenitiesList = document.getElementById('amenities-list');
+            amenitiesList.innerHTML = '';
+
+            if (!project.amenities?.length) {
+                setElementVisibility(amenitiesSection, false);
+                return;
+            }
+
+            setElementVisibility(amenitiesSection, true, 'block');
+            project.amenities.forEach(amenity => {
+                const li = document.createElement('li');
+                if (typeof amenity === 'string') {
+                    li.textContent = amenity;
+                } else if (amenity.link) {
+                    li.innerHTML = `${amenity.text} (<a href="${amenity.link}" target="_blank" rel="noopener noreferrer" class="menu-link">${amenity.linkText}</a>)`;
+                }
+                amenitiesList.appendChild(li);
+            });
+        }
+
+        function renderProjectMap(project) {
+            const mapSection = document.getElementById('map-section');
+            const mapContainer = document.getElementById('map-container');
+            const locationLink = document.getElementById('destination-location');
+
+            if (!project.mapEmbed) {
+                setElementVisibility(mapSection, false);
+                setElementVisibility(document.getElementById('map-nav-link'), false);
+                locationLink.removeAttribute('href');
+                return;
+            }
+
+            setElementVisibility(mapSection, true, 'block');
+            setElementVisibility(document.getElementById('map-nav-link'), true);
+            locationLink.href = '#map-section';
+            mapContainer.innerHTML = `<iframe src="${project.mapEmbed}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+        }
+
+        async function loadProject() {
+            try {
+                const destinations = await UgaverseData.loadDestinations();
+                const destination = UgaverseData.getDestinationById(destinations, destinationId);
+
+                if (!destination) {
+                    document.getElementById('destination-name').textContent = 'Project not found';
+                    document.getElementById('destination-subtitle').textContent = 'The requested experience is unavailable.';
+                    document.getElementById('destination-description').textContent = 'Please choose another experience from the home page.';
+                    document.getElementById('destination-location').textContent = 'Try another destination↓';
+                    document.getElementById('view-details-btn').style.display = 'none';
+                    return;
+                }
+
+                const normalizedDestination = UgaverseData.normalizeDestination(destination);
+                populateCoreProjectInfo(normalizedDestination);
+
+                configureProjectActions(normalizedDestination);
+
+                renderProjectExperiences(normalizedDestination);
+
+                renderProjectGallery(normalizedDestination);
+
+                renderProjectHighlights(normalizedDestination);
+
+                renderProjectMap(normalizedDestination);
+            } catch (error) {
+                console.error('Error loading project:', error);
+                document.getElementById('destination-name').textContent = 'Error loading project';
+            }
+        }
+
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentSlide = 0;
+
+            function showSlide(n) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+
+                currentSlide = (n + slides.length) % slides.length;
+
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+            }
+
+            prevBtn?.addEventListener('click', () => showSlide(currentSlide - 1));
+            nextBtn?.addEventListener('click', () => showSlide(currentSlide + 1));
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => showSlide(index));
+            });
+
+            setInterval(() => showSlide(currentSlide + 1), 5000);
+        }
+
+        loadProject();
+    </script>
+</body>
+</html>

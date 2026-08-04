@@ -93,7 +93,7 @@ async function renderDemoGallery() {
 
             return `
             <article class="project-card">
-                <a class="project-card__link" href="destination.html?id=${item.destinationId}" aria-label="Explore ${item.sampleProject}">
+                <a class="project-card__link" href="project.html?id=${item.destinationId}" aria-label="Explore ${item.sampleProject}">
                     <img src="${item.image}" alt="${item.sampleProject}" width="640" height="480" loading="lazy">
                     <div class="project-card__body">
                         <p class="project-card__meta">${item.industry}</p>

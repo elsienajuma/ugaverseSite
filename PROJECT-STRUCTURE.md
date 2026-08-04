@@ -5,9 +5,9 @@
 The active MVP is a plain static HTML, CSS, JavaScript, and JSON website.
 
 - `index.html` is the public homepage. Its `#demos` section remains the "Who we work with" section.
-- `destination.html` renders destination content selected with an `id` query parameter.
-- `player.html` is the video/360-video player. Opening it without an `id` uses the lightweight test clip.
-- `viewer.html` is the 360 panorama viewer.
+- `project.html` is the reusable project landing-page template. It reads an `id` query parameter and renders standard project information plus only the experience and supporting blocks that have data.
+- `player.html` is the specialist 360-video player. Opening it without an `id` uses the lightweight test clip.
+- `viewer.html` is the specialist 360-panorama viewer.
 - `css/style.css` contains the active shared responsive styles.
 - `js/site.js` controls homepage navigation and industry/project cards.
 - `js/destination-data.js` loads and normalizes destination data.
@@ -25,7 +25,20 @@ Then open `http://localhost:8000/`.
 
 ## Temporary project
 
-Ndere Cultural Centre remains temporarily available at `destination.html?id=ndere` to test the panorama/image experience. It has not been recategorized.
+Ndere Cultural Centre remains temporarily available at `project.html?id=ndere` to test the panorama/image experience. It has not been recategorized.
+
+## Project landing pages
+
+Most projects are expected to provide standard information: name, subtitle or summary, location, description, and primary contact/action information. Missing standard values are handled without breaking the page.
+
+Experience and supporting blocks are optional. `project.html` displays gallery, flat video, 360 video, 360 panorama, highlights, map, and external action blocks only when the selected project contains the relevant data.
+
+- Flat video uses a native HTML video element in `project.html`.
+- 360 video is embedded from `player.html?id=PROJECT_ID`.
+- 360 panorama is embedded from `viewer.html?id=PROJECT_ID`.
+- A future Unity WebGL experience should use a separate specialist wrapper or viewer rather than adding Unity rendering logic to `project.html`.
+
+`player.html` and `viewer.html` remain independent so changes to one specialist experience do not risk breaking another.
 
 ## Planned projects
 

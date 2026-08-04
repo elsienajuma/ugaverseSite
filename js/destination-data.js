@@ -15,19 +15,45 @@
     }
 
     function normalizeDestination(destination) {
+        const experiences = destination.experiences || {};
+        const flatVideoExperience = experiences.flatVideo || destination.flatVideo || {};
+        const video360Experience = experiences.video360 || {};
+        const panorama360Experience = experiences.panorama360 || {};
+
         const gallery = Array.isArray(destination.gallery) && destination.gallery.length
             ? destination.gallery
             : (Array.isArray(destination.images) ? destination.images : []);
 
-        const videos = Array.isArray(destination.videos) && destination.videos.length
+        const rawVideos = Array.isArray(destination.videos) && destination.videos.length
             ? destination.videos
-            : (destination.immersive && Array.isArray(destination.immersive.videos) ? destination.immersive.videos : []);
+            : (Array.isArray(video360Experience.scenes) && video360Experience.scenes.length
+                ? video360Experience.scenes
+                : (destination.immersive && Array.isArray(destination.immersive.videos) ? destination.immersive.videos : []));
 
-        const panoramaItems = Array.isArray(destination.panorama)
+        const rawPanoramaItems = Array.isArray(destination.panorama) && destination.panorama.length
             ? destination.panorama
-            : (Array.isArray(destination.panorama?.images)
-                ? destination.panorama.images
-                : (destination.immersive && Array.isArray(destination.immersive.images) ? destination.immersive.images : []));
+            : (Array.isArray(panorama360Experience.scenes) && panorama360Experience.scenes.length
+                ? panorama360Experience.scenes
+                : (Array.isArray(destination.panorama?.images)
+                    ? destination.panorama.images
+                    : (destination.immersive && Array.isArray(destination.immersive.images) ? destination.immersive.images : [])));
+
+        const videos = rawVideos.map(item => ({
+            ...item,
+            mobile: item.mobile || item.src || item.file || '',
+            desktop: item.desktop || item.src || item.file || ''
+        }));
+
+        const panoramaItems = rawPanoramaItems.map(item => ({
+            ...item,
+            file: item.file || item.src || ''
+        }));
+
+        const flatVideos = Array.isArray(destination.flatVideos) && destination.flatVideos.length
+            ? destination.flatVideos
+            : (Array.isArray(flatVideoExperience.items)
+                ? flatVideoExperience.items
+                : (flatVideoExperience.src ? [flatVideoExperience] : []));
 
         const mapEmbed = destination.map?.embed || destination.mapEmbed || destination.map || '';
         const contact = destination.contact || {
@@ -42,8 +68,10 @@
             category: destination.category || 'Destination',
             coverImage: destination.coverImage || destination.image || gallery[0] || (destination.immersive?.file || ''),
             gallery,
+            flatVideos,
             videos,
             panorama: panoramaItems,
+            webgl: experiences.webgl || destination.webgl || null,
             mapEmbed,
             contact
         };
