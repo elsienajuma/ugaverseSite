@@ -13,7 +13,8 @@ __pycache__/
 
 # Large media (keep out of GitHub repo)
 *.mp4
-!videos/player-test.mp4
+*.mov
+*.MOV
 
 # Archived and backup material
 Archived Project Media/

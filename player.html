@@ -108,14 +108,14 @@
   <div class="scene-container">
     <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" device-orientation-permission-ui="enabled: true">
       <a-assets>
-        <video id="video" src="videos/player-test.mp4" preload="auto" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+        <video id="video" src="demos/daddys-airbnb/video-360/1-Entrance.mp4" preload="auto" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline muted></video>
       </a-assets>
       <a-videosphere src="#video" rotation="0 -90 0"></a-videosphere>
       <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true; mouseEnabled: true; minPolarAngle: 60; maxPolarAngle: 120" mouse-cursor></a-camera>
     </a-scene>
     <div class="controls">
       <select class="video-selector" id="video-selector">
-        <option value="videos/player-test.mp4">Player test clip</option>
+        <option value="demos/daddys-airbnb/video-360/1-Entrance.mp4">Entrance</option>
       </select>
       <button class="control-btn" id="sound-toggle" title="Toggle sound">
         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -126,7 +126,6 @@
     </div>
   </div>
 
-  <script src="js/destination-data.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const video = document.getElementById('video');
@@ -151,64 +150,37 @@
       const qualitySuffix = isMobile() ? '-2K' : '-4K';
       console.log('Device detected:', isMobile() ? 'Mobile (2K)' : 'Desktop (4K)');
       
-      const urlParams = new URLSearchParams(window.location.search);
-      const destinationId = urlParams.get('id');
-      
-      console.log('Loading destination:', destinationId);
-      
-      async function loadDestinationData() {
-        if (!destinationId) {
-          console.log('No destination requested; using the lightweight player test clip.');
-          return;
-        }
+      // Daddy's Airbnb 360 video scenes.
+      // Append more { name, src } entries here if additional scenes are added later.
+      const daddysAirbnbScenes = [
+        { name: 'Entrance', src: 'demos/daddys-airbnb/video-360/1-Entrance.mp4' },
+        { name: 'Front Porch', src: 'demos/daddys-airbnb/video-360/2-Front Porch.mp4' },
+        { name: 'Living Room', src: 'demos/daddys-airbnb/video-360/3-Living Room.mp4' },
+        { name: 'Kitchen', src: 'demos/daddys-airbnb/video-360/4-Kitchen.mp4' },
+        { name: 'Bedroom1', src: 'demos/daddys-airbnb/video-360/5-Bedroom1.mp4' },
+        { name: 'Bedroom2', src: 'demos/daddys-airbnb/video-360/6-Bedroom2.mp4' }
+      ];
 
-        try {
-          const destinations = await UgaverseData.loadDestinations();
-          const destination = UgaverseData.getDestinationById(destinations, destinationId);
-          const videos = Array.isArray(destination?.videos) && destination.videos.length
-            ? destination.videos
-            : ((destination?.immersive && Array.isArray(destination.immersive.videos)) ? destination.immersive.videos : []);
+      function loadDaddysAirbnbVideo() {
+        videoSelector.innerHTML = '';
+        daddysAirbnbScenes.forEach((item) => {
+          const option = document.createElement('option');
+          option.value = item.src;
+          option.textContent = item.name;
+          videoSelector.appendChild(option);
+        });
 
-          if (videos.length === 0) {
-            console.log('Destination has no video scenes; using the lightweight player test clip.');
-            return;
-          }
-
-          videoSelector.innerHTML = '';
-          videos.forEach((item, index) => {
-            const option = document.createElement('option');
-            const sourcePath = isMobile() ? (item.mobile || item.desktop || '') : (item.desktop || item.mobile || '');
-            option.value = sourcePath;
-            option.textContent = item.name || `Scene ${index + 1}`;
-            videoSelector.appendChild(option);
-          });
-
-          if (destination?.audio) {
-            bgMusic.src = UgaverseData.resolveAssetPath(destination.audio);
-            console.log('Loading audio from:', bgMusic.src);
-          }
-
-          if (videos.length > 0) {
-            const initialSource = isMobile()
-              ? (videos[0].mobile || videos[0].desktop || '')
-              : (videos[0].desktop || videos[0].mobile || '');
-            video.src = UgaverseData.resolveAssetPath(initialSource);
-          } else {
-            video.src = UgaverseData.resolveAssetPath(video.src);
-          }
-        } catch (error) {
-          console.error('Error loading destination data:', error);
-        }
+        video.src = daddysAirbnbScenes[0].src;
       }
-      
-      loadDestinationData();
+
+      loadDaddysAirbnbVideo();
       
       // Video selection handler
       videoSelector.addEventListener('change', (e) => {
         const selectedValue = e.target.value;
         const wasMuted = video.muted;
         
-        const newVideoSrc = UgaverseData.resolveAssetPath(selectedValue.replace(/-(2K|4K)\.mp4$/, qualitySuffix + '.mp4'));
+        const newVideoSrc = selectedValue.replace(/-(2K|4K)\.mp4$/, qualitySuffix + '.mp4');
         
         video.src = newVideoSrc;
         video.load();
