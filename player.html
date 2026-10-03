@@ -95,6 +95,10 @@
       font-size: 16px;
       font-weight: 600;
     }
+    /* a drag that starts on the 360 view belongs to the view, not to page scrolling */
+    .a-canvas {
+      touch-action: none;
+    }
   </style>
 </head>
 <body>
@@ -108,14 +112,14 @@
   <div class="scene-container">
     <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" device-orientation-permission-ui="enabled: true">
       <a-assets>
-        <video id="video" src="demos/daddys-airbnb/video-360/1-Entrance.mp4" preload="auto" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+        <video id="video" src="demos/daddys-airbnb/video-360/1-Entrance-4K.mp4" preload="auto" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline muted></video>
       </a-assets>
       <a-videosphere src="#video" rotation="0 -90 0"></a-videosphere>
       <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true; mouseEnabled: true; minPolarAngle: 60; maxPolarAngle: 120" mouse-cursor></a-camera>
     </a-scene>
     <div class="controls">
       <select class="video-selector" id="video-selector">
-        <option value="demos/daddys-airbnb/video-360/1-Entrance.mp4">Entrance</option>
+        <option value="demos/daddys-airbnb/video-360/1-Entrance-4K.mp4">1-Entrance</option>
       </select>
       <button class="control-btn" id="sound-toggle" title="Toggle sound">
         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -151,26 +155,36 @@
       console.log('Device detected:', isMobile() ? 'Mobile (2K)' : 'Desktop (4K)');
       
       // Daddy's Airbnb 360 video scenes.
-      // Append more { name, src } entries here if additional scenes are added later.
+      // Each scene is configured once, with its -4K source; withQuality() picks the -4K or -2K file for this device.
+      // The selector label is the filename without the quality suffix and .mp4; the numeric prefix sets the order.
+      // Append more { src } entries here if additional scenes are added later.
       const daddysAirbnbScenes = [
-        { name: 'Entrance', src: 'demos/daddys-airbnb/video-360/1-Entrance.mp4' },
-        { name: 'Front Porch', src: 'demos/daddys-airbnb/video-360/2-Front Porch.mp4' },
-        { name: 'Living Room', src: 'demos/daddys-airbnb/video-360/3-Living Room.mp4' },
-        { name: 'Kitchen', src: 'demos/daddys-airbnb/video-360/4-Kitchen.mp4' },
-        { name: 'Bedroom1', src: 'demos/daddys-airbnb/video-360/5-Bedroom1.mp4' },
-        { name: 'Bedroom2', src: 'demos/daddys-airbnb/video-360/6-Bedroom2.mp4' }
+        { src: 'demos/daddys-airbnb/video-360/1-Entrance-4K.mp4' },
+        { src: 'demos/daddys-airbnb/video-360/2-Exterior-4K.mp4' },
+        { src: 'demos/daddys-airbnb/video-360/3-Front Porch-4K.mp4' },
+        { src: 'demos/daddys-airbnb/video-360/4-Living Room-4K.mp4' },
+        { src: 'demos/daddys-airbnb/video-360/5-Kitchen-4K.mp4' },
+        { src: 'demos/daddys-airbnb/video-360/6-Bedroom1-4K.mp4' },
+        { src: 'demos/daddys-airbnb/video-360/7-Bedroom2-4K.mp4' }
       ];
+
+      // Quality rule shared by the initial scene, the selector and scene changes
+      function withQuality(src) {
+        return src.replace(/-(2K|4K)\.mp4$/, qualitySuffix + '.mp4');
+      }
 
       function loadDaddysAirbnbVideo() {
         videoSelector.innerHTML = '';
         daddysAirbnbScenes.forEach((item) => {
+          const src = withQuality(item.src);
           const option = document.createElement('option');
-          option.value = item.src;
-          option.textContent = item.name;
+          option.value = src;
+          // temporary: the label is the actual filename without the quality suffix and .mp4
+          option.textContent = src.split('/').pop().replace(/-(2K|4K)\.mp4$/, '');
           videoSelector.appendChild(option);
         });
 
-        video.src = daddysAirbnbScenes[0].src;
+        video.src = withQuality(daddysAirbnbScenes[0].src);
       }
 
       loadDaddysAirbnbVideo();
@@ -180,7 +194,7 @@
         const selectedValue = e.target.value;
         const wasMuted = video.muted;
         
-        const newVideoSrc = selectedValue.replace(/-(2K|4K)\.mp4$/, qualitySuffix + '.mp4');
+        const newVideoSrc = withQuality(selectedValue);
         
         video.src = newVideoSrc;
         video.load();
@@ -216,6 +230,37 @@
         }));
       }
       
+      // Vertical touch drag: A-Frame 1.4.0 look-controls only turns touch into yaw (horizontal), so add the missing pitch here.
+      // Same direction as its mouse drag. Touch only (the mouse path is untouched): gentler than A-Frame's default
+      // (touchSensitivity) and pitch limited to +/-70 degrees.
+      scene.addEventListener('loaded', function() {
+        const canvas = scene.canvas;
+        const lookControls = camera.components['look-controls'];
+        const touchSensitivity = 0.78;
+        const maxTouchPitch = 70 * Math.PI / 180;
+        let lastY = null;
+        let lastYaw = 0;
+
+        canvas.addEventListener('touchstart', (e) => {
+          lastY = e.touches.length === 1 ? e.touches[0].pageY : null;
+          lastYaw = lookControls.yawObject.rotation.y;
+        });
+        window.addEventListener('touchmove', (e) => {
+          if (lastY === null || e.touches.length !== 1 || !lookControls.data.touchEnabled || scene.is('vr-mode')) return;
+          // A-Frame's own touch handler has already turned the yaw for this move; keep only touchSensitivity of that turn
+          const yaw = lookControls.yawObject.rotation;
+          yaw.y = lastYaw + touchSensitivity * (yaw.y - lastYaw);
+          lastYaw = yaw.y;
+          const dy = e.touches[0].pageY - lastY;
+          lastY = e.touches[0].pageY;
+          const direction = lookControls.data.reverseMouseDrag ? 1 : -1;
+          const pitch = lookControls.pitchObject.rotation;
+          pitch.x = Math.max(-maxTouchPitch, Math.min(maxTouchPitch, pitch.x + touchSensitivity * direction * Math.PI * dy / canvas.clientWidth));
+        });
+        window.addEventListener('touchend', () => { lastY = null; });
+        window.addEventListener('touchcancel', () => { lastY = null; });
+      });
+
       // Play overlay for data-saver / low-power mode
       const playOverlay = document.getElementById('play-overlay');
       
