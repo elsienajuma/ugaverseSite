@@ -2327,6 +2327,92 @@ body:has(#destination-name.destination-heading--daddys-house) #destination-hero-
     min-height: 0;
 }
 
+/* Player fullscreen: the same iframe is restyled (never moved or reloaded) to a centered 4:3 (landscape) or 3:4 (portrait) window over a dark backdrop */
+.player-fullscreen__backdrop,
+.player-fullscreen__close {
+    display: none;
+}
+
+html.is-player-fullscreen {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+}
+
+.project-experience-block.is-fullscreen {
+    --fs-margin: 16px;
+    --fs-w: min(100vw - 2 * var(--fs-margin), (100vh - 2 * var(--fs-margin)) * 4 / 3);
+    --fs-h: calc(var(--fs-w) * 3 / 4);
+}
+
+@media (orientation: portrait) {
+    .project-experience-block.is-fullscreen {
+        --fs-w: min(100vw - 2 * var(--fs-margin), (100vh - 2 * var(--fs-margin)) * 3 / 4);
+        --fs-h: calc(var(--fs-w) * 4 / 3);
+    }
+}
+
+@supports (height: 100dvh) {
+    .project-experience-block.is-fullscreen {
+        --fs-w: min(100vw - 2 * var(--fs-margin), (100dvh - 2 * var(--fs-margin)) * 4 / 3);
+    }
+
+    @media (orientation: portrait) {
+        .project-experience-block.is-fullscreen {
+            --fs-w: min(100vw - 2 * var(--fs-margin), (100dvh - 2 * var(--fs-margin)) * 3 / 4);
+        }
+    }
+}
+
+.project-experience-block.is-fullscreen .player-fullscreen__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: rgba(0, 0, 0, 0.82);
+}
+
+.experience-left-col .project-experience-block.is-fullscreen iframe {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    z-index: 1101;
+    width: var(--fs-w);
+    height: var(--fs-h);
+    border-radius: 12px;
+}
+
+.project-experience-block.is-fullscreen .player-fullscreen__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 1102;
+    top: calc(50% - var(--fs-h) / 2 + 10px);
+    right: calc(50% - var(--fs-w) / 2 + 10px);
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+}
+
+.project-experience-block.is-fullscreen .player-fullscreen__close:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.project-experience-block.is-fullscreen .player-fullscreen__close:focus-visible {
+    outline: 2px solid #FFD700;
+    outline-offset: 2px;
+}
+
+.player-fullscreen__close svg {
+    width: 22px;
+    height: 22px;
+}
+
 .experience-right-col {
     display: flex;
     flex-direction: column;

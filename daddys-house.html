@@ -82,7 +82,7 @@
                 <div class="experience-left-col">
                     <h2 class="experience-left-title">VISIT<br class="experience-title__break"> DADDY'S HOUSE</h2>
                     <div class="destination-media-frame" id="media-frame">
-                        <div class="project-experience-block"><iframe src="player.html?id=daddys-airbnb" title="Daddy's AirBnB 360 video" allow="autoplay; fullscreen; gyroscope; accelerometer" allowfullscreen></iframe></div>
+                        <div class="project-experience-block"><iframe src="player.html?id=daddys-airbnb" title="Daddy's AirBnB 360 video" allow="autoplay; fullscreen; gyroscope; accelerometer" allowfullscreen></iframe><div class="player-fullscreen__backdrop" aria-hidden="true"></div><button class="player-fullscreen__close" type="button" aria-label="Exit fullscreen" title="Exit fullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button></div>
                     </div>
                     <p class="video-caption" id="experience-caption">Touch and drag to look around</p>
                 </div>
@@ -175,6 +175,48 @@
             } catch (error) { console.error('Unable to share this project:', error); }
         }
         document.getElementById('share-location-btn')?.addEventListener('click', sharePage);
+
+        // Player fullscreen: the player asks (postMessage), this page restyles the same iframe, so it never reloads.
+        (function () {
+            const block = document.querySelector('.project-experience-block');
+            const frame = block && block.querySelector('iframe');
+            if (!frame) return;
+            const root = document.documentElement;
+            const origin = window.location.origin === 'null' ? '*' : window.location.origin;
+            let open = false;
+
+            function setFullscreen(next) {
+                if (next === open) return;
+                open = next;
+                block.classList.toggle('is-fullscreen', open);
+                root.classList.toggle('is-player-fullscreen', open);
+                if (open) {
+                    block.setAttribute('role', 'dialog');
+                    block.setAttribute('aria-modal', 'true');
+                    block.setAttribute('aria-label', "Daddy's AirBnB 360 tour");
+                } else {
+                    block.removeAttribute('role');
+                    block.removeAttribute('aria-modal');
+                    block.removeAttribute('aria-label');
+                    frame.focus();
+                }
+                frame.contentWindow.postMessage({ ugaversePlayer: 'fullscreen-state', fullscreen: open }, origin);
+            }
+
+            window.addEventListener('message', event => {
+                if (event.source !== frame.contentWindow || event.origin !== window.location.origin) return;
+                const type = event.data && event.data.ugaversePlayer;
+                if (type === 'fullscreen-toggle') setFullscreen(!open);
+                else if (type === 'fullscreen-exit') setFullscreen(false);
+            });
+            block.querySelector('.player-fullscreen__close').addEventListener('click', () => setFullscreen(false));
+            block.querySelector('.player-fullscreen__backdrop').addEventListener('click', () => setFullscreen(false));
+            document.addEventListener('keydown', event => { if (open && event.key === 'Escape') setFullscreen(false); });
+            // keep keyboard focus out of the dimmed page: anything outside the player goes back to the exit button
+            document.addEventListener('focusin', event => {
+                if (open && !block.contains(event.target)) block.querySelector('.player-fullscreen__close').focus();
+            });
+        })();
 
         const header = document.querySelector('.site-header');
         const sections = [

@@ -240,10 +240,10 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
         </button>
       </div>
-      <button class="control-btn" id="sound-toggle" title="Toggle sound">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path id="sound-icon" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-          <path id="mute-x" d="M14.89 9.55l-1.44 1.44 1.44 1.44" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display: none"/>
+      <button class="control-btn" id="fullscreen-toggle" type="button" title="Enter fullscreen" aria-label="Enter fullscreen">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path id="fullscreen-enter-icon" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+          <path id="fullscreen-exit-icon" d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" style="display: none"/>
         </svg>
       </button>
     </div>
@@ -259,8 +259,7 @@
       const sceneList = document.getElementById('scene-list');
       const sceneListItems = document.getElementById('scene-list-items');
       const sceneStatus = document.getElementById('scene-status');
-      const soundToggle = document.getElementById('sound-toggle');
-      const soundIcon = document.getElementById('sound-icon');
+      const fullscreenToggle = document.getElementById('fullscreen-toggle');
       const controls = document.querySelector('.controls');
       const camera = document.querySelector('a-camera');
       const scene = document.querySelector('a-scene');
@@ -604,22 +603,6 @@
         }, 300);
       });
       
-      // Update sound icon based on mute state
-      function updateSoundIcon(muted) {
-        if (muted) {
-          soundIcon.setAttribute('d', 'M3 9v6h4l5 5V4L7 9H3z');
-          document.getElementById('mute-x').style.display = 'block';
-          soundToggle.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
-        } else {
-          soundIcon.setAttribute('d', 'M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z');
-          document.getElementById('mute-x').style.display = 'none';
-          soundToggle.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        }
-      }
-
-      // Initialize button state (music starts muted)
-      updateSoundIcon(true);
-      
       if (!bgMusic) {
         console.error('Background music element not found!');
         return;
@@ -653,17 +636,45 @@
         }
       });
 
-      // Sound toggle - controls only background music
-      soundToggle.addEventListener('click', () => {
-        bgMusic.muted = !bgMusic.muted;
-        if (!bgMusic.muted) {
-          bgMusic.play().catch(e => console.log('Background music play error:', e));
-        } else {
-          bgMusic.pause();
-        }
-        updateSoundIcon(bgMusic.muted);
-        console.log('Sound toggled:', bgMusic.muted ? 'MUTED' : 'PLAYING');
+      // Fullscreen: the page that embeds this player owns the fullscreen state (it restyles the iframe, so nothing here
+      // reloads). This button only asks for a change and shows the state the page reports back.
+      const messageOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
+      let fullscreenActive = false;
+
+      function setFullscreenState(active) {
+        fullscreenActive = active;
+        document.getElementById('fullscreen-enter-icon').style.display = active ? 'none' : '';
+        document.getElementById('fullscreen-exit-icon').style.display = active ? '' : 'none';
+        const label = active ? 'Exit fullscreen' : 'Enter fullscreen';
+        fullscreenToggle.title = label;
+        fullscreenToggle.setAttribute('aria-label', label);
+      }
+
+      if (window.parent === window) {
+        // opened on its own, nothing can host a fullscreen view
+        fullscreenToggle.style.display = 'none';
+      }
+
+      fullscreenToggle.addEventListener('click', () => {
+        window.parent.postMessage({ ugaversePlayer: 'fullscreen-toggle' }, messageOrigin);
       });
+
+      window.addEventListener('message', (e) => {
+        if (e.source !== window.parent || e.origin !== window.location.origin) return;
+        const data = e.data;
+        if (!data || data.ugaversePlayer !== 'fullscreen-state') return;
+        const wasActive = fullscreenActive;
+        setFullscreenState(!!data.fullscreen);
+        if (wasActive && !data.fullscreen && document.hasFocus()) fullscreenToggle.focus();
+      });
+
+      // Escape pressed while focus is inside this frame never reaches the page, so ask it to exit
+      // (capture phase: before the scene list handler closes the list; Escape closes an open list first)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && fullscreenActive && !sceneListOpen) {
+          window.parent.postMessage({ ugaversePlayer: 'fullscreen-exit' }, messageOrigin);
+        }
+      }, true);
 
       // Controls remain visible at all times
     });
