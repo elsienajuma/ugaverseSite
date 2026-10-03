@@ -22,6 +22,7 @@
       gap: 12px;
       transition: opacity 0.3s ease;
       align-items: center;
+      max-width: calc(100% - 40px);
     }
     .control-btn {
       background: rgba(0,0,0,0.5);
@@ -51,20 +52,126 @@
       height: 24px;
       position: relative;
     }
-    .video-selector {
+    .scene-nav {
+      display: flex;
+      align-items: center;
+      flex: 0 1 auto;
+      min-width: 0;
       background: rgba(0,0,0,0.7);
       border: 1px solid rgba(255,255,255,0.3);
-      color: white;
-      padding: 8px 12px;
       border-radius: 20px;
-      font-size: 14px;
-      cursor: pointer;
-      outline: none;
-      min-width: 120px;
-    }
-    .video-selector option {
-      background: #1a1a1a;
       color: white;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+    }
+    .scene-nav-btn {
+      background: none;
+      border: none;
+      color: white;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .scene-nav-btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    .scene-nav-btn:focus-visible {
+      outline: 2px solid #FFD700;
+      outline-offset: -2px;
+    }
+    .scene-nav-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    .scene-nav-label {
+      flex: 0 1 auto;
+      width: 8.5em;
+      min-width: 0;
+      height: 36px;
+      margin: 0;
+      padding: 0 4px;
+      background: none;
+      border: none;
+      border-radius: 18px;
+      color: inherit;
+      font: inherit;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+    .scene-nav-label:focus-visible,
+    .scene-list-item:focus-visible {
+      outline: 2px solid #FFD700;
+      outline-offset: -2px;
+    }
+    /* scene list: opens above the navigator; the wrapper's bottom padding bridges the gap so hovering across it keeps it open */
+    .scene-nav {
+      position: relative;
+    }
+    .scene-list {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 100%;
+      padding-bottom: 8px;
+      z-index: 1;
+    }
+    .scene-list[hidden] {
+      display: none;
+    }
+    .scene-list-items {
+      list-style: none;
+      margin: 0;
+      padding: 4px 0;
+      max-height: min(260px, calc(100vh - 100px));
+      overflow-y: auto;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 14px;
+    }
+    .scene-list-item {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 8px 14px;
+      background: none;
+      border: none;
+      color: white;
+      font: inherit;
+      line-height: 16px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+    .scene-list-item:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    .scene-list-item[aria-current="true"] {
+      color: #FFD700;
+      font-weight: 600;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
     }
     .play-overlay {
       position: absolute;
@@ -91,6 +198,8 @@
       fill: #FFD700;
     }
     .play-overlay span {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 18px;
       color: white;
       font-size: 16px;
       font-weight: 600;
@@ -118,9 +227,19 @@
       <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true; mouseEnabled: true; minPolarAngle: 60; maxPolarAngle: 120" mouse-cursor></a-camera>
     </a-scene>
     <div class="controls">
-      <select class="video-selector" id="video-selector">
-        <option value="demos/daddys-airbnb/video-360/1-Entrance-4K.mp4">1-Entrance</option>
-      </select>
+      <span class="visually-hidden" id="scene-status" role="status" aria-live="polite" aria-atomic="true"></span>
+      <div class="scene-nav" id="scene-nav" role="group" aria-label="Scene navigation">
+        <button class="scene-nav-btn" id="scene-prev" type="button" aria-label="Previous scene">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button class="scene-nav-label" id="scene-label" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="scene-list">1 — Entrance</button>
+        <div class="scene-list" id="scene-list" role="group" aria-label="Scenes" hidden>
+          <ul class="scene-list-items" id="scene-list-items"></ul>
+        </div>
+        <button class="scene-nav-btn" id="scene-next" type="button" aria-label="Next scene">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+        </button>
+      </div>
       <button class="control-btn" id="sound-toggle" title="Toggle sound">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path id="sound-icon" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
@@ -133,7 +252,13 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const video = document.getElementById('video');
-      const videoSelector = document.getElementById('video-selector');
+      const scenePrev = document.getElementById('scene-prev');
+      const sceneNext = document.getElementById('scene-next');
+      const sceneLabel = document.getElementById('scene-label');
+      const sceneNav = document.getElementById('scene-nav');
+      const sceneList = document.getElementById('scene-list');
+      const sceneListItems = document.getElementById('scene-list-items');
+      const sceneStatus = document.getElementById('scene-status');
       const soundToggle = document.getElementById('sound-toggle');
       const soundIcon = document.getElementById('sound-icon');
       const controls = document.querySelector('.controls');
@@ -141,7 +266,6 @@
       const scene = document.querySelector('a-scene');
       const bgMusic = document.getElementById('background-music');
       let sensorTimeout;
-      let sensorWorking = false;
       let intentionalPause = false; // Track if pause was intentional
       
       // Device detection - determine if mobile or desktop
@@ -156,80 +280,261 @@
       
       // Daddy's Airbnb 360 video scenes.
       // Each scene is configured once, with its -4K source; withQuality() picks the -4K or -2K file for this device.
-      // The selector label is the filename without the quality suffix and .mp4; the numeric prefix sets the order.
-      // Append more { src } entries here if additional scenes are added later.
+      // The label is "<number> — <name>"; the array order sets the numbers and the navigation order.
+      // playOnce: the scene plays once and advances on 'ended'; otherwise it loops and advances after SCENE_DWELL_MS.
+      // autoRotate: whether the gentle idle camera rotation may run in this scene.
+      // Append more { name, src } entries here if additional scenes are added later.
       const daddysAirbnbScenes = [
-        { src: 'demos/daddys-airbnb/video-360/1-Entrance-4K.mp4' },
-        { src: 'demos/daddys-airbnb/video-360/2-Exterior-4K.mp4' },
-        { src: 'demos/daddys-airbnb/video-360/3-Front Porch-4K.mp4' },
-        { src: 'demos/daddys-airbnb/video-360/4-Living Room-4K.mp4' },
-        { src: 'demos/daddys-airbnb/video-360/5-Kitchen-4K.mp4' },
-        { src: 'demos/daddys-airbnb/video-360/6-Bedroom1-4K.mp4' },
-        { src: 'demos/daddys-airbnb/video-360/7-Bedroom2-4K.mp4' }
+        { name: 'Entrance', src: 'demos/daddys-airbnb/video-360/1-Entrance-4K.mp4', playOnce: true, autoRotate: false },
+        { name: 'Exterior', src: 'demos/daddys-airbnb/video-360/2-Exterior-4K.mp4', autoRotate: true },
+        { name: 'Front Porch', src: 'demos/daddys-airbnb/video-360/3-Front Porch-4K.mp4', autoRotate: true },
+        { name: 'Living Room', src: 'demos/daddys-airbnb/video-360/4-Living Room-4K.mp4', autoRotate: true },
+        { name: 'Kitchen', src: 'demos/daddys-airbnb/video-360/5-Kitchen-4K.mp4', autoRotate: true },
+        { name: 'Bedroom 1', src: 'demos/daddys-airbnb/video-360/6-Bedroom1-4K.mp4', autoRotate: true },
+        { name: 'Bedroom 2', src: 'demos/daddys-airbnb/video-360/7-Bedroom2-4K.mp4', autoRotate: true }
       ];
 
-      // Quality rule shared by the initial scene, the selector and scene changes
+      // Quality rule, applied once to a raw -4K scene source when the scene is loaded
       function withQuality(src) {
         return src.replace(/-(2K|4K)\.mp4$/, qualitySuffix + '.mp4');
       }
 
-      function loadDaddysAirbnbVideo() {
-        videoSelector.innerHTML = '';
-        daddysAirbnbScenes.forEach((item) => {
-          const src = withQuality(item.src);
-          const option = document.createElement('option');
-          option.value = src;
-          // temporary: the label is the actual filename without the quality suffix and .mp4
-          option.textContent = src.split('/').pop().replace(/-(2K|4K)\.mp4$/, '');
-          videoSelector.appendChild(option);
-        });
+      // Scene progression: one timer, started only once the scene is actually playing.
+      // It counts the time spent playing, so buffering or a pause does not use up the dwell time.
+      const SCENE_DWELL_MS = 15000;
+      let currentIndex = 0;
+      let progressionTimer = null;
+      let dwellRemaining = SCENE_DWELL_MS;
+      let dwellStartedAt = 0;
 
-        video.src = withQuality(daddysAirbnbScenes[0].src);
+      // Idle camera rotation: shared interaction state (the rotation loop itself is further down)
+      const IDLE_DELAY_MS = 3000;     // no interaction for this long before the rotation may start
+      const GYRO_RECENT_MS = 2000;    // orientation events newer than this mean the gyro is in use
+      const IDLE_DEGREES_PER_SECOND = 4;
+      let lastInteraction = performance.now();
+      let lastGyroEvent = -Infinity;
+      let dragging = false;
+
+      function stopDwell() {
+        clearTimeout(progressionTimer);
+        progressionTimer = null;
       }
 
-      loadDaddysAirbnbVideo();
-      
-      // Video selection handler
-      videoSelector.addEventListener('change', (e) => {
-        const selectedValue = e.target.value;
+      function startDwell() {
+        if (daddysAirbnbScenes[currentIndex].playOnce || progressionTimer !== null) return;
+        dwellStartedAt = performance.now();
+        progressionTimer = setTimeout(() => {
+          progressionTimer = null;
+          goToScene(currentIndex + 1);
+        }, Math.max(0, dwellRemaining));
+      }
+
+      function pauseDwell() {
+        if (progressionTimer === null) return;
+        stopDwell();
+        dwellRemaining -= performance.now() - dwellStartedAt;
+      }
+
+      // Visible title, list entry and announcement of a scene, all from the same configuration
+      function sceneTitle(index) {
+        return (index + 1) + ' — ' + daddysAirbnbScenes[index].name;
+      }
+
+      const sceneListButtons = daddysAirbnbScenes.map((item, index) => {
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'scene-list-item';
+        button.textContent = sceneTitle(index);
+        button.addEventListener('click', () => selectScene(index));
+        li.appendChild(button);
+        sceneListItems.appendChild(li);
+        return button;
+      });
+
+      // The single place where the scene changes: previous/next buttons, the scene list, automatic progression and the first load
+      function goToScene(index) {
+        const count = daddysAirbnbScenes.length;
+        currentIndex = ((index % count) + count) % count;
+        const sceneItem = daddysAirbnbScenes[currentIndex];
         const wasMuted = video.muted;
-        
-        const newVideoSrc = withQuality(selectedValue);
-        
-        video.src = newVideoSrc;
+
+        stopDwell();
+        dwellRemaining = SCENE_DWELL_MS;
+        lastInteraction = performance.now();
+
+        const title = sceneTitle(currentIndex);
+        sceneLabel.textContent = title;
+        sceneLabel.setAttribute('aria-label', 'Choose scene, current: ' + title);
+        sceneStatus.textContent = 'Scene ' + title;
+        sceneListButtons.forEach((button, i) => {
+          if (i === currentIndex) button.setAttribute('aria-current', 'true');
+          else button.removeAttribute('aria-current');
+        });
+        video.loop = !sceneItem.playOnce;
+        video.src = withQuality(sceneItem.src);
         video.load();
-        
+
         // Restore playback state
         video.muted = wasMuted;
         video.play().catch(err => console.log('Playback error:', err));
-      });
-      
-      // Sensor watchdog: detect if sensors are silent/broken
-      function onSensorDetected(event) {
-        // Check if we actually received sensor data
-        if (event.alpha !== null || event.beta !== null || event.gamma !== null) {
-          clearTimeout(sensorTimeout);
-          sensorWorking = true;
-          console.log('✅ Motion sensors (accelerometer) detected and working');
-          // Enable motion tracking automatically
-          const lookControls = camera.getAttribute('look-controls');
-          camera.setAttribute('look-controls', Object.assign({}, lookControls, {
-            magicWindowTrackingEnabled: true
-          }));
-        }
       }
-      
+
+      scenePrev.addEventListener('click', () => goToScene(currentIndex - 1));
+      sceneNext.addEventListener('click', () => goToScene(currentIndex + 1));
+
+      // Scene list: opens above the navigator. A mouse or pen opens it by hovering the title, touch and keyboard by
+      // activating it. The input type comes from the pointer events, not from the screen size. Opening or closing
+      // the list never touches the scene or its timer; only choosing a different scene does, through goToScene().
+      const SCENE_LIST_CLOSE_DELAY_MS = 150;
+      let sceneListOpen = false;
+      let sceneListCloseTimer = null;
+      let sceneListPinned = false; // a pen tap keeps the list open, since the pen leaves hover range when lifted
+      let lastPointerType = '';
+
+      function isHoverPointer(event) {
+        return event.pointerType === 'mouse' || event.pointerType === 'pen';
+      }
+
+      function openSceneList() {
+        clearTimeout(sceneListCloseTimer);
+        if (sceneListOpen) return;
+        sceneListOpen = true;
+        sceneList.hidden = false;
+        sceneLabel.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeSceneList() {
+        clearTimeout(sceneListCloseTimer);
+        if (!sceneListOpen) return;
+        sceneListOpen = false;
+        sceneListPinned = false;
+        sceneList.hidden = true;
+        sceneLabel.setAttribute('aria-expanded', 'false');
+      }
+
+      function selectScene(index) {
+        const hadFocus = sceneList.contains(document.activeElement);
+        closeSceneList();
+        if (hadFocus) sceneLabel.focus();
+        if (index !== currentIndex) goToScene(index);
+      }
+
+      sceneLabel.addEventListener('pointerdown', (e) => { lastPointerType = e.pointerType; });
+      sceneLabel.addEventListener('keydown', () => { lastPointerType = ''; });
+      sceneLabel.addEventListener('click', () => {
+        const byHoverPointer = lastPointerType === 'mouse' || lastPointerType === 'pen';
+        const byKeyboard = lastPointerType === '';
+        const byPen = lastPointerType === 'pen';
+        lastPointerType = '';
+        // a click with a mouse/pen keeps the list the hover opened; touch and keyboard toggle it
+        if (byHoverPointer || !sceneListOpen) openSceneList();
+        else closeSceneList();
+        if (byPen) sceneListPinned = true;
+        if (byKeyboard && sceneListOpen) sceneListButtons[currentIndex].focus();
+      });
+
+      sceneLabel.addEventListener('pointerenter', (e) => { if (isHoverPointer(e)) openSceneList(); });
+      sceneNav.addEventListener('pointerenter', (e) => { if (isHoverPointer(e)) clearTimeout(sceneListCloseTimer); });
+      sceneNav.addEventListener('pointerleave', (e) => {
+        if (!isHoverPointer(e) || sceneListPinned) return;
+        clearTimeout(sceneListCloseTimer);
+        sceneListCloseTimer = setTimeout(closeSceneList, SCENE_LIST_CLOSE_DELAY_MS);
+      });
+
+      // Keyboard: Escape closes and returns to the title; Up/Down move between entries; Tab out of the group closes
+      document.addEventListener('keydown', (e) => {
+        if (!sceneListOpen) return;
+        if (e.key === 'Escape') {
+          closeSceneList();
+          sceneLabel.focus();
+        } else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && sceneList.contains(document.activeElement)) {
+          e.preventDefault();
+          const at = sceneListButtons.indexOf(document.activeElement);
+          const step = e.key === 'ArrowDown' ? 1 : -1;
+          sceneListButtons[(at + step + sceneListButtons.length) % sceneListButtons.length].focus();
+        }
+      });
+      sceneNav.addEventListener('focusout', (e) => {
+        // relatedTarget is empty when a click lands on a button Safari/Firefox does not focus; that must not close the list
+        if (e.relatedTarget && !sceneNav.contains(e.relatedTarget)) closeSceneList();
+      });
+      document.addEventListener('pointerdown', (e) => { if (!sceneNav.contains(e.target)) closeSceneList(); }, true);
+      window.addEventListener('blur', closeSceneList);
+
+      // The first scene plays once and moves on when it ends; the others advance on the dwell timer
+      video.addEventListener('ended', () => {
+        if (daddysAirbnbScenes[currentIndex].playOnce) goToScene(currentIndex + 1);
+      });
+      video.addEventListener('playing', startDwell);
+      video.addEventListener('waiting', pauseDwell);
+      video.addEventListener('pause', pauseDwell);
+
+      goToScene(0);
+
+      // Keep A-Frame from applying a bad/default orientation when no sensor data exists.
+      // Only touches the component when the state actually changes.
+      function setMagicWindowTracking(enabled) {
+        const lookControls = camera.components['look-controls'];
+        if (!lookControls || lookControls.data.magicWindowTrackingEnabled === enabled) return;
+        camera.setAttribute('look-controls', 'magicWindowTrackingEnabled', enabled);
+      }
+
+      // Persistent sensor listener: a usable event is one with at least one non-null value
+      function onDeviceOrientation(event) {
+        if (event.alpha == null && event.beta == null && event.gamma == null) return;
+        if (lastGyroEvent === -Infinity) {
+          clearTimeout(sensorTimeout);
+          console.log('✅ Motion sensors (accelerometer) detected and working');
+        }
+        lastGyroEvent = performance.now();
+        setMagicWindowTracking(true);
+      }
+
       function forceTouchOnlyMode() {
         console.log('⚠️ Motion sensors silent - using touch-only mode');
-        // Ensure touch is enabled (already set in HTML)
-        const lookControls = camera.getAttribute('look-controls');
-        camera.setAttribute('look-controls', Object.assign({}, lookControls, {
-          magicWindowTrackingEnabled: false,
-          touchEnabled: true,
-          mouseEnabled: true
-        }));
+        // Touch and mouse stay enabled (set in HTML)
+        setMagicWindowTracking(false);
       }
-      
+
+      // Idle camera rotation: a gentle clockwise turn (yaw only) when nobody is steering the view.
+      // Interaction listeners come before the touch-pitch block below, so a drag marks the rotation as stopped
+      // before that block captures the yaw it measures the drag from.
+      scene.addEventListener('loaded', function() {
+        const canvas = scene.canvas;
+        const lookControls = camera.components['look-controls'];
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let lastFrame = null;
+
+        function interact() { lastInteraction = performance.now(); }
+        function dragStart() { dragging = true; interact(); }
+        function dragEnd(e) { dragging = !!(e.touches && e.touches.length); interact(); }
+
+        canvas.addEventListener('touchstart', dragStart);
+        window.addEventListener('touchmove', interact);
+        window.addEventListener('touchend', dragEnd);
+        window.addEventListener('touchcancel', dragEnd);
+        canvas.addEventListener('mousedown', dragStart);
+        window.addEventListener('mousemove', () => { if (dragging) interact(); });
+        window.addEventListener('mouseup', () => { dragging = false; interact(); });
+
+        window.addEventListener('deviceorientation', onDeviceOrientation);
+
+        function idleRotationFrame() {
+          requestAnimationFrame(idleRotationFrame);
+          const now = performance.now();
+          const dt = lastFrame === null ? 0 : Math.min(now - lastFrame, 100);
+          lastFrame = now;
+
+          if (!daddysAirbnbScenes[currentIndex].autoRotate || reducedMotion.matches || dragging || scene.is('vr-mode')) return;
+          // working gyro (fresh events) means the visitor steers by moving the device; device movement also counts as interaction
+          if (now - lastGyroEvent < GYRO_RECENT_MS) return;
+          if (now - Math.max(lastInteraction, lastGyroEvent) < IDLE_DELAY_MS) return;
+          lookControls.yawObject.rotation.y -= IDLE_DEGREES_PER_SECOND * Math.PI / 180 * dt / 1000;
+        }
+        requestAnimationFrame(idleRotationFrame);
+      });
+
       // Vertical touch drag: A-Frame 1.4.0 look-controls only turns touch into yaw (horizontal), so add the missing pitch here.
       // Same direction as its mouse drag. Touch only (the mouse path is untouched): gentler than A-Frame's default
       // (touchSensitivity) and pitch limited to +/-70 degrees.
@@ -291,15 +596,12 @@
           playOverlay.classList.add('show');
         });
         
-        // Start sensor watchdog: 300ms deadline
+        // Start sensor watchdog: 300ms deadline (the persistent deviceorientation listener is added with the idle rotation)
         sensorTimeout = setTimeout(() => {
-          if (!sensorWorking) {
+          if (lastGyroEvent === -Infinity) {
             forceTouchOnlyMode();
           }
         }, 300);
-        
-        // Listen for any orientation event to confirm sensors work
-        window.addEventListener('deviceorientation', onSensorDetected, { once: true });
       });
       
       // Update sound icon based on mute state
