@@ -42,21 +42,90 @@ function handleNavigationViewport(event) {
 desktopNavigation.addEventListener?.("change", handleNavigationViewport);
 
 function initHeroSlideshows() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     document.querySelectorAll(".hero-media-slideshow").forEach((heroSlideshow) => {
-        const heroSlides = heroSlideshow.querySelectorAll("img");
+        const heroSlides = Array.from(heroSlideshow.querySelectorAll("img"));
 
-        if (heroSlides.length > 1 && !heroSlideshow.dataset.initialized) {
-            heroSlideshow.dataset.initialized = "true";
-            let heroSlideIndex = 0;
+        if (heroSlides.length < 2 || heroSlideshow.dataset.initialized) return;
 
-            setInterval(() => {
-                heroSlides[heroSlideIndex].classList.remove("is-active");
-                heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
-                heroSlides[heroSlideIndex].classList.add("is-active");
-            }, 5000);
-        }
+        heroSlideshow.dataset.initialized = "true";
+        const heroFrame = heroSlideshow.closest(".hero__media");
+        let heroSlideIndex = 0;
+        let heroTimer;
+        let heroSwipeBlockedUntil = 0;
+
+        const showSlide = (index) => {
+            heroSlideIndex = ((index % heroSlides.length) + heroSlides.length) % heroSlides.length;
+
+            heroSlides.forEach((slide, slideIndex) => {
+                const isActive = slideIndex === heroSlideIndex;
+                slide.classList.toggle("is-active", isActive);
+
+                if (isActive) {
+                    slide.removeAttribute("aria-hidden");
+                } else {
+                    slide.setAttribute("aria-hidden", "true");
+                }
+            });
+
+            heroSlides[(heroSlideIndex + 1) % heroSlides.length].loading = "eager";
+            heroSlides[(heroSlideIndex - 1 + heroSlides.length) % heroSlides.length].loading = "eager";
+        };
+
+        const restartHeroTimer = () => {
+            clearInterval(heroTimer);
+
+            if (reducedMotion.matches) return;
+
+            heroTimer = setInterval(() => showSlide(heroSlideIndex + 1), 5000);
+        };
+
+        const goToSlide = (index) => {
+            showSlide(index);
+            restartHeroTimer();
+        };
+
+        heroFrame?.querySelector(".hero-media-nav--prev")?.addEventListener("click", () => goToSlide(heroSlideIndex - 1));
+        heroFrame?.querySelector(".hero-media-nav--next")?.addEventListener("click", () => goToSlide(heroSlideIndex + 1));
+
+        let swipeStartX = 0;
+        let swipeStartY = 0;
+        let swipePointerId = null;
+
+        heroSlideshow.addEventListener("pointerdown", (event) => {
+            if (event.pointerType === "mouse") return;
+
+            swipePointerId = event.pointerId;
+            swipeStartX = event.clientX;
+            swipeStartY = event.clientY;
+        });
+
+        heroSlideshow.addEventListener("pointerup", (event) => {
+            if (event.pointerId !== swipePointerId) return;
+
+            swipePointerId = null;
+            const swipeX = event.clientX - swipeStartX;
+            const swipeY = event.clientY - swipeStartY;
+
+            if (Math.abs(swipeX) >= 40 && Math.abs(swipeX) > Math.abs(swipeY)) {
+                heroSwipeBlockedUntil = Date.now() + 400;
+                goToSlide(heroSlideIndex + (swipeX < 0 ? 1 : -1));
+            }
+        });
+
+        heroSlideshow.addEventListener("pointercancel", () => { swipePointerId = null; });
+
+        // a completed swipe can end in a click; keep it from following the slideshow link
+        heroSlideshow.addEventListener("click", (event) => {
+            if (Date.now() < heroSwipeBlockedUntil) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }, true);
+
+        showSlide(0);
+        restartHeroTimer();
     });
 }
 

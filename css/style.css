@@ -60,6 +60,19 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Cross-document page transition: a short root cross-fade between pages in browsers that support it; others navigate normally */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 250ms;
+        animation-timing-function: ease-in-out;
+    }
+}
+
 body {
     margin: 0;
     background: var(--project-background, var(--blue));
@@ -221,10 +234,6 @@ body:not(:has(#destination-name)) main .container {
 }
 
 @media (min-width: 41.5rem) and (max-width: 42rem) {
-    #whatsapp .immersive-media-section__button {
-        align-self: flex-start;
-    }
-
     #whatsapp .immersive-media-section__grid {
         gap: 0.75rem;
     }
@@ -508,15 +517,15 @@ body:has(#destination-name.destination-heading--daddys-house) #whatsapp-band .pr
     transition: transform 180ms ease, opacity 180ms ease;
 }
 
-.nav-toggle[aria-expanded="true"] .nav-toggle__line:nth-of-type(1) {
+.nav-toggle[aria-expanded="true"] .nav-toggle__line:nth-child(2) {
     transform: translateY(7px) rotate(45deg);
 }
 
-.nav-toggle[aria-expanded="true"] .nav-toggle__line:nth-of-type(2) {
+.nav-toggle[aria-expanded="true"] .nav-toggle__line:nth-child(3) {
     opacity: 0;
 }
 
-.nav-toggle[aria-expanded="true"] .nav-toggle__line:nth-of-type(3) {
+.nav-toggle[aria-expanded="true"] .nav-toggle__line:nth-child(4) {
     transform: translateY(-7px) rotate(-45deg);
 }
 
@@ -619,22 +628,6 @@ h3 {
 
 .hero__mobile-break {
     display: none;
-}
-
-.whatsapp-copy-break {
-    display: none;
-}
-
-@media (min-width: 22.5rem) {
-    .whatsapp-copy-break {
-        display: inline;
-    }
-}
-
-@media (max-width: 31.999rem) {
-    .cta-assessment-break {
-        display: none;
-    }
 }
 
 @media (max-width: 41.999rem) {
@@ -817,6 +810,69 @@ h3 {
     opacity: 1;
 }
 
+.hero-media-slideshow {
+    touch-action: pan-y;
+}
+
+.hero-media-stage {
+    position: relative;
+}
+
+.hero-media-caption-link {
+    text-decoration: none;
+}
+
+.hero-media-caption-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.hero__media figcaption:has(.hero-media-caption-link) {
+    position: relative;
+}
+
+.hero-media-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0 0 0.15em;
+    border: 0;
+    background: none;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: inherit;
+    font-size: 2.5rem;
+    line-height: 1;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: color 200ms ease;
+}
+
+.hero-media-nav:hover {
+    color: var(--white);
+}
+
+.hero-media-nav:focus-visible {
+    outline: 2px solid var(--yellow);
+    outline-offset: -4px;
+    color: var(--white);
+}
+
+.hero-media-nav--prev {
+    left: 0.25rem;
+}
+
+.hero-media-nav--next {
+    right: 0.25rem;
+}
+
 .about__grid {
     display: grid;
     gap: clamp(2rem, 5vw, 3.5rem);
@@ -845,6 +901,8 @@ h3 {
 
 .about__copy {
     margin: 0;
+    margin-top: 0.96em;
+    margin-top: 0.6lh;
     color: var(--blue);
     font-family: "Roca Two", sans-serif;
     font-size: clamp(1.5rem, 7.4vw, 2rem);
@@ -1134,10 +1192,6 @@ h3 {
     .steps-card__text-link {
         font-size: 1rem;
     }
-
-    #immersive-media .immersive-media-section__visual {
-        margin-bottom: 0;
-    }
 }
 
 @media (max-width: 63.999rem) {
@@ -1164,7 +1218,7 @@ h3 {
     .steps-card__front h3 {
         margin: 0;
         font-family: "Roca Two", sans-serif;
-        font-size: 1.5rem;
+        font-size: clamp(1.0625rem, 6vw + 0.0375rem, 1.5rem);
         line-height: 1.15;
     }
 
@@ -1221,6 +1275,17 @@ h3 {
         aspect-ratio: auto;
         height: auto;
         min-height: calc(61.53vw + 221.09px);
+    }
+}
+
+/* Below 336px the number + COMMUNICATE leave under ~8px of slack even at the fluid size: drop all three numbers and the column gaps that framed them */
+@media (max-width: 21rem) {
+    .steps-card__number {
+        display: none;
+    }
+
+    .steps-card__front {
+        column-gap: 0;
     }
 }
 
@@ -1304,18 +1369,19 @@ h3 {
     line-height: 1.15;
 }
 
-@media (min-width: 41.5rem) and (max-width: 42rem) {
-    #airbnb .section-three__grid {
-        gap: 0.75rem;
-    }
-
-    #airbnb .section-three__copy {
-        font-size: 1.125rem;
+/* 512–1023px: the eyebrow, quote and supporting line are centred as one group; the quote grows from 24px at 512px to the 30.72px (1.92rem) it has at 1024px */
+@media (min-width: 32rem) and (max-width: 63.999rem) {
+    #airbnb .section-three__content .eyebrow {
+        text-align: center;
     }
 
     #airbnb .section-three__content h2 {
-        max-width: none;
-        margin: 3rem auto;
+        margin-inline: auto;
+        font-size: clamp(1.5rem, 1.3125vw + 1.08rem, 1.92rem);
+        text-align: center;
+    }
+
+    #airbnb .section-three__copy {
         text-align: center;
     }
 }
@@ -1385,6 +1451,10 @@ h3 {
     color: var(--blue);
     font-size: clamp(2rem, 5vw, 3.25rem);
     line-height: 1.1;
+}
+
+.conversion-cta__copy {
+    margin: 0;
 }
 
 .conversion-cta__button {
@@ -1467,12 +1537,7 @@ h3 {
 }
 
 @media (max-width: 41.999rem) {
-    #whatsapp .immersive-media-section__copy-link::after {
-        transform: scaleX(1);
-    }
-}
-
-@media (max-width: 32rem) {
+    #whatsapp .immersive-media-section__copy-link::after,
     #cta .immersive-media-section__copy-link::after {
         transform: scaleX(1);
     }
@@ -1480,6 +1545,10 @@ h3 {
 
 .immersive-media-section__button {
     margin-top: 1.25rem;
+}
+
+#whatsapp .immersive-media-section__button {
+    align-self: flex-start;
 }
 
 #whatsapp .immersive-media-section__visual {
@@ -1579,6 +1648,17 @@ h3 {
 #airbnb,
 #whatsapp {
     padding-bottom: 0;
+}
+
+/* 1024–1440px: start the final section higher (top padding eases to 7rem) and keep 3rem below the button until 1280px, easing to the existing 1440px layout (no extra bottom space) */
+@media (min-width: 64rem) {
+    #whatsapp {
+        padding-top: clamp(4rem, 11.538vw - 3.384rem, 7rem);
+    }
+
+    #whatsapp .immersive-media-section__content {
+        padding-bottom: clamp(0px, 27rem - 30vw, 3rem);
+    }
 }
 
 .section--light {
@@ -1704,10 +1784,6 @@ body:has(#destination-name.destination-heading--daddys-house) #destination-hero-
 .destination-hero__visual {
     align-self: end;
     max-width: 92%;
-}
-
-.destination-hero__slideshow-link {
-    display: block;
 }
 
 .destination-hero__media-group {
@@ -2270,6 +2346,10 @@ body:has(#destination-name.destination-heading--daddys-house) #destination-hero-
     max-width: 100%;
 }
 
+.experience-left-col .experience-left-title {
+    font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+}
+
 .experience-title__break {
     display: none;
 }
@@ -2368,7 +2448,7 @@ html.is-player-fullscreen {
     position: fixed;
     inset: 0;
     z-index: 1100;
-    background: rgba(0, 0, 0, 0.82);
+    background: rgba(0, 0, 0, 0.68);
 }
 
 .experience-left-col .project-experience-block.is-fullscreen iframe {
@@ -2431,9 +2511,10 @@ html.is-player-fullscreen {
     padding-inline: 0.75rem;
 }
 
-@media (min-width: 32rem) and (max-width: 41.999rem) {
+@media (min-width: 32rem) and (max-width: 63.999rem) {
+    /* 1rem at 512px easing to 0.5rem at 672px, then held */
     .experience-right-content {
-        padding-top: 1rem;
+        padding-top: clamp(0.5rem, 2.6rem - 5vw, 1rem);
     }
 }
 
@@ -2474,33 +2555,8 @@ html.is-player-fullscreen {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.experience-heading__break--512 {
-    display: none;
-}
-
 @media (min-width: 32rem) and (max-width: 63.999rem) {
-    .experience-heading__break--default {
-        display: none;
-    }
-
-    .experience-heading__break--512 {
-        display: inline;
-    }
-}
-
-@media (min-width: 32rem) and (max-width: 41.999rem) {
-    .experience-right-heading,
-    .experience-right-subheading {
-        padding-left: 2rem;
-    }
-}
-
-@media (min-width: 42rem) and (max-width: 63.999rem) {
-    /* the 2.5rem grid gap plus 3.5rem padding-top left 6rem between the player and this text; 0.5rem halves that to 3rem */
-    .experience-right-content {
-        padding-top: 0.5rem;
-    }
-
+    /* the 2.5rem grid gap plus 3.5rem padding-top left 6rem between the player and this text; the fluid padding-top above halves that to 3rem by 672px */
     .experience-right-heading,
     .experience-right-subheading {
         align-self: stretch;
@@ -2791,7 +2847,7 @@ html.is-player-fullscreen {
 }
 
 /* Daddy's House: text links keep the underline the compact layout already shows, at every width */
-body:has(#destination-name.destination-heading--daddys-house) :is(.destination-host-link, .location-link, .immersive-media-section__copy-link)::after {
+body:has(#destination-name.destination-heading--daddys-house) :is(.destination-host-link, .location-link)::after {
     transform: scaleX(1);
 }
 
