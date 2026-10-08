@@ -52,6 +52,6 @@ The site is three independent static pages, not a data-driven template. `index.h
 
 ## Gotchas
 
-- `.gitignore` excludes all `*.mp4` / `*.mov`, plus `backups/`, `*.bak`, `.temp_*`. Project video media is intentionally NOT tracked by git — don't rely on commits to preserve it, and don't add exceptions without asking.
+- `.gitignore` excludes `*.mp4` / `*.mov` / `*.MOV`, plus `backups/`, `*.bak`, `.temp_*`, with one exception: `demos/daddys-airbnb/video-360/*.mp4` (the 14 player scene videos, 4K + 2K) is tracked because Vercel deploys from git and `player.html` requests them from the deployed site. Source clips such as `demos/daddys-airbnb/video/*.MOV` stay untracked. Don't add other video exceptions without asking.
 - `demos/` directories exist only for real projects — no empty placeholder dirs, no `.gitkeep` files.
 - Never invent contact details, booking info, or addresses beyond what's already on the page.
