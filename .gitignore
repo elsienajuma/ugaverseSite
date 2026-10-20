@@ -31,3 +31,6 @@ backups/
 *.swp
 *.swo
 __pycache__/
+
+# Tailwind build tool dependencies (run npm install in tools/tailwind/ to restore)
+node_modules/

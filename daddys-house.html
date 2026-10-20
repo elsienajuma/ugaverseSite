@@ -1,252 +1,1705 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ugaverse Studios | Daddy's AirBnB</title>
-    <link rel="icon" type="image/png" href="icons/favicon_7Oct2026.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48_7Oct2026.png">
-    <link rel="apple-touch-icon" href="icons/favicon-apple_7Oct2026.png">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/site.js" defer></script>
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#153B2B"/>
+<meta name="description" content="Daddy's House is a home for short stays and good times in Naalya, Kampala. Short stays, gatherings and creative experiences. Message the host on WhatsApp."/>
+<title>Daddy's House | A home for short stays and good times | Naalya, Kampala</title>
+<link rel="icon" type="image/png" href="icons/favicon_7Oct2026.png"/>
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48_7Oct2026.png"/>
+<link rel="apple-touch-icon" href="icons/favicon-apple_7Oct2026.png"/>
+<!-- Self-contained: shares nothing with css/style.css or js/site.js. Vercel Analytics, the same snippet as index.html. -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script>
+  /* Reveal-on-scroll only hides content when JavaScript runs. If the main script never gets going,
+     the fallback class below shows everything after 3 seconds. */
+  document.documentElement.classList.add("js");
+  setTimeout(function () {
+    if (!document.documentElement.hasAttribute("data-reveal-ready")) document.documentElement.classList.add("reveal-fallback");
+  }, 3000);
+</script>
+<!-- Material Symbols: only the icons this page uses, so the font stays small -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;icon_names=360,arrow_downward,arrow_forward,bathtub,bed,campaign,casino,celebration,chat,check,check_circle,close,countertops,directions_run,favorite,filter_vintage,fitness_center,info,kitchen,local_movies,login,logout,map,menu,mic,near_me,outdoor_grill,palette,park,pin_drop,receipt,route,schedule,share,shopping_basket,skillet,soup_kitchen,speaker,style,videocam,view_in_ar,visibility,warning,weekend&amp;display=block" rel="stylesheet"/>
+<!-- Brand typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Koh+Santepheap:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+    /* Everything below is scoped to this file. The compiled Tailwind stylesheet (css/daddys-house.css) is linked after this block,
+       so rules here avoid the properties that Tailwind utilities set on the same elements. */
+    :root { --outline-color: #E29A38; --sky-card: #A3C4F0; /* same blue as the Kitchen access and Indoor games cards */ --gold-cream: #F5E6C6; --heading-blue: #005490; /* the azure for large headings (Story); reuse it wherever a heading should match. It is also the CTA blue. The deeper #00467A was tried and set aside. */ }
+    /* Large azure headings. Used instead of the text-[#005490] utility because the compiled Tailwind stylesheet loads after this block and would override it. */
+    .heading-azure { color: var(--heading-blue); }
+
+    html { scroll-padding-top: 6.5rem; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+    html.is-tour-fullscreen { overflow: hidden; scrollbar-gutter: stable; overscroll-behavior: none; }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .tactile-card {
+      background-color: #F4EFE6;
+      border: 1px solid #DFE6D8;
+      box-shadow: 0 8px 24px -4px rgba(21, 59, 43, 0.05), 0 2px 6px -1px rgba(74, 88, 62, 0.04);
+    }
+    .arch-mask { border-top-left-radius: 6rem; border-top-right-radius: 6rem; }
+
+    /* ---- Focus: a two-tone ring that reads on both light and dark green surfaces ---- */
+    :focus-visible { outline: 3px solid #153B2B; outline-offset: 3px; box-shadow: 0 0 0 2px #fff; }
+    header :focus-visible, footer :focus-visible, .on-dark :focus-visible { outline-color: #c2ecd5; box-shadow: none; }
+
+    /* ---- Header and navigation ---- */
+    .rates-card-pale { background: #FAF8F2; }
+    .section-sky, .section-gold { border: 0 solid transparent; }
+    .section-sky { border-image: linear-gradient(#B3E0FF, #B3E0FF) 1 fill / 0 / 0 100vmax; } /* the sky blue at the top of the hero gradient (it was a light tint of the #FFC832 gold, then cream); this class is only used by the Gatherings section */
+    .section-gold { border-image: linear-gradient(#365F40, #365F40) 1 fill / 0 / 0 100vmax; } /* same green as the 360 tour container */
+    /* Sticky gradients (hero and Story section). Each section owns a viewport-sized layer (position: fixed) behind its content, and the section
+       clips it to its own box (clip-path), so the gradient stays where it is on the screen while the content scrolls over it, and is only seen inside
+       that section. The hero's clip is extended 1rem upward and 100vmax sideways so the layer reaches the page top and both screen edges.
+       Pure CSS; the stops are in rem from the top of the screen, so the fade is the same depth at every width. */
+    .hero-panel { position: relative; isolation: isolate; background: #FFFFFF; border-radius: 0; margin-top: 1rem; clip-path: inset(-1rem -100vmax 0 -100vmax); }
+    .hero-panel::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      /* sky blue (#B3E0FF) at the top of the screen, fading to white; to remove, set every stop to #FFFFFF */
+      background: linear-gradient(180deg, #B3E0FF 0, #BCE4FF 5rem, #C8E8FF 10rem, #D4ECFD 16rem, #DFF1FC 22rem, #EBF5FC 28rem, #F6FAFD 34rem, #FFFFFF 40rem, #FFFFFF 100%);
+    }
+    /* ===== STORY BLUE TRIAL: delete everything from this comment to the matching END line to go back to the white fade. =====
+       Story section only: the section's base is sky blue (#B3E0FF) and the pinned fade at the bottom of the screen is the light green (#E4F9C2), so the blue dissolves into green. */
+    html #the-story.story-section { background-color: #CCEAFF; }
+    html #the-story.story-section::before { display: none; }
+    /* The green fade is a pinned layer at the end of the section: it stays at the bottom of the screen while the section is on screen, then rides up with the section's bottom edge. To go back to the always-pinned fade, delete this rule and the ::before line above it. */
+    html #the-story.story-section::after { content: ""; display: block; position: sticky; bottom: 0; height: 40vh; margin-top: -40vh; z-index: -1; pointer-events: none; background: linear-gradient(0deg, #EEFADB 0, rgba(238, 250, 219, 0.98) 8vh, rgba(238, 250, 219, 0.9) 15vh, rgba(238, 250, 219, 0.72) 22vh, rgba(238, 250, 219, 0.45) 29vh, rgba(238, 250, 219, 0.18) 35vh, rgba(238, 250, 219, 0) 40vh); }
+    /* ===== END STORY BLUE TRIAL ===== */
+    /* ===== CREATORS BLUE TRIAL: delete everything from this comment to the matching END line to go back to the green and white version. =====
+       Creators section only: the same treatment as the Story section. The base is sky blue (#B3E0FF) and the pinned fade at the bottom of the screen is the light green (#E4F9C2), reaching up about 40% of the screen. */
+    html #creators.story-section { background-color: #B3E0FF; }
+    html #creators.story-section::before { display: none; }
+    /* The green fade is a pinned layer at the end of the section: it stays at the bottom of the screen while the section is on screen, then rides up with the section's bottom edge. To go back to the always-pinned fade, delete this rule and the ::before line above it. */
+    html #creators.story-section { border-top-color: #C5D1BC; } /* the same olive line as between Rates and Location, so the join with Gatherings is a clear, intentional edge */
+    html #creators.story-section::after { content: ""; display: block; position: sticky; bottom: 0; height: 60vh; margin-top: -60vh; z-index: -1; pointer-events: none; background: linear-gradient(0deg, #EEFADB 0, rgba(238, 250, 219, 0.97) 6vh, rgba(238, 250, 219, 0.88) 13vh, rgba(238, 250, 219, 0.74) 20vh, rgba(238, 250, 219, 0.58) 27vh, rgba(238, 250, 219, 0.42) 34vh, rgba(238, 250, 219, 0.27) 41vh, rgba(238, 250, 219, 0.14) 48vh, rgba(238, 250, 219, 0.05) 54vh, rgba(238, 250, 219, 0) 60vh); }
+    /* ===== END CREATORS BLUE TRIAL ===== */
+    /* Three stacked white halos (medium, wide, very wide; no tight inner layer, so no outline effect) with no offset, so it reads as soft light behind the lettering that fades into the sky-to-white gradient */
+    .hero-title-glow { text-shadow: 0 0 16px rgba(255, 255, 255, 0.6), 0 0 36px rgba(255, 255, 255, 0.45), 0 0 70px rgba(255, 255, 255, 0.3); }
+    /* Softer glow for the Gatherings heading: tinted like the sky-blue fade behind it (not white), wide and faint, so it reads as light around the letters and blends into the background */
+    .heading-glow-soft { text-shadow: 0 0 20px rgba(205, 233, 255, 0.75), 0 0 44px rgba(205, 233, 255, 0.55), 0 0 88px rgba(205, 233, 255, 0.4); }
+    /* WhatsApp booking button: white ring plus a soft lift so it reads as the header's main action on the dark green */
+    .whatsapp-book { box-shadow: 0 6px 14px -4px rgba(0, 0, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.2); }
+    .whatsapp-book:hover { box-shadow: 0 10px 20px -6px rgba(0, 0, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.22); }
+    .nav-link { color: rgba(255, 255, 255, 0.82); transition: color 150ms; }
+    .nav-link:hover { color: #FFC832; } /* the same gold as the NAALYA, KAMPALA text in the header */
+    .nav-link[aria-current="true"] { color: #FFC832; } /* the section you are in: gold text (the desktop underline is unchanged) */
+    .site-nav {
+      display: none; position: absolute; left: 0; right: 0; top: calc(100% + 0.5rem);
+      flex-direction: column; gap: 0.25rem; padding: 0.75rem; border-radius: 1.5rem;
+      background: #2A4B33; box-shadow: 0 20px 40px -12px rgba(42, 75, 51, 0.45);
+    }
+    .site-nav.is-open { display: flex; }
+    .site-nav .nav-link { padding: 0.8rem 1rem; border-radius: 0.75rem; font-size: 1rem; }
+    .site-nav .nav-link:hover, .site-nav .nav-link[aria-current="true"] { background: #213D29; }
+    .site-nav .nav-wa { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.5rem; padding: 0.7rem 1rem; border-radius: 9999px; border: 3px solid #fff; background: #25D366; color: #153B2B; font-weight: 600; font-size: 1rem; box-shadow: 0 6px 14px -4px rgba(0, 0, 0, 0.45); }
+    .site-nav .nav-wa:hover { filter: brightness(1.05); }
+    @media (min-width: 1024px) {
+      /* margin-left:auto pushes the links to the right, next to the booking button; the logo stays on the left */
+      .site-nav { display: flex; position: static; flex-direction: row; gap: 1.5rem; padding: 0; background: none; box-shadow: none; margin-left: auto; margin-right: 1rem; }
+      .site-nav .nav-link { padding: 0; border-radius: 0; font-size: 0.875rem; }
+      .site-nav .nav-wa { display: none; } /* the menu's WhatsApp button is for phones and tablets; desktop keeps the header button */
+      .site-nav .nav-link:hover, .site-nav .nav-link[aria-current="true"] { background: none; }
+      .site-nav .nav-link[aria-current="true"] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 7px; }
+    }
+
+    /* ---- Outline accent behind selected photographs ---- */
+    .outline-frame { position: relative; isolation: isolate; --frame-radius: 1rem; --ox: 14px; --oy: 14px; }
+    .outline-frame::before {
+      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      border: 2px solid var(--outline-color); border-radius: var(--frame-radius); opacity: 0.9;
+      transform: translate(var(--ox), var(--oy));
+    }
+    .outline-frame--hero { --frame-radius: 1rem; }
+    @media (min-width: 1024px) { .outline-frame--hero { --frame-radius: 1.5rem; } }
+    .outline-frame--arch { --frame-radius: 6rem 6rem 0 0; --ox: -14px; }
+    /* Story arch below 1024px: a closer-to-square frame with a gentler dome (6rem would be nearly a semicircle on a phone) */
+    @media (max-width: 1023px) {
+      .outline-frame--arch { --frame-radius: 3.5rem 3.5rem 0 0; }
+      .arch-mask { border-top-left-radius: 3.5rem; border-top-right-radius: 3.5rem; }
+    }
+    /* Wide arch (Creators section): the same arched top as the portrait arch, with a radius that scales with the screen so it suits a 4:3 landscape photo */
+    .outline-frame--arch-wide { --arch-r: clamp(3rem, 10vw, 6rem); --frame-radius: var(--arch-r) var(--arch-r) 0 0; --ox: -14px; }
+    .arch-mask-wide { border-top-left-radius: var(--arch-r); border-top-right-radius: var(--arch-r); }
+
+    /* ---- Scroll reveal ---- */
+    .js:not(.reveal-fallback) [data-reveal] {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity 700ms ease, transform 700ms ease; transition-delay: var(--delay, 0ms);
+    }
+    .js:not(.reveal-fallback) [data-reveal].is-visible { opacity: 1; transform: none; }
+
+    /* ---- 360 tour (ported from the preview's .dh-tour) ---- */
+    .tour-stage {
+      position: relative; aspect-ratio: 1 / 1; max-height: 82vh; width: 100%; overflow: hidden;
+      border-radius: 1rem; background: #000; border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+    }
+    @media (min-width: 640px) { .tour-stage { aspect-ratio: 16 / 10; max-height: 76vh; } }
+    .tour-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+    .tour-poster {
+      position: absolute; inset: 0; display: grid; place-items: center; width: 100%; padding: 1.25rem;
+      border: 0; background: #17251E; color: #fff; font: inherit; text-align: center; cursor: pointer;
+    }
+    .tour-poster[hidden] { display: none; }
+    .tour-poster__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 40% 60%; transition: transform 600ms ease; }
+    /* Overlay: a dark, desaturated charcoal-green (a quieter relative of the brand forest green), so the photograph stays calm and the text stays crisp */
+    .tour-poster__shade {
+      position: absolute; inset: 0; z-index: 1;
+      background: radial-gradient(55% 55% at 50% 48%, rgba(20, 32, 26, 0.64), rgba(20, 32, 26, 0.42)),
+                  linear-gradient(0deg, rgba(20, 32, 26, 0.74), transparent 55%);
+    }
+    .tour-poster:hover .tour-poster__img, .tour-poster:focus-within .tour-poster__img { transform: scale(1.04); }
+    .tour-poster__inner { position: relative; z-index: 2; display: grid; justify-items: center; gap: 1.1rem; width: 100%; max-width: 30rem; }
+    .tour-start { display: grid; justify-items: center; gap: 0.85rem; margin: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+    .tour-play {
+      display: grid; place-items: center; width: 88px; height: 88px; border-radius: 50%;
+      background: #FFC832; color: #003E69; box-shadow: 0 0 0 10px rgba(255, 200, 50, 0.25);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .tour-poster:hover .tour-play, .tour-poster:focus-within .tour-play { transform: scale(1.06); box-shadow: 0 0 0 16px rgba(255, 200, 50, 0.2); }
+    .tour-play span { font-family: "Koh Santepheap", Georgia, serif; font-size: 1.5rem; font-weight: 700; line-height: 1; }
+    .tour-poster__title { font-family: "Koh Santepheap", Georgia, serif; font-size: clamp(1.35rem, 3vw, 1.9rem); font-weight: 600; line-height: 1.15; }
+    /* Four room shortcuts: hidden on phones (the poster stays a square with just the play disc; the player has its own room buttons), one centred row from 640px. Each starts the tour in that room. */
+    .tour-rooms { display: none; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; width: 100%; max-width: 19rem; margin: 0; padding: 0; list-style: none; }
+    .tour-rooms li { display: contents; }
+    .tour-rooms button {
+      min-height: 44px; padding: 0.55rem 1.1rem; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 999px;
+      background: rgba(20, 32, 26, 0.78); color: #F1F5F2; font: inherit; font-size: 0.875rem; font-weight: 600; line-height: 1.2;
+      cursor: pointer; transition: background-color 150ms ease, border-color 150ms ease;
+    }
+    .tour-rooms button:hover { background: #2C4538; border-color: rgba(255, 255, 255, 0.55); color: #FFC832; }
+    .tour-rooms button:active { transform: scale(0.98); }
+    @media (min-width: 640px) { .tour-rooms { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; } }
+    /* ---- Tour loading screen: sits inside the stage (so it keeps the frame's rounded corners and hidden overflow), above the player ---- */
+    .tour-loader {
+      position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; padding: 1.25rem;
+      background: #17251E; color: #EEF3EF; text-align: center; opacity: 1; transition: opacity 500ms ease;
+    }
+    .tour-loader[hidden] { display: none; }
+    .tour-loader.is-leaving { opacity: 0; pointer-events: none; }
+    .tour-loader__img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%;
+      filter: blur(9px) saturate(0.85); transform: scale(1.08);
+    }
+    .tour-loader__shade {
+      position: absolute; inset: 0;
+      background: radial-gradient(60% 60% at 50% 50%, rgba(20, 32, 26, 0.72), rgba(20, 32, 26, 0.5)),
+                  linear-gradient(0deg, rgba(20, 32, 26, 0.78), rgba(20, 32, 26, 0.35));
+    }
+    .tour-loader__inner { position: relative; display: grid; justify-items: center; gap: 0.9rem; max-width: 24rem; }
+    .tour-loader__logo { display: block; height: 2.75rem; width: auto; }
+    .tour-loader__title { margin: 0; font-family: "Koh Santepheap", Georgia, serif; font-size: clamp(1.2rem, 2.6vw, 1.55rem); font-weight: 600; line-height: 1.2; }
+    .tour-loader__bar { position: relative; display: block; width: min(14rem, 70%); height: 3px; overflow: hidden; border-radius: 3px; background: rgba(255, 255, 255, 0.2); }
+    .tour-loader__bar[hidden], .tour-loader__actions[hidden], .tour-roompill[hidden] { display: none; }
+    .tour-loader__bar::before { content: ""; position: absolute; top: 0; bottom: 0; left: -40%; width: 40%; border-radius: 3px; background: #FFBC40; animation: tour-bar 1.6s ease-in-out infinite; }
+    @keyframes tour-bar { from { left: -40%; } to { left: 100%; } }
+    .tour-loader__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 0.4rem; }
+    .tour-loader__retry, .tour-loader__link {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0.55rem 1.2rem; border-radius: 999px;
+      font: inherit; font-size: 0.875rem; line-height: 1.2; text-decoration: none; cursor: pointer;
+    }
+    .tour-loader__retry { border: 0; background: #C4F07B; color: #134A0E; font-weight: 700; }
+    .tour-loader__retry:hover { background: #FFFFFF; }
+    .tour-loader__link { border: 1px solid rgba(255, 255, 255, 0.35); background: rgba(20, 32, 26, 0.7); color: #F1F5F2; font-weight: 600; }
+    .tour-loader__link:hover { background: #2C4538; border-color: rgba(255, 255, 255, 0.55); }
+    /* Small, unobtrusive indicator for a room that is slow to start after the first load */
+    .tour-roompill {
+      position: absolute; top: 12px; left: 12px; z-index: 2; display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; background: rgba(20, 32, 26, 0.82); color: #F1F5F2;
+      font-size: 0.8125rem; font-weight: 600; line-height: 1.2; pointer-events: none;
+    }
+    .tour-roompill__dot { width: 8px; height: 8px; border-radius: 50%; background: #FFBC40; animation: tour-pulse 1.2s ease-in-out infinite; }
+    @keyframes tour-pulse { 50% { opacity: 0.35; } }
+    @media (prefers-reduced-motion: reduce) {
+      .tour-loader { transition: none; }
+      .tour-loader__bar::before { left: 0; width: 100%; opacity: 0.55; animation: none; }
+      .tour-roompill__dot { animation: none; }
+    }
+    /* ---- Fullscreen: a custom window, not the browser Fullscreen API. As on daddys-house.html, only the iframe is restyled (never moved or
+       reloaded) into a centred window over a dark backdrop; the stage, poster and loader stay in place. The script sets --fs-w and --fs-h
+       (in px) from the real visible viewport and keeps them current on resize and rotation; the values below are the fallback. ---- */
+    .tour-backdrop, .tour-close { display: none; }
+    .tour-stage.is-fullscreen {
+      --fs-margin: 16px;
+      --fs-w: min(100vw - 2 * var(--fs-margin), (100vh - 2 * var(--fs-margin)) * 4 / 3);
+      --fs-h: calc(var(--fs-w) * 3 / 4);
+    }
+    @media (orientation: portrait) {
+      .tour-stage.is-fullscreen {
+        --fs-w: min(100vw - 2 * var(--fs-margin), (100vh - 2 * var(--fs-margin)) * 3 / 4);
+        --fs-h: calc(var(--fs-w) * 4 / 3);
+      }
+    }
+    .tour-stage.is-fullscreen .tour-backdrop { display: block; position: fixed; inset: 0; z-index: 1500; background: rgba(0, 0, 0, 0.68); touch-action: none; }
+    .tour-stage.is-fullscreen iframe { position: fixed; inset: 0; margin: auto; z-index: 1501; width: var(--fs-w); height: var(--fs-h); border-radius: 12px; }
+    .tour-stage.is-fullscreen .tour-close {
+      display: grid; place-items: center; position: fixed; z-index: 1502; padding: 0; width: 40px; height: 40px;
+      top: calc(50% - var(--fs-h) / 2 + 10px); right: calc(50% - var(--fs-w) / 2 + 10px);
+      border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%; background: rgba(0, 0, 0, 0.6); color: #fff; cursor: pointer;
+    }
+    .tour-stage.is-fullscreen .tour-close:hover { background: rgba(0, 0, 0, 0.85); }
+    @media (pointer: coarse) { .tour-stage.is-fullscreen .tour-close { width: 46px; height: 46px; } }
+
+    /* ---- Hero slideshow (the original page's stacked-slide crossfade: 600ms opacity, arrows, swipe) ---- */
+    [data-hero-slideshow], [data-extras-slideshow] { touch-action: pan-y; }
+    .hero-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 600ms ease; }
+    .hero-slide.is-active { opacity: 1; }
+    .hero-nav {
+      position: absolute; top: 50%; z-index: 2; display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; margin: 0; padding: 0 0 0.15em; border: 0; background: none;
+      color: rgba(255, 255, 255, 0.85); font-family: inherit; font-size: 2.5rem; line-height: 1;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55); cursor: pointer; transform: translateY(-50%); transition: color 200ms ease;
+    }
+    .hero-nav:hover { color: #fff; }
+    .hero-nav:focus-visible { outline: 2px solid #fff; outline-offset: -4px; box-shadow: none; color: #fff; }
+    .hero-nav--prev { left: 0.25rem; }
+    .hero-nav--next { right: 0.25rem; }
+
+    /* ---- Included tiles ---- */
+    /* Included-with-your-stay tiles: one shared height (phones are shorter, the icons are hidden there). Change --amenity-h to resize all four. */
+    :root { --amenity-h: 216px; }
+    @media (max-width: 359px) { :root { --amenity-h: 240px; } }
+    @media (min-width: 1024px) { :root { --amenity-h: 280px; } }
+    .tile-photo { position: relative; overflow: hidden; min-height: var(--amenity-h); }
+    .tile-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .tile-photo figcaption { position: absolute; inset: auto 0 0 0; padding: 4rem 1.5rem 1.25rem; background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), transparent); color: #fff; }
+    .tile-photo figcaption span.block { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 14px rgba(0, 0, 0, 0.4); }
+
+    /* ---- Extras: sticky introduction, cards scrolling in the right column at the section's existing height ---- */
+    @media (min-width: 1024px) {
+      .extras-grid { height: clamp(32rem, calc(100vh - 6rem), 50rem); }
+      .extras-intro { position: sticky; top: 7rem; align-self: start; }
+      .extras-scroll {
+        position: absolute; inset: 0; overflow-y: auto; padding: 4px 0.75rem 3rem 4px;
+        scrollbar-width: thin; scrollbar-color: #C8E8FF transparent;
+      }
+      .extras-fade {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 4.5rem; pointer-events: none;
+        background: linear-gradient(0deg, #395974 15%, rgba(57, 89, 116, 0)); transition: opacity 200ms;
+      }
+      .extras-fade.is-end { opacity: 0; }
+    }
+    @media (max-width: 1023px) { .extras-fade { display: none; } }
+    /* Extras photo slideshow above the introduction. It reuses the hero's slide and arrow styles; the frame is about as tall as one row of cards,
+       and on short desktop windows it shrinks so the introduction still fits inside the section's fixed height. */
+    .xs-caption-bar {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+      padding: 1.75rem 0.9rem 0.7rem; background: linear-gradient(0deg, rgba(0, 0, 0, 0.55), transparent); pointer-events: none;
+    }
+    .xs-caption { color: #fff; font-size: 0.8125rem; font-weight: 600; line-height: 1.2; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); }
+    .xs-dots { display: flex; pointer-events: auto; }
+    .xs-dot { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; }
+    .xs-dot::before { content: ""; width: 8px; height: 8px; border-radius: 9999px; background: rgba(255, 255, 255, 0.5); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25); transition: background-color 200ms ease, transform 200ms ease; }
+    .xs-dot[aria-current="true"]::before { background: #fff; transform: scale(1.3); }
+    .xs-dot:focus-visible { outline: 2px solid #fff; outline-offset: -2px; box-shadow: none; }
+    @media (min-width: 1024px) { .xs-frame { aspect-ratio: auto; height: clamp(10rem, calc(100vh - 34rem), 17.5rem); } }
+
+    /* Pinned mode (desktop, set up by the script): the two-column panel keeps its size and pins under the header while the page scrolls
+       through a runway whose length equals the hidden card travel. The page's own scrolling then moves the cards (the script only sets
+       a transform from the scroll position), so a wheel, trackpad or touch drag anywhere over the section works and nothing nests or traps.
+       The section ends, and the panel unpins, once the last card has been reached. */
+    @media (min-width: 1024px) {
+      .extras-pinned .extras-grid { position: sticky; top: 5.5rem; }
+      .extras-pinned .extras-intro { position: static; align-self: center; }
+      .extras-pinned .extras-scroll { overflow: hidden; }
+      .extras-pinned .extras-scroll > ul { will-change: transform; }
+    }
+
+    /* ---- Movie Nights: CSS film strip along the top and bottom (adapted from the preview's .dh-movie) ---- */
+    .film-section { position: relative; }
+    .film-section::before, .film-section::after {
+      content: ""; position: absolute; left: 0; right: 0; height: 12px; pointer-events: none;
+      background: repeating-linear-gradient(90deg, rgba(168, 209, 231, 0.32) 0 18px, transparent 18px 36px);
+    }
+    .film-section::before { top: 14px; background: repeating-linear-gradient(90deg, #EEFADB 0 18px, transparent 18px 36px); } /* the top squares are the light green of the section above */
+    .film-section::after { bottom: 14px; background: repeating-linear-gradient(90deg, #ECEEE5 0 18px, transparent 18px 36px); } /* the bottom squares match the Rates section below */
+
+    /* Movie Nights stars: a few tiny dots and four-point sparkles scattered unevenly in the gutters and around the text, each fading slowly on its own
+       timing. The layer sits behind the content, ignores clicks, and the stars stay still with reduced motion. Phones show only the edge stars. */
+    .film-stars { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .film-stars .fs {
+      position: absolute; display: block; width: calc(var(--s) * 1.6); height: calc(var(--s) * 1.6); border-radius: 50%;
+      background: #FFFDF2; box-shadow: 0 0 calc(var(--s) * 3) rgba(255, 253, 242, 0.85), 0 0 calc(var(--s) * 1.2) rgba(255, 253, 242, 0.9);
+      opacity: var(--o); animation: fs-twinkle var(--d) ease-in-out var(--w) infinite;
+    }
+    .film-stars .fs.is-gold { background: #FFE27A; box-shadow: 0 0 calc(var(--s) * 3) rgba(255, 200, 50, 0.85), 0 0 calc(var(--s) * 1.2) rgba(255, 210, 80, 0.9); }
+    .film-stars .fs.is-sparkle { border-radius: 0; box-shadow: none; filter: drop-shadow(0 0 5px rgba(255, 253, 242, 0.95)); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+    .film-stars .fs-d { display: none; }
+    @media (min-width: 1024px) { .film-stars .fs-d { display: block; } }
+    @keyframes fs-twinkle { 0%, 100% { opacity: 0.06; transform: scale(0.65); } 50% { opacity: 1; transform: scale(1.35); } }
+    @media (prefers-reduced-motion: reduce) { .film-stars .fs { animation: none; opacity: calc(var(--o) * 0.7); } }
+
+    /* ---- Story section: palette cream with faint lime and gold washes, and a calm portrait slideshow in the arch frame.
+       The slides stack in one frame (same idea as the hero slideshow, but a slower 1.2s crossfade). ---- */
+    .story-section {
+      position: relative; isolation: isolate; clip-path: inset(0);
+      background-color: #E4F9C2;
+      border-color: rgba(19, 74, 14, 0.15);
+    }
+    .story-section::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      /* white at the top of the screen, fading into the section's light green over about two thirds of the screen height; to remove, set every stop to transparent */
+      background: linear-gradient(180deg, #FFFFFF 0, rgba(255, 255, 255, 0.97) 16vh, rgba(255, 255, 255, 0.86) 32vh, rgba(255, 255, 255, 0.55) 50vh, rgba(255, 255, 255, 0) 67vh);
+    }
+    /* Story and Creators sections: the same white fade, flipped 180 degrees (white at the bottom of the screen, fading up into the light green) and pinned to the screen like the hero. To go back, delete this rule. */
+    #the-story.story-section::before, #creators.story-section::before { background: linear-gradient(0deg, #FFFFFF 0, rgba(255, 255, 255, 0.98) 10vh, rgba(255, 255, 255, 0.9) 20vh, rgba(255, 255, 255, 0.72) 30vh, rgba(255, 255, 255, 0.45) 40vh, rgba(255, 255, 255, 0.18) 48vh, rgba(255, 255, 255, 0) 55vh); }
+    /* Gatherings section: the same pinned sky-blue-to-white fade as the hero. The layer is fixed to the screen and clipped to the section, so it stays at the top of the screen while the section scrolls past. To remove, set every stop to #FFFFFF. */
+    .gatherings-panel { position: relative; isolation: isolate; background: #FFFFFF; clip-path: inset(0); }
+    .gatherings-panel::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: linear-gradient(180deg, #B3E0FF 0, #BCE4FF 5rem, #C8E8FF 10rem, #D4ECFD 16rem, #DFF1FC 22rem, #EBF5FC 28rem, #F6FAFD 34rem, #FFFFFF 40rem, #FFFFFF 100%);
+    }
+    /* Location section: the same pinned sky-blue fade as Gatherings, ending in the section's cream instead of white. To go back, restore the old inline gradient on the section. */ /* Rates and Location share this one pinned fade (both layers are fixed to the screen, so they line up at the seam). To split them again, give Rates its own background back. */
+    .location-panel, .rates-panel { position: relative; isolation: isolate; background: #FAF8F2; clip-path: inset(0); }
+    .location-panel::before, .rates-panel::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: linear-gradient(0deg, #EEF9D8 0rem, #F0F9DB 5rem, #F1F9DE 10rem, #F2F9E2 15rem, #F4F9E5 20rem, #F6F8E8 25rem, #F7F8EB 30rem, #F9F8EF 35rem, #FAF8F2 40rem, #FAF8F2 100%);
+    }
+    /* Location section, colours reversed: the base is the light green (#EEFADB) and the sky blue (#B3E0FF) is the layer pinned to the bottom of the screen (40vh tall), riding up with the section's bottom edge. Rates uses the same fade with green instead of blue. To go back, restore the saved copy. */
+    .location-panel { background: #EEFADB; }
+    .location-panel::before { display: none; }
+    .location-panel::after { content: ""; display: block; position: sticky; bottom: 0; height: 60vh; margin-top: -60vh; z-index: -1; pointer-events: none; background: linear-gradient(0deg, #C4E6FF 0, rgba(196, 230, 255, 0.97) 6vh, rgba(196, 230, 255, 0.88) 13vh, rgba(196, 230, 255, 0.74) 20vh, rgba(196, 230, 255, 0.58) 27vh, rgba(196, 230, 255, 0.42) 34vh, rgba(196, 230, 255, 0.27) 41vh, rgba(196, 230, 255, 0.14) 48vh, rgba(196, 230, 255, 0.05) 54vh, rgba(196, 230, 255, 0) 60vh); }
+    .story-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1200ms ease; }
+    .story-slide.is-active { opacity: 1; }
+    .story-label { grid-area: 1 / 1; text-align: center; opacity: 0; transition: opacity 1200ms ease; }
+    .story-label.is-active { opacity: 1; }
+    [data-creators-labels] .story-label { transition-duration: 700ms; } /* the Creators labels fade faster than the Story ones (1200ms) so each stays readable on the shorter 3 second turn */
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0ms !important; }
+      .js [data-reveal] { opacity: 1 !important; transform: none !important; }
+      .tour-poster:hover .tour-poster__img, .tour-poster:hover .tour-play { transform: none; }
+    }
+  </style>
+<link rel="stylesheet" href="css/daddys-house.css"/>
 </head>
-<body>
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+<body class="bg-linen-canvas text-on-surface font-body antialiased selection:bg-pale-olive-mid selection:text-forest-deep">
+<a class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[2000] focus:bg-forest-deep focus:text-white focus:px-4 focus:py-2 focus:rounded-lg" href="#main-content">Skip to main content</a>
 
-    <header class="site-header">
-        <div class="container site-header__inner">
-            <div class="destination-header__logo-container">
-                <img class="destination-header__logo" id="destination-hero-logo" src="demos/daddys-airbnb/graphics/daddys-house-logo.svg" alt="Daddy's AirBnB logo">
-                <span class="destination-header__text-logo logo" id="destination-text-logo">Daddy's House</span>
-            </div>
-            <div class="destination-header__actions">
-                <button class="nav-toggle" id="hamburger" type="button" aria-expanded="false" aria-controls="mobileNav">
-                    <span class="sr-only">Open navigation</span>
-                    <span class="nav-toggle__line" aria-hidden="true"></span>
-                    <span class="nav-toggle__line" aria-hidden="true"></span>
-                    <span class="nav-toggle__line" aria-hidden="true"></span>
-                </button>
-                <nav class="site-nav" id="mobileNav" aria-label="Destination navigation">
-                    <ul class="site-nav__list">
-                        <li><a href="#experience">Tour</a></li>
-                        <li><a href="#activities">Activities</a></li>
-                        <li id="map-nav-link"><a href="#location">Directions</a></li>
-                    </ul>
-                </nav>
-                <a class="logo" href="index.html" aria-label="Ugaverse home">
-                    <span class="logo__text">ugaverse</span>
-                    <img class="logo__mobile-mark" src="icons/logo-sm.png" alt="" width="49" height="58">
-                </a>
-            </div>
-        </div>
-    </header>
+<!-- HEADER -->
+<header class="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl rounded-full z-50 bg-[#2A4B33] shadow-xl shadow-[#2A4B33]/25 backdrop-blur-md" id="top">
+<div class="flex justify-between items-center gap-3 px-3 min-[360px]:px-5 sm:px-6 py-2.5 w-full">
+<a class="flex items-center gap-3 shrink-0" href="#hero" aria-label="Daddy's House, back to the top">
+<img src="demos/daddys-airbnb/graphics/daddys-house-logo.svg" alt="Daddy's House" width="2000" height="938" class="h-9 min-[360px]:h-11 w-auto" style="filter: brightness(0) invert(1);"/>
+<span class="hidden xl:inline-block px-2.5 py-0.5 rounded-full bg-[#3A6647] text-[11px] font-label-badge text-[#FFC832] tracking-wider">NAALYA, KAMPALA</span>
+</a>
+<nav class="site-nav" id="site-nav" aria-label="Page sections">
+<a class="nav-link font-label-lg text-label-lg" href="#the-house">Tour the House</a>
+<a class="nav-link font-label-lg text-label-lg" href="#amenities" data-spy="amenities extras gatherings creators movie-nights">Activities</a>
+<a class="nav-link font-label-lg text-label-lg" href="#rates">Prices</a>
+<a class="nav-link font-label-lg text-label-lg" href="#location">Location</a>
+<a class="nav-wa lg:hidden" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-base" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">chat</span>Book with WhatsApp</a>
+</nav>
+<div class="flex items-center gap-2 sm:gap-3">
+<a class="whatsapp-book hidden lg:inline-flex items-center gap-2 whitespace-nowrap px-4 py-[7px] rounded-full border-[3px] border-white bg-whatsapp-green text-forest-deep font-label-lg text-label-lg font-semibold hover:brightness-105 hover:-translate-y-px active:scale-[0.98] transition-all" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-base" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span><span class="hidden sm:inline">Book with </span>WhatsApp</span>
+</a>
+<button class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-forest-accent" type="button" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+<span class="sr-only" id="nav-toggle-label">Open navigation</span>
+<span class="material-symbols-outlined" id="nav-toggle-icon" aria-hidden="true">menu</span>
+</button>
+</div>
+</div>
+</header>
 
-    <main class="destination-page" id="main-content">
-        <section class="container destination-hero" id="hero" style="--project-hero-background: #005F9C;">
-            <div class="destination-hero__content">
-                <div class="destination-hero__intro">
-                    <div class="destination-heading-row">
-                        <h1 id="destination-name" class="destination-heading--daddys-house">
-                            <span class="destination-heading__line destination-heading__line--left">A Vacation</span>
-                            <span class="destination-heading__line destination-heading__line--center">  in</span>
-                            <span class="destination-heading__line destination-heading__line--right"><span class="destination-heading__the">The</span> City</span>
-                        </h1>
-                    </div>
-                    <p class="hero-sub" id="destination-subtitle">Everything you need, right here.</p>
-                </div>
-                <div class="destination-actions" id="project-actions">
-                    <a class="button button--primary" href="https://wa.me/message/WUY56WGM3X6CG1" target="_blank" rel="noopener noreferrer">HOW MUCH?</a>
-                    <a class="destination-host-link" href="https://wa.me/message/WUY56WGM3X6CG1">Talk to Host</a>
-                </div>
-            </div>
+<main id="main-content">
+<!-- HERO -->
+<section class="hero-panel pt-32 pb-16 lg:pt-36 lg:pb-24 px-5 sm:px-8 md:px-14 lg:px-8 max-w-7xl mx-auto" id="hero" aria-labelledby="hero-title">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center max-w-[44rem] mx-auto lg:max-w-none">
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div data-reveal class="max-lg:hidden inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#F6B51E] border border-[#134A0E]/15 text-[#003E69]" style="box-shadow: 0 3px 8px -3px rgba(120, 70, 0, 0.4), 0 1px 3px rgba(120, 70, 0, 0.2);">
+<span class="material-symbols-outlined text-sm text-[#003E69]" aria-hidden="true">park</span>
+<span class="text-label-badge font-label-badge text-[#003E69]">RESIDENTIAL SANCTUARY</span>
+</div>
+<h1 data-reveal style="--delay:80ms" id="hero-title" class="hero-title-glow text-display-hero-mobile md:text-[2.75rem] md:leading-[1.1] lg:text-display-hero lg:max-[1149px]:text-[3rem] font-display-hero heading-azure lg:leading-[1.08] tracking-tight">
+A home for <br class="min-[480px]:max-[1023px]:hidden">short stays and <br class="min-[480px]:max-[1023px]:hidden">good&nbsp;times.
+</h1>
+<p data-reveal style="--delay:160ms" class="min-[480px]:max-lg:[text-wrap:pretty] text-[1.25rem] md:text-[1.375rem] lg:text-[1.4rem] leading-[1.5] font-body-lg font-bold text-on-surface-variant">
+Relax, make memories together, and <br class="hidden min-[430px]:max-[479px]:block lg:hidden min-[1100px]:block">try something new.
+</p>
+<div data-reveal style="--delay:240ms" class="flex flex-nowrap sm:flex-wrap items-center gap-3 pt-2">
+<a class="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-4 sm:px-7 py-3.5 rounded-lg bg-[#365F40] hover:bg-[#2B4D34] text-white font-label-lg text-label-lg transition-all shadow-md active:scale-[0.98]" href="#tour" data-tour-trigger>
+<span class="material-symbols-outlined max-sm:hidden" aria-hidden="true">visibility</span>
+Take the Tour
+</a>
+<a class="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 px-4 sm:px-6 py-3.5 rounded-lg border border-[#003E69]/30 bg-[#005490] hover:bg-[#003E69] text-white font-label-lg text-label-lg transition-all" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined max-sm:hidden" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">chat</span>
+Contact Host
+</a>
+</div>
+<ul data-reveal style="--delay:320ms" class="mt-4 p-4 rounded-xl bg-[#E6F4FF] border border-[#B3E0FF] grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-between lg:grid lg:grid-cols-2 min-[1200px]:flex min-[1200px]:justify-between items-center gap-y-2 gap-x-4 text-xs md:text-sm lg:text-xs font-medium text-[#2F363C]" aria-label="At a glance">
+<li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base" aria-hidden="true">bed</span> 2 Bedrooms</li>
+<li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base" aria-hidden="true">bathtub</span> 1 Bathroom</li>
+<li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base" aria-hidden="true">soup_kitchen</span> Kitchen</li>
+<li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base" aria-hidden="true">fitness_center</span> Outdoor Gym</li>
+</ul>
+</div>
+<div class="order-first lg:order-none lg:col-span-7 relative" data-reveal style="--delay:160ms">
+<div class="lg:hidden inline-flex items-center gap-2 px-3.5 py-1.5 mb-5 rounded-full bg-[#F6B51E] border border-[#134A0E]/15 text-[#003E69]" style="box-shadow: 0 3px 8px -3px rgba(120, 70, 0, 0.4), 0 1px 3px rgba(120, 70, 0, 0.2);">
+<span class="material-symbols-outlined text-sm text-[#003E69]" aria-hidden="true">park</span>
+<span class="text-label-badge font-label-badge text-[#003E69]">RESIDENTIAL SANCTUARY</span>
+</div>
+<div class="outline-frame outline-frame--hero">
+<div class="relative overflow-hidden rounded-2xl lg:rounded-3xl shadow-2xl border border-[#9AD5FF] w-full aspect-square min-[480px]:aspect-[3/2] lg:aspect-[16/10] max-h-[80svh] lg:max-h-none bg-pale-olive-mid" data-hero-slideshow>
+<img class="hero-slide is-active" src="demos/daddys-airbnb/images/IMG_8151.jpg" alt="Daddy's House in Naalya: a single-storey bungalow with a red roof, seen across the front lawn and stepping stones" width="1200" height="901" fetchpriority="high" decoding="async" style="object-position: 50% 58%;"/>
+<img class="hero-slide" src="demos/daddys-airbnb/images/IMG_8616.jpg" alt="A basketball hoop beside the house, with a ball about to drop in" width="1201" height="900" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 40%;"/>
+<img class="hero-slide" src="demos/daddys-airbnb/images/IMG_9440.jpg" alt="Three people talking on a garden bench while a phone on a tripod films the conversation" width="1200" height="901" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 40%;"/>
+<img class="hero-slide" src="demos/daddys-airbnb/images/IMG_9470.jpg" alt="Someone using handmade gym bars in the compound, with a painted gym sign on the wall" width="1200" height="901" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 30%;"/>
+<img class="hero-slide" src="demos/daddys-airbnb/images/IMG_9512.jpg" alt="A game of basketball in front of the house, with children nearby on the porch steps" width="1200" height="901" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 45%;"/>
+<img class="hero-slide" src="demos/daddys-airbnb/images/IMG_9635.jpg" alt="A bedroom with a slatted wood feature wall, a bed and a window with a decorative grille" width="1200" height="901" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 60%;"/>
+<button class="hero-nav hero-nav--prev" type="button" aria-label="Previous image">‹</button>
+<button class="hero-nav hero-nav--next" type="button" aria-label="Next image">›</button>
+<div class="max-sm:contents absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-wrap items-center justify-between gap-3">
+<div class="max-sm:absolute max-sm:bottom-3 max-sm:left-3 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border backdrop-blur-md" style="background-color: rgba(196, 240, 123, 0.97); border-color: #A8DD4D; box-shadow: 0 8px 20px -6px rgba(19, 74, 14, 0.32), 0 2px 6px rgba(19, 74, 14, 0.14);">
+<span class="text-label-badge font-label-badge text-on-surface-variant block">NIGHTLY RATE</span>
+<span class="text-title-md font-title-md text-[#134A0E] font-bold">UGX 150,000 <span class="text-body-sm font-body-sm text-on-surface-variant font-normal">/ night</span></span>
+</div>
+<div class="max-sm:absolute max-sm:top-3 max-sm:right-3 bg-[#365F40]/95 text-white backdrop-blur-md px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-white/20 flex items-center gap-2" style="box-shadow: 0 8px 20px -6px rgba(19, 74, 14, 0.32), 0 2px 6px rgba(19, 74, 14, 0.14);">
+<span class="material-symbols-outlined text-base" aria-hidden="true" style="color: #88CFFB;">pin_drop</span>
+<span class="text-body-sm font-body-sm font-medium">Naalya, Kampala</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-            <div class="destination-hero__media-group">
-                <figure class="hero__media about__media destination-hero__visual" id="hero-visual">
-                    <div class="hero-media-stage">
-                        <div class="hero-media-slideshow" id="hero-visual-slideshow">
-                            <img src="demos/daddys-airbnb/images/IMG_8151.jpg" alt="Daddy's AirBnB creative homestay in Naalya, Kampala" loading="eager" class="is-active">
-                            <img src="demos/daddys-airbnb/images/IMG_8616.jpg" alt="" loading="lazy" aria-hidden="true">
-                            <img src="demos/daddys-airbnb/images/IMG_9414.jpg" alt="" loading="lazy" aria-hidden="true">
-                            <img src="demos/daddys-airbnb/images/IMG_9440.jpg" alt="" loading="lazy" aria-hidden="true">
-                            <img src="demos/daddys-airbnb/images/IMG_9470.jpg" alt="" loading="lazy" aria-hidden="true">
-                            <img src="demos/daddys-airbnb/images/IMG_9512.jpg" alt="" loading="lazy" aria-hidden="true">
-                            <img src="demos/daddys-airbnb/images/IMG_9613.jpg" alt="" loading="lazy" aria-hidden="true">
-                            <img src="demos/daddys-airbnb/images/IMG_9635.jpg" alt="" loading="lazy" aria-hidden="true">
-                        </div>
-                        <button class="hero-media-nav hero-media-nav--prev" type="button" aria-label="Previous image">‹</button>
-                        <button class="hero-media-nav hero-media-nav--next" type="button" aria-label="Next image">›</button>
-                    </div>
-                    <figcaption><a class="hero-media-caption-link" href="#experience">TAKE THE TOUR</a></figcaption>
-                </figure>
-                <div class="destination-hero__links">
-                    <p class="location"><a href="#location" class="location-link" id="destination-location">Naalya, Kampala, Uganda↓</a></p>
-                    <div class="destination-hero__find-more">
-                        <a class="destination-tiktok-link" href="https://www.tiktok.com/@hakeemwildfire" target="_blank" rel="noopener noreferrer"><img src="icons/tiktok.png" alt="TikTok"></a>
-                        <a class="destination-whatsapp-link" href="https://wa.me/message/WUY56WGM3X6CG1" target="_blank" rel="noopener noreferrer"><img src="icons/whatsapp.png" alt="WhatsApp"></a>
-                        <a class="location-link" href="https://linktr.ee/ugaverse_studios" target="_blank" rel="noopener noreferrer">more info</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- 1. STORY -->
+<section class="story-section pt-20 border-y" id="the-story" aria-labelledby="story-title">
+<div class="max-w-6xl mx-auto px-6 min-[480px]:px-10 md:max-lg:pl-[calc(3.5rem_+_0.45_*_max(0px,_(100vw_-_44rem)_/_2_-_3.5rem))] md:max-lg:pr-14 pb-20 lg:px-12">
+<div class="grid grid-cols-1 md:grid-cols-[clamp(18.5rem,42%,20rem)_minmax(0,1fr)] lg:grid-cols-[clamp(20rem,37%,25rem)_minmax(0,1fr)] gap-12 md:gap-x-10 lg:gap-x-20 xl:gap-x-28 items-center">
+<div class="relative w-full max-w-[26rem] mx-auto md:mx-0 lg:max-w-none" data-reveal>
+<div class="lg:hidden md:whitespace-nowrap inline-flex items-center gap-2 px-3.5 py-1.5 mb-5 rounded-full bg-[#365F40] border border-[#365F40] text-white">
+<span class="material-symbols-outlined text-sm text-white" aria-hidden="true">favorite</span>
+<span class="text-label-badge font-label-badge text-white">THE DADDY’S HOUSE EXPERIENCE</span>
+</div>
+<div class="outline-frame outline-frame--arch">
+<div class="arch-mask overflow-hidden shadow-xl border-4 border-[#2F78BE] bg-pale-olive-mid">
+<div class="relative w-full aspect-[10/11] lg:aspect-auto lg:h-[500px]" data-story-slideshow>
+<img class="story-slide is-active" src="demos/daddys-airbnb/images/IMG_9414.jpg" alt="The front lawn at Daddy's House, with stepping stones, the bungalow and a painting on an easel" width="1200" height="901" loading="lazy" decoding="async" style="object-position: 55% 50%;"/>
+<img class="story-slide" src="demos/daddys-airbnb/images/portrait/IMG_6896-web.jpg" alt="A figure made from a dark jacket and a yellow jerrycan, hung on a breeze-block wall" width="1000" height="1333" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 40%;"/>
+<img class="story-slide" src="demos/daddys-airbnb/images/portrait/IMG_7961-web.jpg" alt="An ornate gold-framed mirror above a marble-topped console table in the hallway" width="1000" height="1333" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 40%;"/>
+<img class="story-slide" src="demos/daddys-airbnb/images/portrait/IMG_8012-web.jpg" alt="A person carrying a bag along the hallway, past a slatted wood wall and a curved mirror" width="1000" height="1333" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 35%;"/>
+<img class="story-slide" src="demos/daddys-airbnb/images/portrait/IMG_9418-web.jpg" alt="Two men looking at a phone on a tripod in the garden while filming" width="1000" height="1333" loading="lazy" aria-hidden="true" decoding="async" style="object-position: 50% 30%;"/>
+<button class="hero-nav hero-nav--prev" type="button" data-story-prev aria-label="Previous photo">‹</button>
+<button class="hero-nav hero-nav--next" type="button" data-story-next aria-label="Next photo">›</button>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-4 -right-4 bg-[#FFC832] text-[#003E69] px-5 py-3 rounded-xl shadow-lg border border-[#134A0E]/15">
+<div class="grid">
+<span class="story-label is-active text-base font-bold tracking-wider text-[#003E69]" data-story-label>CREATIVE SESSIONS</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-story-label aria-hidden="true">SUSTAINABLE ART</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-story-label aria-hidden="true">THEMED DECOR</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-story-label aria-hidden="true">OVERNIGHT STAYS</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-story-label aria-hidden="true">CONTENT CREATION</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<div data-reveal class="max-lg:hidden inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#365F40] border border-[#365F40] text-white">
+<span class="material-symbols-outlined text-sm text-white" aria-hidden="true">favorite</span>
+<span class="text-label-badge font-label-badge text-white">THE DADDY’S HOUSE EXPERIENCE</span>
+</div>
+<h2 data-reveal style="--delay:60ms" id="story-title" class="font-headline-lg font-semibold heading-azure [font-size:clamp(2.25rem,4.6vw,3.5rem)] leading-[1.08] tracking-tight text-balance">
+It’s more than <br class="min-[480px]:hidden">a place to stay.
+</h2>
+<p data-reveal style="--delay:120ms" class="text-[1.25rem] lg:text-[1.4rem] leading-[1.5] font-body-lg font-bold text-on-surface-variant max-w-[36rem] text-pretty">
+Daddy’s House offers a peaceful, comfortable environment where you can <span class="rounded-sm px-0.5" style="background: linear-gradient(transparent 58%, #FFDC7A 58%, #FFDC7A 92%, transparent 92%);">unwind, connect, and create</span>.
+</p>
+<div data-reveal style="--delay:180ms" class="flex justify-center sm:justify-end md:justify-start lg:justify-end max-w-[36rem] pt-2">
+<a class="group inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg bg-[#365F40] hover:bg-[#2B4D34] text-white font-label-lg text-[15px] font-semibold tracking-wide shadow-md transition-all active:scale-[0.98]" href="#amenities">
+Explore Activities
+<span class="material-symbols-outlined text-lg transition-transform group-hover:translate-y-0.5" aria-hidden="true">arrow_downward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-        <section class="destination-experience-section" id="experience">
-            <div class="container experience-section__container">
-                <div class="experience-left-col">
-                    <h2 class="experience-left-title">VISIT<br class="experience-title__break"> DADDY'S HOUSE</h2>
-                    <div class="destination-media-frame" id="media-frame">
-                        <div class="project-experience-block"><iframe src="player.html?id=daddys-airbnb" title="Daddy's AirBnB 360 video" allow="autoplay; fullscreen; gyroscope; accelerometer" allowfullscreen></iframe><div class="player-fullscreen__backdrop" aria-hidden="true"></div><button class="player-fullscreen__close" type="button" aria-label="Exit fullscreen" title="Exit fullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button></div>
-                    </div>
-                    <p class="video-caption" id="experience-caption">Touch and drag to look around</p>
-                </div>
-                <div class="experience-right-col">
-                    <div class="experience-right-content">
-                        <h2 class="experience-right-heading">You don't ever need to leave.</h2>
-                        <p class="experience-right-subheading">Daddy's House has everything you need.</p>
-                        <div class="experience-right-cta">
-                            <a class="button button--yellow" href="#activities">Get Activities</a>
-                            <div class="experience-right-social">
-                                <a class="destination-tiktok-link" href="https://www.tiktok.com/@hakeemwildfire" target="_blank" rel="noopener noreferrer"><img src="icons/tiktok.png" alt="TikTok"></a>
-                                <a class="destination-whatsapp-link" href="https://wa.me/message/WUY56WGM3X6CG1" target="_blank" rel="noopener noreferrer"><img src="icons/whatsapp.png" alt="WhatsApp"></a>
-                                <a class="location-link" href="https://linktr.ee/ugaverse_studios" target="_blank" rel="noopener noreferrer">more info</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- 2. THE HOUSE: 360 TOUR FIRST, THEN RATE AND ROOMS -->
+<section class="section-gold py-24 px-6 md:px-10 lg:px-12 max-w-7xl mx-auto" id="the-house" aria-labelledby="house-title">
+<!-- 360° TOUR MODULE (no transform or z-index on any ancestor of the stage, so fullscreen can cover the page) -->
+<div class="rounded-3xl bg-[#365F40] text-on-primary p-6 sm:p-8 lg:p-12 relative overflow-hidden on-dark" id="tour">
+<div class="absolute -right-24 -bottom-24 w-96 h-96 rounded-full bg-sky-tint-mid/10 blur-3xl pointer-events-none"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative">
+<div class="lg:col-span-5 space-y-5">
+<div data-reveal class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E4F3FF] text-[#005490] text-label-badge font-label-badge border border-sky-border/40">
+<span class="material-symbols-outlined text-sm" aria-hidden="true">view_in_ar</span>
+IMMERSIVE 360° EXPERIENCE
+</div>
+<h2 data-reveal style="--delay:60ms" id="house-title" class="text-headline-lg font-headline-lg leading-tight text-white">Step inside the home.</h2>
+<p data-reveal style="--delay:120ms" class="font-body font-bold text-[1.1875rem] sm:text-[1.25rem] lg:text-[1.3125rem] xl:text-[1.375rem] leading-[1.6] text-[#EBEEEC]">
+Explore every room at Daddy’s House and imagine your stay here.
+</p>
+<div data-reveal style="--delay:180ms" class="pt-2">
+<button class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-lg w-full sm:w-auto text-center bg-[#FFC832] text-[#003E69] font-label-lg text-label-lg font-semibold hover:bg-white transition-all shadow-lg active:scale-[0.98]" type="button" data-tour-trigger data-tour-scroll>
+<span class="material-symbols-outlined" aria-hidden="true">360</span>
+Launch Virtual Tour
+</button>
+</div>
+</div>
+<div class="lg:col-span-7">
+<div class="tour-stage" id="tour-viewer" data-tour-stage>
+<div class="tour-poster" data-tour-poster>
+<img class="tour-poster__img" src="demos/daddys-airbnb/images/IMG_9635.jpg" alt="" width="1200" height="901" loading="lazy" decoding="async"/>
+<span class="tour-poster__shade"></span>
+<div class="tour-poster__inner">
+<button class="tour-start" type="button" data-tour-start>
+<span class="tour-play" aria-hidden="true"><span>360°</span></span>
+<span class="tour-poster__title">Start the 360 Tour</span>
+</button>
+<ul class="tour-rooms" aria-label="Start the tour in a room">
+<li><button type="button" data-tour-room="Exterior">Exterior</button></li>
+<li><button type="button" data-tour-room="Living Room">Living Room</button></li>
+<li><button type="button" data-tour-room="Kitchen">Kitchen</button></li>
+<li><button type="button" data-tour-room="Bedroom 1">Bedroom</button></li>
+</ul>
+</div>
+</div>
+<div class="tour-loader" data-tour-loader hidden>
+<img class="tour-loader__img" src="demos/daddys-airbnb/images/IMG_8151.jpg" alt="" width="1200" height="901" loading="lazy" decoding="async"/>
+<span class="tour-loader__shade"></span>
+<div class="tour-loader__inner">
+<img class="tour-loader__logo" src="demos/daddys-airbnb/graphics/daddys-house-logo.svg" alt="" width="2000" height="938"/>
+<p class="tour-loader__title" data-tour-loader-title>Opening the front door…</p>
+<span class="tour-loader__bar" data-tour-loader-bar aria-hidden="true"></span>
+<div class="tour-loader__actions" data-tour-loader-actions hidden>
+<button class="tour-loader__retry" type="button" data-tour-retry>Retry</button>
+<a class="tour-loader__link" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">Message the host on WhatsApp</a>
+</div>
+</div>
+</div>
+<div class="tour-roompill" data-tour-roompill hidden><span class="tour-roompill__dot" aria-hidden="true"></span><span data-tour-roompill-text>Loading room…</span></div>
+<p class="sr-only" role="status" aria-live="polite" data-tour-status></p>
+<div class="tour-backdrop" data-tour-backdrop aria-hidden="true"></div>
+<button class="tour-close" type="button" data-tour-close aria-label="Exit fullscreen" title="Exit fullscreen">
+<span class="material-symbols-outlined" aria-hidden="true">close</span>
+</button>
+</div>
+<p class="mt-3 text-sm text-sky-tint-light/80 max-sm:text-[#F1F7FB]">Drag to look around. Tap the room name in the tour to jump between scenes.</p>
+</div>
+</div>
+</div>
 
-        <section id="activities">
-            <div class="container daddys-airbnb-transition__content">
-                <h2 class="experience-left-title daddys-airbnb-transition__heading">ACTIVITIES</h2>
-                <p class="daddys-airbnb-transition__price-note">All prices are in <abbr>UGX</abbr></p>
-                <div class="daddys-airbnb-transition__columns">
-                    <div class="daddys-airbnb-transition__column daddys-airbnb-transition__column--left">
-                        <div class="daddys-airbnb-transition__package-viewport daddys-airbnb-transition__package-viewport--package1"><img class="daddys-airbnb-transition__package-image" src="demos/daddys-airbnb/images/Packages 1.png" alt=""></div>
-                    </div>
-                    <div class="daddys-airbnb-transition__column daddys-airbnb-transition__column--right">
-                        <div class="daddys-airbnb-transition__package-viewport daddys-airbnb-transition__package-viewport--package2"><img class="daddys-airbnb-transition__package-image" src="demos/daddys-airbnb/images/Packages 2.png" alt=""></div>
-                        <a class="button button--yellow" href="https://wa.me/message/WUY56WGM3X6CG1">LET ME BOOK</a>
-                        <p class="daddys-airbnb-transition__download">*<a class="location-link" href="https://wa.me/message/WUY56WGM3X6CG1">Download Details</a><br class="download-break"> for more information</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- OVERNIGHT RATE -->
+<div data-reveal class="mt-8 min-[480px]:max-md:mx-4 md:max-lg:mx-8 p-5 lg:p-6 rounded-2xl border max-sm:border-[3px] max-sm:!border-[#8FD0FF] flex flex-col lg:flex-row lg:items-center justify-between gap-5 min-[600px]:max-lg:grid min-[600px]:max-lg:grid-cols-2 min-[600px]:max-lg:items-center min-[600px]:max-lg:gap-x-0" style="background-color: #D3E4F0; border-color: #BACFD9;">
+<div>
+<span class="text-label-badge font-label-badge text-secondary block">OVERNIGHT RATE</span>
+<span class="text-headline-md font-headline-md text-[#365F40] font-bold">UGX 150,000 <span class="text-body-md font-body-md text-on-surface-variant font-normal whitespace-nowrap">per night</span></span>
+</div>
+<dl class="flex flex-wrap min-[600px]:max-lg:flex-col gap-x-10 gap-y-3 text-sm text-forest-fresh">
+<div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-xl" aria-hidden="true">login</span><div><dt class="text-label-badge font-label-badge text-secondary">CHECK-IN</dt><dd class="font-medium">From noon on your booked day</dd></div></div>
+<div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-xl" aria-hidden="true">logout</span><div><dt class="text-label-badge font-label-badge text-secondary">CHECK-OUT</dt><dd class="font-medium">10 a.m. the following day</dd></div></div>
+</dl>
+<a class="min-[600px]:max-lg:col-span-2 px-5 py-2.5 rounded-lg bg-[#005490] hover:bg-[#003E69] text-white text-center font-label-lg text-label-lg transition-all shadow-sm" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+Ask about availability
+</a>
+</div>
+</section>
 
-        <section class="container destination-section-card map-section" id="location">
-            <h2 class="experience-left-title map-section__title">LOCATION</h2>
-            <div class="map-section__directions">
-                <p class="map-section__description"><span class="map-section__label">DIRECTIONS:</span>Opposite Vienna College on <span class="map-section__break">Namugongo Road, turn onto</span> <span class="map-section__break">Kimbejja Road for about</span> <span class="map-section__break">300m, then take the second</span> <span class="map-section__break">left turn sloping straight down</span> <span class="map-section__break">the hill to the last house.</span></p>
-            </div>
-            <div class="map-section__location">
-                <div class="map-container" id="map-container"><iframe src="https://www.google.com/maps/embed?origin=mfe&amp;pb=!1m3!2m1!1s0.3752697,32.6368035!6i17" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
-                <div class="destination-actions map-section__actions" id="map-actions">
-                    <a class="button button--yellow" href="https://wa.me/message/WUY56WGM3X6CG1">CONTACT HOST</a>
-                    <button class="button map-section__share-button" type="button" id="share-location-btn">SHARE LOCATION</button>
-                </div>
-                <a class="location-link map-section__tour-link" href="#experience">Take the online tour↑</a>
-            </div>
-        </section>
+<!-- 3. INCLUDED WITH YOUR STAY -->
+<section class="py-20 bg-pale-olive-light/70 border-t border-pale-olive-border" id="amenities" aria-labelledby="included-title">
+<div class="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
+<div class="text-center max-w-3xl mx-auto mb-14" data-reveal>
+<span class="text-label-badge font-label-badge text-pale-olive-text tracking-wider block mb-2">ACTIVITIES</span>
+<h2 id="included-title" class="text-headline-lg font-headline-lg text-forest-fresh">Included with your stay</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant mt-2">Make yourself at home, unwind, and enjoy your time at Daddy’s House.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-[24rem] mx-auto md:max-w-[50rem] lg:max-w-none">
+<figure data-reveal class="tile-photo lg:col-span-3 rounded-2xl border border-pale-olive-border shadow-md m-0">
+<img src="demos/daddys-airbnb/images/IMG_8616.jpg" alt="A ball about to drop through a hoop beside the house" width="1201" height="900" loading="lazy" decoding="async"/>
+<figcaption>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D3F49A] text-on-primary-fixed text-[11px] font-bold tracking-wider"><span class="material-symbols-outlined text-sm" aria-hidden="true">check</span>INCLUDED</span>
+<span class="block mt-2 font-headline-md text-[1.6rem] leading-tight font-semibold">Outdoor games</span>
+</figcaption>
+</figure>
+<div data-reveal style="--delay:100ms" class="max-md:-order-1 tactile-card bg-[#E6F4FF] border-[3px] border-[#B3E0FF] lg:col-span-2 rounded-2xl p-7 flex flex-col justify-center min-h-[var(--amenity-h)]">
+<span class="inline-flex items-center gap-1 self-start px-2.5 py-1 rounded-full bg-[#2F78BE] text-white text-[11px] font-bold tracking-wider max-lg:mb-3"><span class="material-symbols-outlined text-sm" aria-hidden="true">check</span>INCLUDED</span>
+<div class="w-12 h-12 text-[#365F40] hidden lg:flex items-center justify-start my-4"><span class="material-symbols-outlined text-[2.5rem]" aria-hidden="true">kitchen</span></div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Kitchen access</h3>
+<p class="text-body-md font-body-md text-[#2F363C]">You can access the kitchen and other amenities during your stay</p>
+</div>
+<div data-reveal class="tactile-card bg-[#E6F4FF] border-[3px] border-[#B3E0FF] lg:col-span-2 rounded-2xl p-7 flex flex-col justify-center min-h-[var(--amenity-h)]">
+<span class="inline-flex items-center gap-1 self-start px-2.5 py-1 rounded-full bg-[#2F78BE] text-white text-[11px] font-bold tracking-wider max-lg:mb-3"><span class="material-symbols-outlined text-sm" aria-hidden="true">check</span>INCLUDED</span>
+<div class="hidden lg:flex gap-2 my-4">
+<span class="w-12 h-12 text-[#365F40] flex items-center justify-start"><span class="material-symbols-outlined text-[2.5rem]" aria-hidden="true">style</span></span>
+<span class="w-12 h-12 text-[#365F40] flex items-center justify-start"><span class="material-symbols-outlined text-[2.5rem]" aria-hidden="true">casino</span></span>
+</div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Indoor games</h3>
+<p class="text-body-md font-body-md text-[#2F363C]">Board games, cards and more for relaxed evenings.</p>
+</div>
+<figure data-reveal style="--delay:100ms" class="tile-photo lg:col-span-3 rounded-2xl border border-pale-olive-border shadow-md m-0">
+<img src="demos/daddys-airbnb/images/IMG_9467-web.jpg" alt="A man in a red vest doing a pull-up on a red handmade gym frame in the compound, with a painted gym sign on the wall behind" width="1400" height="1050" loading="lazy" decoding="async" style="object-position: 50% 20%;"/>
+<figcaption>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D3F49A] text-on-primary-fixed text-[11px] font-bold tracking-wider"><span class="material-symbols-outlined text-sm" aria-hidden="true">check</span>INCLUDED</span>
+<span class="block mt-2 font-headline-md text-[1.6rem] leading-tight font-semibold">Handmade gym equipment</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
 
-        <section class="section immersive-media-section" id="cta">
-            <div class="container immersive-media-section__grid">
-                <div class="immersive-media-section__content">
-                    <h2>You see it?<br class="cta-heading-break"> You like it?<br>You want it?<br class="cta-heading-break"> <span>You’ve got it.</span></h2>
-                    <p class="immersive-media-section__copy">We will take photos, shoot videos and <br class="cta-copy-break">build your business page from scratch.</p>
-                    <p class="immersive-media-section__copy immersive-media-section__copy--yellow">Tell us about your brand in <a class="immersive-media-section__copy-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfQQJ_zNJJ5OUcCCQtaSOlQwQqp2ekyKymm3oKMRVbIfpSQrw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">5 minutes</a>.</p>
-                    <a class="button button--yellow button--large immersive-media-section__button" href="https://docs.google.com/forms/d/e/1FAIpQLSfQQJ_zNJJ5OUcCCQtaSOlQwQqp2ekyKymm3oKMRVbIfpSQrw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">ASSESS ME</a>
-                </div>
-                <figure class="immersive-media-section__visual">
-                    <div class="immersive-media-section__slideshow"><img src="images/homepage/chef1.png" alt="" width="2000" height="2000" loading="lazy" class="is-active"><img src="images/homepage/chef2.png" alt="" width="2000" height="2000" loading="lazy" aria-hidden="true"></div>
-                </figure>
-            </div>
-        </section>
+<!-- 4. CUSTOMIZE YOUR EXPERIENCE -->
+<section class="py-20 border-y on-dark" id="extras" aria-labelledby="extras-title" style="background-color: #395974; border-color: #4A7598;">
+<div class="extras-runway max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
+<!-- Below 1024px the slideshow, text and cards share a capped width (24rem on phones, 50rem for two columns on tablets) so nothing grows too wide before the desktop layout takes over. -->
+<div class="extras-grid grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 lg:items-stretch max-w-[24rem] mx-auto md:max-w-[50rem] lg:max-w-none">
+<!-- Tablet (768 to 1023px): the heading text sits on the left and the slideshow on the right. Phones stack them; desktop keeps the sticky left column. -->
+<div class="extras-intro lg:col-span-4 md:max-lg:grid md:max-lg:grid-cols-2 md:max-lg:grid-rows-[auto_auto_1fr] md:max-lg:gap-x-8 md:max-lg:items-start">
+<div data-reveal class="md:max-lg:col-start-1 flex w-fit items-center gap-2 px-3 py-1 mb-3 rounded-full bg-sky-tint-light text-[#005490] text-label-badge font-label-badge border border-sky-border/40">
+<span class="material-symbols-outlined text-sm" aria-hidden="true">shopping_basket</span>
+CUSTOMIZE YOUR EXPERIENCE
+</div>
+<div data-reveal class="xs-frame md:max-lg:col-start-2 md:max-lg:row-start-1 md:max-lg:row-span-3 md:max-lg:mb-0 md:max-lg:max-w-none relative overflow-hidden rounded-2xl mb-6 w-full max-w-[32rem] aspect-[4/3] bg-[#2A1A10]" style="border: 1px solid #4A7598; box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);" data-extras-slideshow role="group" aria-roledescription="carousel" aria-label="Photos of the optional extras">
+<img class="hero-slide is-active" data-label="In-house chef" src="demos/daddys-airbnb/images/extras/slide-chef-biryani.jpg" alt="A white dish of spiced rice topped with a rich red meat stew and fresh mint, with a cup of milky tea behind" width="960" height="720" decoding="async"/>
+<img class="hero-slide" data-label="Barbecue grill &amp; chef" src="demos/daddys-airbnb/images/extras/slide-barbecue.jpg" alt="Grilled lamb chops on flatbread, with a small pot of red sauce and pickled onions" width="960" height="720" loading="lazy" aria-hidden="true" decoding="async"/>
+<button class="hero-nav hero-nav--prev" type="button" aria-label="Previous photo">‹</button>
+<button class="hero-nav hero-nav--next" type="button" aria-label="Next photo">›</button>
+<div class="xs-caption-bar">
+<span class="xs-caption" data-xs-caption>In-house chef</span>
+<div class="xs-dots" data-xs-dots></div>
+</div>
+</div>
+<h2 data-reveal style="--delay:60ms" id="extras-title" class="md:max-lg:col-start-1 text-headline-lg font-headline-lg text-white">Optional extras.</h2>
+<p data-reveal class="md:max-lg:col-start-1 font-body text-[1.1875rem] sm:text-[1.25rem] lg:text-[1.3125rem] xl:text-[1.375rem] leading-[1.6] mt-3" style="--delay:120ms; color: #F1F7FB;">If you need a hand with something extra, the host can help arrange it.</p>
+<p data-reveal class="max-lg:hidden mt-6 font-body text-[1.1875rem] sm:text-[1.25rem] lg:text-[1.3125rem] xl:text-[1.375rem] leading-[1.6] font-bold text-white" style="--delay:180ms">Plan your stay with the host.</p>
+<div data-reveal style="--delay:220ms" class="max-lg:hidden mt-3 flex flex-wrap items-center gap-x-6 gap-y-3">
+<a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#CFFF70] text-forest-deep font-label-lg text-label-lg font-semibold hover:brightness-105 transition-all active:scale-[0.98]" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-xl" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">chat</span>
+Send a message
+</a>
+</div>
+</div>
+<div class="lg:col-span-8 relative">
+<div class="extras-scroll" id="extras-scroll" tabindex="0" role="region" aria-label="Optional extras. This list scrolls.">
+<ul class="grid grid-cols-1 md:grid-cols-2 gap-5 list-none m-0 p-0">
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">In-house chef</h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">Meal preparation, with help on shopping and cooking.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF]">
+<span class="text-xs text-on-surface-variant block">Chef's fee</span>
+<span class="text-title-md font-title-md font-bold text-[#3D7046]">UGX 100,000 <span class="text-xs font-normal text-on-surface-variant">/ day</span></span>
+<span class="text-[11px] text-on-surface-variant block mt-0.5">The food budget is separate.</span>
+</div>
+</li>
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Barbecue</h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">Enjoy a barbecue at the house, with the grill and a chef to cook for you.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF]">
+<span class="text-xs text-on-surface-variant block">Grill and chef</span>
+<span class="text-title-md font-title-md font-bold text-[#3D7046]">UGX 50,000</span>
+<span class="text-[11px] text-on-surface-variant block mt-0.5">Food and fuel budget separate</span>
+</div>
+</li>
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Bluetooth speaker</h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">A speaker to bring music to your stay or gathering.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF]">
+<span class="text-xs text-on-surface-variant block">Speaker hire</span>
+<span class="text-title-md font-title-md font-bold text-[#3D7046]">UGX 30,000 <span class="text-xs font-normal text-on-surface-variant">per stay</span></span>
+<span class="text-[11px] text-on-surface-variant block mt-0.5">* Included in the gatherings package</span>
+</div>
+</li>
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Content capture</h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">Have moments from your stay or gathering captured as content.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF]">
+<span class="text-xs text-on-surface-variant block">Content capture</span>
+<span class="text-title-md font-title-md font-bold text-[#3D7046]">UGX 150,000</span>
+<span class="text-[11px] text-on-surface-variant block mt-0.5">Available for gatherings · Not included in gathering fee</span>
+</div>
+</li>
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Errands running</h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">The host may be able to help with errands, by arrangement.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF] flex items-center justify-between"><span class="text-label-badge font-label-badge text-on-surface-variant">RATE</span><span class="text-body-sm font-body-sm font-semibold text-[#3D7046]">Negotiable</span></div>
+</li>
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2"><span class="lg:hidden">Themed decor</span><span class="max-lg:hidden">Themed decorations</span></h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">Decorations to suit the theme of your event.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF] flex items-center justify-between"><span class="text-label-badge font-label-badge text-on-surface-variant">ARRANGED</span><span class="text-body-sm font-body-sm font-semibold text-[#3D7046]">Plan with host</span></div>
+</li>
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Creative sessions</h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">Creative activities, such as painting and bead-making.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF] flex items-center justify-between"><span class="text-label-badge font-label-badge text-on-surface-variant">ARRANGED</span><span class="text-body-sm font-body-sm font-semibold text-[#3D7046]">Plan with host</span></div>
+</li>
+<li class="tactile-card bg-[#E6F4FF] border-[3px] border-[#CFFF70] rounded-2xl p-7 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] mb-2">Nature walks</h3>
+<p class="text-body-md font-body-md text-[#2F363C] mb-4">Refreshing guided walks/runs in the green Naalya scenery.</p>
+</div>
+<div class="pt-4 border-t-2 border-[#8FD0FF] flex items-center justify-between"><span class="text-label-badge font-label-badge text-on-surface-variant">ARRANGED</span><span class="text-body-sm font-body-sm font-semibold text-[#3D7046]">Plan with host</span></div>
+</li>
+</ul>
+</div>
+<div class="lg:hidden mt-8">
+<p class="font-body text-[1.1875rem] sm:text-[1.25rem] leading-[1.6] font-bold text-white">Plan your stay with the host.</p>
+<div class="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3">
+<a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#CFFF70] text-forest-deep font-label-lg text-label-lg font-semibold hover:brightness-105 transition-all active:scale-[0.98]" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-xl" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">chat</span>
+Send a message
+</a>
+</div>
+</div>
+<div class="extras-fade" id="extras-fade" aria-hidden="true"></div>
+</div>
+</div>
+</div>
+</section>
 
-        <section id="whatsapp-band">
-            <div class="project-immersive-media__band">Learn more about immersive media on <a class="project-immersive-media__band-link" href="https://whatsapp.com/channel/0029VbBEmJ51CYoUdToApD1s">WhatsApp</a></div>
-        </section>
-    </main>
+<!-- 5. GATHERINGS & RECEPTIONS -->
+<section class="gatherings-panel py-24" id="gatherings" aria-labelledby="gatherings-title">
+<div class="max-w-7xl mx-auto px-6 md:px-14 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,47fr)_minmax(0,53fr)] gap-10 lg:gap-16 items-center max-w-[44rem] mx-auto lg:max-w-none">
+<div class="flex flex-col gap-6 lg:pr-2">
+<div data-reveal class="max-lg:hidden inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#F6B51E] border border-[#134A0E]/15 text-[#003E69]" style="box-shadow: 0 3px 8px -3px rgba(120, 70, 0, 0.4), 0 1px 3px rgba(120, 70, 0, 0.2);">
+<span class="material-symbols-outlined text-sm text-[#003E69]" aria-hidden="true">celebration</span>
+<span class="text-label-badge font-label-badge text-[#003E69]">SMALL EVENTS &amp; GATHERINGS</span>
+</div>
+<h2 data-reveal style="--delay:60ms" id="gatherings-title" class="heading-glow-soft text-display-hero-mobile lg:text-display-hero font-display-hero heading-azure lg:leading-[1.08] tracking-tight">A place to celebrate.</h2>
+<p data-reveal style="--delay:120ms" class="text-[1.25rem] lg:text-[1.4rem] leading-[1.5] font-body-lg font-bold text-on-surface-variant">
+Mark milestones together with friends and family at Daddy’s House.
+</p>
+<!-- Tablet (768 to 1023px): the booking card sits on the left and the overnight-stay note beside it on the right. Elsewhere this wrapper is transparent (display: contents), so the column stacks as before. -->
+<div class="contents md:max-lg:grid md:max-lg:grid-cols-[auto_minmax(0,1fr)] md:max-lg:gap-6 md:max-lg:items-center">
+<div data-reveal style="--delay:160ms" class="tactile-card bg-transparent border-4 border-[#279B48] rounded-2xl p-4 max-w-[26rem] grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-5 gap-y-4">
+<div>
+<span class="text-label-badge font-label-badge text-on-surface-variant block mb-1">BOOKING RATE</span>
+<span class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] block">UGX 300,000</span>
+</div>
+<div class="border-t-2 sm:border-t-0 sm:border-l-2 border-[#B3E0FF] pt-4 sm:pt-0 sm:pl-5">
+<span class="text-label-badge font-label-badge text-on-surface-variant block mb-1">GATHERING CAPACITY</span>
+<span class="font-headline-md text-[1.6rem] leading-tight font-semibold text-[#005490] block">~25 <span class="text-body-sm font-body-sm font-normal text-[#2F363C]">people</span></span>
+</div>
+</div>
+<p data-reveal style="--delay:200ms" class="text-sm text-on-surface-variant">An overnight stay for the booking host is included. <a class="underline font-medium text-[#005490] hover:text-forest-deep" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">Plan with the host</a> in advance.</p>
+</div>
+<div data-reveal style="--delay:280ms" class="flex flex-wrap items-center md:max-lg:justify-center gap-3 pt-2">
+<a class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-[#365F40] hover:bg-[#2B4D34] text-white font-label-lg text-label-lg transition-all shadow-md active:scale-[0.98]" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined" aria-hidden="true" style="font-variation-settings: 'FILL' 1;">chat</span>
+Talk to Host
+</a>
+</div>
+</div>
+<div class="order-first lg:order-none relative" data-reveal style="--delay:120ms">
+<div class="lg:hidden inline-flex items-center gap-2 px-3.5 py-1.5 mb-5 rounded-full bg-[#F6B51E] border border-[#134A0E]/15 text-[#003E69]" style="box-shadow: 0 3px 8px -3px rgba(120, 70, 0, 0.4), 0 1px 3px rgba(120, 70, 0, 0.2);">
+<span class="material-symbols-outlined text-sm text-[#003E69]" aria-hidden="true">celebration</span>
+<span class="text-label-badge font-label-badge text-[#003E69]">SMALL EVENTS &amp; GATHERINGS</span>
+</div>
+<div class="outline-frame outline-frame--hero">
+<div class="relative overflow-hidden rounded-2xl lg:rounded-3xl shadow-2xl border border-[#9AD5FF] w-full aspect-[3/2] lg:aspect-[16/10] bg-pale-olive-mid">
+<img alt="Three people on garden benches, seen from behind, raising their arms together in the compound" class="w-full h-full object-cover" src="demos/daddys-airbnb/images/IMG_9454-web.jpg" width="1400" height="1050" loading="lazy" decoding="async"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-    <footer class="site-footer">
-        <div class="container site-footer__inner">
-            <div><a class="logo" href="index.html" aria-label="Ugaverse home">ugaverse</a><p>Building digital homes for intentional brands</p></div>
-            <div class="site-footer__links"><a href="index.html#featured">About</a><a href="index.html#airbnb">Explore</a><a href="index.html#cta">Get Online</a></div>
-            <p class="site-footer__legal">© <span data-current-year>2026</span> Ugaverse. All rights reserved.</p>
-        </div>
-    </footer>
+<!-- 6. CREATORS & MEDIA -->
+<section class="story-section pt-20 border-y" id="creators" aria-labelledby="creators-title">
+<div class="max-w-6xl mx-auto px-6 min-[480px]:px-10 md:px-14 pb-20 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-12 lg:gap-x-14 xl:gap-x-20 items-center max-w-[34rem] md:max-w-[44rem] mx-auto lg:max-w-none">
+<div class="relative w-full max-w-[34rem] mx-auto md:max-lg:mx-0 md:max-lg:max-w-none lg:max-w-none" data-reveal>
+<div class="lg:hidden inline-flex items-center gap-2 px-3.5 py-1.5 mb-5 rounded-full bg-[#365F40] border border-[#365F40] text-white">
+<span class="material-symbols-outlined text-sm text-white" aria-hidden="true">mic</span>
+<span class="text-label-badge font-label-badge text-white">CREATORS &amp; MEDIA</span>
+</div>
+<div class="outline-frame outline-frame--arch-wide">
+<div class="arch-mask-wide overflow-hidden shadow-xl border-4 border-[#2F78BE] bg-pale-olive-mid">
+<div class="relative w-full aspect-[16/10]">
+<img class="absolute inset-0 w-full h-full object-cover" src="demos/daddys-airbnb/images/IMG_9428-web.jpg" alt="Three men talking on garden benches while a phone on a tripod films the conversation" width="1400" height="1050" loading="lazy" decoding="async" style="object-position: 50% 0%; transform: scale(1.2); transform-origin: 65% 42%;"/>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-4 -right-4 bg-[#FFC832] text-[#003E69] px-5 py-3 rounded-xl shadow-lg border border-[#134A0E]/15" data-creators-labels role="status" aria-live="off">
+<div class="grid">
+<span class="story-label is-active text-base font-bold tracking-wider text-[#003E69]" data-creators-label>PODCASTS</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-creators-label aria-hidden="true">VIDEOS</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-creators-label aria-hidden="true">PHOTOGRAPHY</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-creators-label aria-hidden="true">INTERVIEWS</span>
+<span class="story-label text-base font-bold tracking-wider text-[#003E69]" data-creators-label aria-hidden="true">SHORT FILMS</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<div data-reveal class="max-lg:hidden inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-[#365F40] border border-[#365F40] text-white">
+<span class="material-symbols-outlined text-sm text-white" aria-hidden="true">mic</span>
+<span class="text-label-badge font-label-badge text-white">CREATORS &amp; MEDIA</span>
+</div>
+<h2 data-reveal style="--delay:60ms" id="creators-title" class="font-headline-lg font-semibold text-[#005490] [font-size:clamp(2.25rem,4.6vw,3.5rem)] leading-[1.08] tracking-tight text-balance">
+Bring ideas <br class="hidden lg:block">to reality.
+</h2>
+<p data-reveal style="--delay:120ms" class="text-[1.25rem] lg:text-[1.4rem] leading-[1.5] font-body-lg font-bold text-on-surface-variant max-w-[36rem] text-pretty">
+Use our space for <span class="rounded-sm px-0.5" style="background: linear-gradient(transparent 58%, #9AD5FF 58%, #9AD5FF 92%, transparent 92%);">your next</span> <br class="hidden lg:block"><span class="rounded-sm px-0.5" style="background: linear-gradient(transparent 58%, #9AD5FF 58%, #9AD5FF 92%, transparent 92%);">creative project</span>.
+</p>
+<ul data-reveal style="--delay:150ms" class="space-y-3 text-body-sm font-body-sm text-on-surface max-w-[36rem]">
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[#365F40] text-lg" aria-hidden="true">check_circle</span>Separate from overnight stays</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[#365F40] text-lg" aria-hidden="true">check_circle</span>Recording gear, crew and editing not included</li>
+</ul>
+<div data-reveal style="--delay:200ms" class="flex justify-center sm:justify-end md:justify-center lg:justify-end max-w-[36rem] md:max-lg:max-w-none pt-2">
+<a class="group inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg bg-[#365F40] hover:bg-[#2B4D34] text-white font-label-lg text-[15px] font-semibold tracking-wide shadow-md transition-all active:scale-[0.98]" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-lg" aria-hidden="true">videocam</span>
+Book the space
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-    <script>
-        async function sharePage() {
-            const data = { title: "Daddy's AirBnB", text: "Explore Daddy's AirBnB on Ugaverse.", url: window.location.href };
-            if (navigator.share) {
-                try { await navigator.share(data); return; } catch (error) { if (error.name === 'AbortError') return; }
-            }
-            try {
-                await navigator.clipboard?.writeText(window.location.href);
-                const status = document.getElementById('share-status');
-                if (status) status.textContent = 'Project link copied to clipboard.';
-            } catch (error) { console.error('Unable to share this project:', error); }
-        }
-        document.getElementById('share-location-btn')?.addEventListener('click', sharePage);
+<!-- 7. MOVIE NIGHTS -->
+<section class="film-section py-24 text-on-primary on-dark" id="movie-nights" aria-labelledby="movie-title" style="background-color: #1E3545;">
+<div class="film-stars" aria-hidden="true">
+<i class="fs fs-d is-sparkle" style="left:15.2%;top:83.8%;--s:9.4px;--d:5.1s;--w:-1.7s;--o:0.81"></i>
+<i class="fs fs-d" style="left:20.4%;top:61.0%;--s:3.6px;--d:5.6s;--w:-3.3s;--o:0.76"></i>
+<i class="fs fs-d" style="left:12.8%;top:49.1%;--s:2.8px;--d:4.5s;--w:-2.9s;--o:0.60"></i>
+<i class="fs fs-d" style="left:4.0%;top:21.0%;--s:5.4px;--d:4.9s;--w:-7.3s;--o:0.90"></i>
+<i class="fs fs-d" style="left:5.6%;top:60.8%;--s:5.1px;--d:7.2s;--w:-2.4s;--o:0.55"></i>
+<i class="fs fs-d is-sparkle" style="left:7.0%;top:80.9%;--s:9.9px;--d:5.3s;--w:-3.3s;--o:0.92"></i>
+<i class="fs fs-d" style="left:11.3%;top:47.5%;--s:4.4px;--d:7.3s;--w:-7.9s;--o:0.81"></i>
+<i class="fs fs-d is-gold" style="left:14.6%;top:75.0%;--s:3.7px;--d:7.7s;--w:-2.7s;--o:0.93"></i>
+<i class="fs fs-d" style="left:2.5%;top:17.7%;--s:3.5px;--d:7.2s;--w:-2.6s;--o:0.78"></i>
+<i class="fs fs-d" style="left:81.1%;top:25.9%;--s:4.7px;--d:5.8s;--w:-1.4s;--o:0.74"></i>
+<i class="fs fs-d" style="left:84.9%;top:68.8%;--s:2.4px;--d:6.5s;--w:-4.2s;--o:0.82"></i>
+<i class="fs fs-d" style="left:80.0%;top:84.4%;--s:4.3px;--d:4.5s;--w:-1.0s;--o:0.65"></i>
+<i class="fs fs-d is-gold" style="left:88.8%;top:80.2%;--s:5.2px;--d:4.6s;--w:-6.5s;--o:0.84"></i>
+<i class="fs fs-d is-gold" style="left:80.6%;top:79.1%;--s:3.1px;--d:3.7s;--w:-5.5s;--o:0.78"></i>
+<i class="fs fs-d" style="left:80.0%;top:15.3%;--s:3.9px;--d:4.7s;--w:-0.0s;--o:0.60"></i>
+<i class="fs fs-d is-sparkle" style="left:84.6%;top:62.2%;--s:8.4px;--d:6.1s;--w:-2.2s;--o:0.77"></i>
+<i class="fs fs-d" style="left:86.1%;top:52.8%;--s:2.3px;--d:3.5s;--w:-3.8s;--o:0.81"></i>
+<i class="fs fs-d" style="left:83.8%;top:58.8%;--s:2.5px;--d:4.8s;--w:-0.1s;--o:0.75"></i>
+<i class="fs fs-d" style="left:25.7%;top:8.9%;--s:4.7px;--d:5.6s;--w:-3.9s;--o:0.71"></i>
+<i class="fs fs-d" style="left:53.4%;top:8.8%;--s:2.5px;--d:5.2s;--w:-1.5s;--o:0.89"></i>
+<i class="fs fs-d" style="left:72.9%;top:91.1%;--s:4.6px;--d:5.7s;--w:-6.3s;--o:0.73"></i>
+<i class="fs fs-d is-sparkle" style="left:30.2%;top:91.0%;--s:9.3px;--d:5.4s;--w:-1.3s;--o:0.87"></i>
+<i class="fs" style="left:1.5%;top:14.0%;--s:2.9px;--d:6.1s;--w:-0.7s;--o:0.84"></i>
+<i class="fs" style="left:3.8%;top:31.0%;--s:4.9px;--d:5.1s;--w:-5.1s;--o:0.94"></i>
+<i class="fs is-gold" style="left:2.0%;top:55.0%;--s:2.9px;--d:5.2s;--w:-6.4s;--o:0.64"></i>
+<i class="fs" style="left:4.0%;top:78.0%;--s:2.8px;--d:4.0s;--w:-5.2s;--o:0.76"></i>
+<i class="fs is-sparkle" style="left:97.0%;top:20.0%;--s:7.1px;--d:5.5s;--w:-1.2s;--o:0.77"></i>
+<i class="fs is-sparkle" style="left:95.5%;top:42.0%;--s:7.2px;--d:4.8s;--w:-4.5s;--o:0.83"></i>
+<i class="fs is-gold" style="left:98.0%;top:66.0%;--s:3.1px;--d:4.7s;--w:-3.0s;--o:0.69"></i>
+<i class="fs is-sparkle" style="left:96.0%;top:86.0%;--s:8.4px;--d:5.6s;--w:-0.1s;--o:0.85"></i>
+</div>
+<div class="relative z-10 max-w-5xl mx-auto px-6 md:px-10 lg:px-12 text-center space-y-6">
+<div data-reveal class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2F4D62] text-[#A8D1E7] font-label-badge text-label-badge mx-auto">
+<span class="material-symbols-outlined text-sm" aria-hidden="true">local_movies</span>
+SPECIAL EVENINGS
+</div>
+<h2 data-reveal style="--delay:60ms" id="movie-title" class="text-headline-lg font-headline-lg">Silent Movie <br class="min-[480px]:hidden">Nights under <br class="min-[480px]:hidden">the&nbsp;stars.</h2>
+<p data-reveal style="--delay:120ms" class="text-body-lg font-body-lg text-[#D3E4F0] max-w-2xl mx-auto">
+Settle in under the night sky with silent-disco headsets, a pallet for two, cosy blankets, tea and all the popcorn you can enjoy.
+</p>
+<p data-reveal style="--delay:150ms" class="text-sm text-[#A8D1E7] max-w-2xl mx-auto">Come as two; couples and friends are welcome.</p>
+<div data-reveal style="--delay:180ms" class="inline-block p-6 rounded-2xl bg-[#2F4D62]/70 border border-white/10 max-w-xl mx-auto text-center">
+<span class="material-symbols-outlined text-sun-ochre text-3xl mb-2" aria-hidden="true">campaign</span>
+<p class="text-title-md font-title-md font-semibold text-on-primary mb-1">Upcoming Movie Sessions</p>
+<p class="text-body-sm font-body-sm text-[#D3E4F0]">Our first Silent Movie Night took place on 4 October, and more sessions are ahead.</p>
+<div class="mt-4">
+<a class="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-[#C4F07B] text-[#134A0E] text-xs font-semibold hover:brightness-105 transition-all" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+Ask about upcoming sessions
+</a>
+</div>
+</div>
+</div>
+</section>
 
-        // Player fullscreen: the player asks (postMessage), this page restyles the same iframe, so it never reloads.
-        (function () {
-            const block = document.querySelector('.project-experience-block');
-            const frame = block && block.querySelector('iframe');
-            if (!frame) return;
-            const root = document.documentElement;
-            const origin = window.location.origin === 'null' ? '*' : window.location.origin;
-            let open = false;
+<!-- 8. RATES & BOOKING -->
+<section class="rates-panel border-t border-pale-olive-border" id="rates" aria-labelledby="rates-title">
+<div class="py-24 px-6 md:px-10 lg:px-12 max-w-7xl mx-auto">
+<div class="text-center max-w-3xl mx-auto mb-16" data-reveal>
+<span class="text-label-badge font-label-badge text-pale-olive-text tracking-wider block mb-2">RATES &amp; BOOKING</span>
+<h2 id="rates-title" class="text-headline-lg font-headline-lg text-forest-fresh">Rates at a glance.</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant mt-2">Clear rates, confirmed directly with the host on WhatsApp.</p>
+</div>
+<!-- Rate cards are capped at 24rem wide (about a large phone's width) so they keep their proportions as the screen grows. The booking box now lives in the grid so it can sit beside the third card on tablets. -->
+<div class="grid grid-cols-1 md:grid-cols-2 min-[1100px]:grid-cols-3 gap-8 max-w-[24rem] mx-auto md:max-w-[50rem] min-[1100px]:max-w-none">
+<div data-reveal class="tactile-card rounded-3xl p-6 flex flex-col justify-between rates-card-pale border-4 border-[#2F78BE]">
+<div>
+<span class="text-label-badge font-label-badge text-[#003E69] uppercase block mb-1">Accommodation</span>
+<h3 class="font-body text-[22px] leading-[30px] font-bold text-[#003E69]">Overnight Stay</h3>
+<div class="my-3">
+<span class="text-headline-md font-headline-md font-bold text-[#003E69]">UGX 150,000</span>
+<span class="text-body-sm font-body-sm text-[#2F363C] ml-1">per night</span>
+</div>
+<ul class="space-y-2 text-body-sm font-body-sm text-[#2F363C] mb-5">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[#6B4410] text-base" aria-hidden="true">check</span>Two bedrooms, one bathroom</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[#6B4410] text-base" aria-hidden="true">check</span>Kitchen</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[#6B4410] text-base" aria-hidden="true">check</span>Games and gym equipment</li>
+</ul>
+</div>
+<a class="w-full text-center py-3 rounded-lg bg-[#005490] hover:bg-[#003E69] text-white font-label-lg text-label-lg transition-all shadow-md" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">Ask about availability</a>
+</div>
+<div data-reveal style="--delay:100ms" class="tactile-card rounded-3xl p-6 flex flex-col justify-between rates-card-pale border-4 border-[#2F78BE]">
+<div>
+<span class="text-label-badge font-label-badge text-[#003E69] uppercase block mb-1">Small events</span>
+<h3 class="font-body text-[22px] leading-[30px] font-bold text-[#003E69]">Parties/Gatherings</h3>
+<div class="my-3">
+<span class="text-headline-md font-headline-md font-bold text-[#003E69]">UGX 300,000</span>
+<span class="text-body-sm font-body-sm text-[#2F363C] ml-1 max-[399px]:block max-[399px]:ml-0">per booking</span>
+</div>
+<ul class="space-y-2 text-body-sm font-body-sm text-[#2F363C] mb-5">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[#6B4410] text-base" aria-hidden="true">check</span>~25 people</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[#6B4410] text-base" aria-hidden="true">check</span>Includes an overnight stay</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-[#6B4410] text-base" aria-hidden="true">check</span>Arranged in advance with the host</li>
+<li class="flex items-center gap-2 font-medium text-[#003E69]"><span class="material-symbols-outlined text-[#003E69] text-base" aria-hidden="true">info</span>Gathering capacity ≠ sleeping capacity</li>
+</ul>
+</div>
+<a class="w-full text-center py-3 rounded-lg bg-[#005490] hover:bg-[#003E69] text-white font-label-lg text-label-lg transition-all shadow-md" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">Ask about a gathering</a>
+</div>
+<div data-reveal style="--delay:200ms" class="tactile-card rounded-3xl p-6 flex flex-col justify-between rates-card-pale border-4 border-[#279B48]">
+<div>
+<span class="text-label-badge font-label-badge text-[#003E69] uppercase block mb-1">Extras</span>
+<h3 class="font-body text-[22px] leading-[30px] font-bold text-[#2A4B33]">Optional add-ons</h3>
+<ul class="list-none m-0 p-0 mt-4 mb-4">
+<li class="flex flex-wrap items-baseline justify-between gap-x-3 py-3 first:pt-0">
+<span class="font-title-md text-base font-bold text-[#003E69]">In-house Chef</span>
+<span class="font-headline-sm text-base font-bold text-[#003E69] whitespace-nowrap">UGX 100,000</span>
+</li>
+<li class="border-t border-[#2F78BE]/25 flex flex-wrap items-baseline justify-between gap-x-3 py-3 first:pt-0">
+<span class="font-title-md text-base font-bold text-[#003E69]"><span class="min-[400px]:max-md:hidden min-[1100px]:hidden">Barbecue Grill</span><span class="max-[399px]:hidden md:max-[1099px]:hidden">Barbecue Grill &amp; Chef</span></span>
+<span class="font-headline-sm text-base font-bold text-[#003E69] whitespace-nowrap">UGX 50,000</span>
+</li>
+<li class="border-t border-[#2F78BE]/25 flex flex-wrap items-baseline justify-between gap-x-3 py-3 first:pt-0">
+<span class="font-title-md text-base font-bold text-[#003E69]">Bluetooth Speaker</span>
+<span class="font-headline-sm text-base font-bold text-[#003E69] whitespace-nowrap">UGX 30,000</span>
+</li>
+<li class="border-t border-[#2F78BE]/25 flex flex-wrap items-baseline justify-between gap-x-3 py-3 first:pt-0">
+<span class="font-title-md text-base font-bold text-[#003E69]">Content Capture</span>
+<span class="font-headline-sm text-base font-bold text-[#003E69] whitespace-nowrap">UGX 150,000</span>
+</li>
+</ul>
+</div>
+<a class="w-full text-center py-3 rounded-lg bg-[#365F40] hover:bg-[#2B4D34] text-white font-label-lg text-label-lg shadow-md transition-all active:scale-[0.98]" href="#extras">See details</a>
+</div>
 
-            function setFullscreen(next) {
-                if (next === open) return;
-                open = next;
-                block.classList.toggle('is-fullscreen', open);
-                root.classList.toggle('is-player-fullscreen', open);
-                if (open) {
-                    block.setAttribute('role', 'dialog');
-                    block.setAttribute('aria-modal', 'true');
-                    block.setAttribute('aria-label', "Daddy's AirBnB 360 tour");
-                } else {
-                    block.removeAttribute('role');
-                    block.removeAttribute('aria-modal');
-                    block.removeAttribute('aria-label');
-                    frame.focus();
-                }
-                frame.contentWindow.postMessage({ ugaversePlayer: 'fullscreen-state', fullscreen: open }, origin);
-            }
+<div data-reveal class="mt-8 md:max-[1099px]:mt-0 min-[1100px]:col-span-3 tactile-card bg-[#E6F4FF] border-[3px] border-[#8FD0FF] rounded-2xl p-5 lg:p-6 flex flex-col min-[1100px]:flex-row min-[1100px]:items-center justify-between gap-5 lg:gap-8">
+<div class="min-[1100px]:flex-1">
+<h3 class="text-label-badge font-label-badge text-secondary block mb-3">HOW BOOKING WORKS</h3>
+<ol class="grid grid-cols-1 min-[1100px]:grid-cols-3 gap-4 lg:gap-6 list-none m-0 p-0">
+<li class="flex items-start gap-3">
+<span class="shrink-0 w-8 h-8 rounded-full bg-[#005490] text-white font-bold flex items-center justify-center text-sm" aria-hidden="true">1</span>
+<div>
+<h4 class="text-body-md font-body-md font-semibold text-[#365F40]">Message the host</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Tell them when you'd like to stay.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="shrink-0 w-8 h-8 rounded-full bg-[#005490] text-white font-bold flex items-center justify-center text-sm" aria-hidden="true">2</span>
+<div>
+<h4 class="text-body-md font-body-md font-semibold text-[#365F40]">Confirm your plans</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Agree dates, gatherings and extras.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="shrink-0 w-8 h-8 rounded-full bg-[#005490] text-white font-bold flex items-center justify-center text-sm" aria-hidden="true">3</span>
+<div>
+<h4 class="text-body-md font-body-md font-semibold text-[#365F40]">Pay before you enter</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Check-in is noon.<br class="min-[400px]:max-md:hidden min-[1100px]:hidden"> Check-out is 10 a.m.</p>
+</div>
+</li>
+</ol>
+</div>
+<a class="px-5 py-2.5 rounded-lg bg-[#005490] hover:bg-[#003E69] text-white text-center font-label-lg text-label-lg transition-all shadow-sm min-[1100px]:shrink-0" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank">
+Start your booking
+</a>
+</div>
+</div>
+</div>
+</section>
 
-            window.addEventListener('message', event => {
-                if (event.source !== frame.contentWindow || event.origin !== window.location.origin) return;
-                const type = event.data && event.data.ugaversePlayer;
-                if (type === 'fullscreen-toggle') setFullscreen(!open);
-                else if (type === 'fullscreen-exit') setFullscreen(false);
-            });
-            block.querySelector('.player-fullscreen__close').addEventListener('click', () => setFullscreen(false));
-            block.querySelector('.player-fullscreen__backdrop').addEventListener('click', () => setFullscreen(false));
-            document.addEventListener('keydown', event => { if (open && event.key === 'Escape') setFullscreen(false); });
-            // keep keyboard focus out of the dimmed page: anything outside the player goes back to the exit button
-            document.addEventListener('focusin', event => {
-                if (open && !block.contains(event.target)) block.querySelector('.player-fullscreen__close').focus();
-            });
-        })();
+<!-- 9. LOCATION -->
+<section class="location-panel pt-20 border-t border-pale-olive-border" id="location" aria-labelledby="location-title">
+<div class="max-w-7xl mx-auto px-6 md:px-14 pb-20 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center max-w-[44rem] mx-auto lg:max-w-none">
+<!-- Below 1024px this column's children join the grid directly so they can be ordered around the map: heading, directions, map, buttons. -->
+<div class="lg:col-span-5 space-y-6 max-lg:contents max-lg:space-y-0">
+<h2 data-reveal style="--delay:60ms" id="location-title" class="max-lg:order-1 text-headline-lg font-headline-lg heading-azure">Find us in Naalya, Kampala.</h2>
+<div data-reveal style="--delay:160ms" class="max-lg:order-2 space-y-4">
+<div class="p-6 lg:p-8 rounded-2xl bg-transparent border-[6px] border-[#279B48]">
+<div class="flex items-center gap-4 mb-4">
+<span class="shrink-0 w-14 h-14 rounded-full bg-[#005490] text-white flex items-center justify-center"><span class="material-symbols-outlined text-[2rem]" aria-hidden="true">route</span></span>
+<h3 class="font-body text-[1.625rem] leading-[1.2] font-bold text-[#134A0E]">Directions</h3>
+</div>
+<p class="font-body text-[1.1875rem] leading-[1.65] font-bold text-[#2F363C]">Opposite Vienna College, turn off Namugongo Road onto Kimbejja Road and continue for about 300m. Take the second left turn - at the boda stage - then go straight down the hill to the last house with a pink tyre on the fence. Follow the fence down to the gate.</p>
+</div>
+</div>
+<div data-reveal style="--delay:200ms" class="max-lg:order-4 pt-2 max-lg:pt-0 flex flex-wrap items-center md:max-lg:justify-center gap-x-6 gap-y-3">
+<a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#365F40] hover:bg-[#2B4D34] text-white font-label-lg text-label-lg shadow-md transition-all active:scale-[0.98]" href="https://www.google.com/maps/search/?api=1&amp;query=0.3752697,32.6368035" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined" aria-hidden="true">map</span>
+Open in Google Maps
+</a>
+<button class="inline-flex items-center gap-2 py-2.5 text-[#134A0E] font-label-lg text-label-lg underline decoration-[#F6B51E] decoration-2 underline-offset-4 hover:text-[#215717]" type="button" id="share-page">
+<span class="material-symbols-outlined" aria-hidden="true">share</span>
+Share this page
+</button>
+</div>
+<p class="max-lg:order-5 max-lg:empty:hidden text-sm text-[#2F363C]" id="share-status" role="status" aria-live="polite"></p>
+</div>
+<div class="max-lg:order-3 lg:col-span-7" data-reveal style="--delay:120ms">
+<div class="outline-frame" style="--frame-radius: 1.5rem; --outline-color: #134A0E;">
+<div class="rounded-3xl overflow-hidden shadow-xl bg-[#F6B51E] p-4" style="border: 2px solid #99C2DE;">
+<div class="relative rounded-2xl overflow-hidden aspect-[16/10] bg-pale-olive-mid">
+<iframe title="Map showing the location of Daddy's House in Naalya, Kampala" class="absolute inset-0 w-full h-full border-0" src="https://www.google.com/maps/embed?origin=mfe&amp;pb=!1m3!2m1!1s0.3752697,32.6368035!6i17" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
 
-        const header = document.querySelector('.site-header');
-        const sections = [
-            ['experience', 'site-header--experience'],
-            ['activities', 'site-header--daddys-transition'],
-            ['location', 'site-header--map'],
-            ['cta', 'site-header--immersive-media']
-        ];
-        sections.forEach(([id, className]) => {
-            const section = document.getElementById(id);
-            if (!section) return;
-            const observer = new IntersectionObserver(entries => entries.forEach(entry => header.classList.toggle(className, entry.isIntersecting)), { rootMargin: '-74px 0px -70% 0px', threshold: 0 });
-            observer.observe(section);
+<!-- FOOTER -->
+<footer class="w-full bg-forest-deep text-on-primary pb-24 md:pb-0">
+<div class="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 py-16 flex flex-col gap-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+<div class="lg:col-span-4 space-y-4">
+<img src="demos/daddys-airbnb/graphics/daddys-house-logo.svg" alt="Daddy's House" width="2000" height="938" class="h-20 w-auto -ml-3" loading="lazy"/>
+<p class="text-body-md font-body-md text-on-primary/80 max-w-xs">A home for short stays and good times. Naalya, Kampala.</p>
+</div>
+<div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-8">
+<nav aria-label="Explore this page">
+<h2 class="text-label-badge font-label-badge text-primary-fixed uppercase block mb-3">EXPLORE THIS PAGE</h2>
+<ul class="space-y-2 text-body-sm font-body-sm">
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#the-story">Story</a></li>
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#tour" data-tour-trigger>360° tour</a></li>
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#the-house">Accommodation</a></li>
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#extras">Customize your experience</a></li>
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#gatherings">Gatherings</a></li>
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#movie-nights">Movie Nights</a></li>
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#rates">Packages and booking</a></li>
+<li><a class="inline-block py-3 lg:py-0 text-on-primary/70 hover:text-on-primary hover:underline transition-all" href="#location">Location</a></li>
+</ul>
+</nav>
+<div>
+<h2 class="text-label-badge font-label-badge text-primary-fixed uppercase block mb-3">CONTACT</h2>
+<ul class="space-y-3 text-body-sm font-body-sm">
+<li><a class="inline-flex py-2.5 items-center gap-2 text-primary-fixed font-semibold hover:underline" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-base" aria-hidden="true">chat</span>Message the host on WhatsApp</a></li>
+<li class="text-on-primary/80">Naalya, Kampala. Opposite Vienna College, Namugongo Road.</li>
+<li class="text-on-primary/70">Check-in from noon.<br/>Check-out 10 a.m.</li>
+</ul>
+</div>
+<div>
+<h2 class="text-label-badge font-label-badge text-primary-fixed uppercase block mb-3">USEFUL LINKS</h2>
+<ul class="space-y-3 text-body-sm font-body-sm" id="useful-links">
+<!-- When a real destination exists, replace the <span> with <a href="..."> and delete the "Coming soon" tag. -->
+<li><span class="text-on-primary/70" aria-disabled="true">House Rules</span> <span class="ml-1 px-2 py-0.5 rounded-full bg-forest-accent text-[11px] text-primary-fixed">Coming soon</span></li>
+<li><span class="text-on-primary/70" aria-disabled="true">Link-tree</span> <span class="ml-1 px-2 py-0.5 rounded-full bg-forest-accent text-[11px] text-primary-fixed">Coming soon</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-body-sm font-body-sm text-on-primary/60">
+<p>© <span data-current-year>2026</span> Daddy's House, Naalya.</p>
+<p>Crafted by <a class="underline hover:text-on-primary" href="index.html" aria-label="Ugaverse home">Ugaverse</a></p>
+</div>
+</div>
+</footer>
+
+<!-- MOBILE STICKY WHATSAPP BUTTON -->
+<aside aria-label="Quick booking" class="fixed bottom-6 right-6 z-40 md:hidden">
+<a class="flex items-center justify-center w-14 h-14 rounded-full bg-whatsapp-green text-white shadow-2xl border-2 border-white active:scale-95 transition-transform" href="https://wa.me/message/WUY56WGM3X6CG1" rel="noopener noreferrer" target="_blank" aria-label="Message the host on WhatsApp">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+</aside>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // ---- Footer year ----
+  document.querySelectorAll("[data-current-year]").forEach(function (el) { el.textContent = String(new Date().getFullYear()); });
+
+  // ---- Hero slideshow: the same behaviour as the original page (js/site.js, initHeroSlideshows) ----
+  // Eight slides stacked in one frame; one is visible at a time and the next fades in over 600ms (CSS).
+  // It advances by itself every 5 seconds, wraps around, and the prev/next arrows and touch swipes move it too;
+  // any manual move restarts the 5 second timer. With reduced motion there is no automatic rotation.
+  (function () {
+    var show = document.querySelector("[data-hero-slideshow]");
+    var slides = show ? Array.prototype.slice.call(show.querySelectorAll(".hero-slide")) : [];
+    if (slides.length < 2) return;
+    var index = 0, timer;
+    function showSlide(i) {
+      index = ((i % slides.length) + slides.length) % slides.length;
+      slides.forEach(function (slide, n) {
+        var active = n === index;
+        slide.classList.toggle("is-active", active);
+        if (active) slide.removeAttribute("aria-hidden"); else slide.setAttribute("aria-hidden", "true");
+      });
+      slides[(index + 1) % slides.length].loading = "eager";
+      slides[(index - 1 + slides.length) % slides.length].loading = "eager";
+    }
+    function restartTimer() {
+      clearInterval(timer);
+      if (reducedMotion.matches) return;
+      timer = setInterval(function () { showSlide(index + 1); }, 5000);
+    }
+    function goTo(i) { showSlide(i); restartTimer(); }
+    show.querySelector(".hero-nav--prev").addEventListener("click", function () { goTo(index - 1); });
+    show.querySelector(".hero-nav--next").addEventListener("click", function () { goTo(index + 1); });
+    var startX = 0, startY = 0, pointerId = null;
+    show.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse") return;
+      pointerId = e.pointerId; startX = e.clientX; startY = e.clientY;
+    });
+    show.addEventListener("pointerup", function (e) {
+      if (e.pointerId !== pointerId) return;
+      pointerId = null;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) goTo(index + (dx < 0 ? 1 : -1));
+    });
+    show.addEventListener("pointercancel", function () { pointerId = null; });
+    showSlide(0);
+    restartTimer();
+  })();
+
+  // ---- Extras slideshow: same behaviour as the hero (crossfade, arrows, swipe, wraps around), plus dots and a caption naming the extra ----
+  // It advances every 5.5 seconds, pauses while the pointer or keyboard focus is on it, and does not move by itself with reduced motion.
+  (function () {
+    var show = document.querySelector("[data-extras-slideshow]");
+    var slides = show ? Array.prototype.slice.call(show.querySelectorAll(".hero-slide")) : [];
+    if (slides.length < 2) return;
+    var caption = show.querySelector("[data-xs-caption]");
+    var dotsBox = show.querySelector("[data-xs-dots]");
+    var index = 0, timer, held = false;
+    var dots = slides.map(function (slide, n) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "xs-dot";
+      b.setAttribute("aria-label", "Show photo " + (n + 1) + " of " + slides.length);
+      b.addEventListener("click", function () { goTo(n); });
+      dotsBox.appendChild(b);
+      return b;
+    });
+    function showSlide(i) {
+      index = ((i % slides.length) + slides.length) % slides.length;
+      slides.forEach(function (slide, n) {
+        var active = n === index;
+        slide.classList.toggle("is-active", active);
+        if (active) slide.removeAttribute("aria-hidden"); else slide.setAttribute("aria-hidden", "true");
+        if (active) dots[n].setAttribute("aria-current", "true"); else dots[n].removeAttribute("aria-current");
+      });
+      caption.textContent = slides[index].getAttribute("data-label");
+      slides[(index + 1) % slides.length].loading = "eager";
+      slides[(index - 1 + slides.length) % slides.length].loading = "eager";
+    }
+    function restartTimer() {
+      clearInterval(timer);
+      if (reducedMotion.matches) return;
+      timer = setInterval(function () { if (!held) showSlide(index + 1); }, 5500);
+    }
+    function goTo(i) { showSlide(i); restartTimer(); }
+    show.querySelector(".hero-nav--prev").addEventListener("click", function () { goTo(index - 1); });
+    show.querySelector(".hero-nav--next").addEventListener("click", function () { goTo(index + 1); });
+    show.addEventListener("mouseenter", function () { held = true; });
+    show.addEventListener("mouseleave", function () { held = false; });
+    show.addEventListener("focusin", function () { held = true; });
+    show.addEventListener("focusout", function () { held = false; });
+    var startX = 0, startY = 0, pointerId = null;
+    show.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse") return;
+      pointerId = e.pointerId; startX = e.clientX; startY = e.clientY;
+    });
+    show.addEventListener("pointerup", function (e) {
+      if (e.pointerId !== pointerId) return;
+      pointerId = null;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) goTo(index + (dx < 0 ? 1 : -1));
+    });
+    show.addEventListener("pointercancel", function () { pointerId = null; });
+    showSlide(0);
+    restartTimer();
+  })();
+
+  // ---- Story slideshow: four portrait photographs in the arch frame, crossfading every 6.5 seconds ----
+  // Separate from the hero slideshow (its own container, buttons and class names). The category label in the card is one of four
+  // stacked labels that crossfade with the same 1.2s timing as the photographs, so the words always match the picture shown.
+  // The arrows and touch swipes move it and restart the timer. Rotation pauses while the frame is off screen or the tab is hidden,
+  // and with reduced motion the first photograph stays unless a visitor uses the arrows.
+  (function () {
+    var show = document.querySelector("[data-story-slideshow]");
+    var slides = show ? Array.prototype.slice.call(show.querySelectorAll(".story-slide")) : [];
+    var labels = Array.prototype.slice.call(document.querySelectorAll("[data-story-label]"));
+    if (slides.length < 2) return;
+    var index = 0, timer, onScreen = false;
+    function showSlide(i) {
+      index = ((i % slides.length) + slides.length) % slides.length;
+      function set(list) {
+        list.forEach(function (el, n) {
+          var active = n === index;
+          el.classList.toggle("is-active", active);
+          if (active) el.removeAttribute("aria-hidden"); else el.setAttribute("aria-hidden", "true");
         });
-    </script>
+      }
+      set(slides); set(labels);
+      slides[(index + 1) % slides.length].loading = "eager"; // the neighbouring photographs are already fetched when their turn comes
+      slides[(index - 1 + slides.length) % slides.length].loading = "eager";
+    }
+    function syncTimer() {
+      clearInterval(timer);
+      if (reducedMotion.matches || !onScreen || document.hidden) return;
+      timer = setInterval(function () { showSlide(index + 1); }, 6500);
+    }
+    function goTo(i) { showSlide(i); syncTimer(); }
+    show.querySelector("[data-story-prev]").addEventListener("click", function () { goTo(index - 1); });
+    show.querySelector("[data-story-next]").addEventListener("click", function () { goTo(index + 1); });
+    var startX = 0, startY = 0, pointerId = null;
+    show.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse") return;
+      pointerId = e.pointerId; startX = e.clientX; startY = e.clientY;
+    });
+    show.addEventListener("pointerup", function (e) {
+      if (e.pointerId !== pointerId) return;
+      pointerId = null;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) goTo(index + (dx < 0 ? 1 : -1));
+    });
+    show.addEventListener("pointercancel", function () { pointerId = null; });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) { onScreen = entries[0].isIntersecting; syncTimer(); }).observe(show);
+    } else { onScreen = true; }
+    document.addEventListener("visibilitychange", syncTimer);
+    showSlide(0);
+    syncTimer();
+  })();
+
+  // ---- Creators labels: the gold card on the arch photo cycles PODCASTS, VIDEOS, PHOTOGRAPHY, INTERVIEWS, SHORT FILMS ----
+  // Only the labels change; the photograph stays. Same card style and 1.2s crossfade as the Story labels, but a faster 3 second turn with a shorter 0.7s fade.
+  // Rotation pauses while the card is off screen or the tab is hidden, and with reduced motion the first label stays.
+  (function () {
+    var box = document.querySelector("[data-creators-labels]");
+    var labels = box ? Array.prototype.slice.call(box.querySelectorAll("[data-creators-label]")) : [];
+    if (labels.length < 2) return;
+    var index = 0, timer, onScreen = false;
+    function show(i) {
+      index = i % labels.length;
+      labels.forEach(function (el, n) {
+        var active = n === index;
+        el.classList.toggle("is-active", active);
+        if (active) el.removeAttribute("aria-hidden"); else el.setAttribute("aria-hidden", "true");
+      });
+    }
+    function sync() {
+      clearInterval(timer);
+      if (reducedMotion.matches || !onScreen || document.hidden) return;
+      timer = setInterval(function () { show(index + 1); }, 3000);
+    }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) { onScreen = entries[0].isIntersecting; sync(); }).observe(box);
+    } else { onScreen = true; }
+    document.addEventListener("visibilitychange", sync);
+    show(0);
+    sync();
+  })();
+
+  // ---- Mobile navigation ----
+  var nav = document.getElementById("site-nav");
+  var navToggle = document.getElementById("nav-toggle");
+  var navLabel = document.getElementById("nav-toggle-label");
+  var navIcon = document.getElementById("nav-toggle-icon");
+  function setNav(open) {
+    navToggle.setAttribute("aria-expanded", String(open));
+    nav.classList.toggle("is-open", open);
+    navLabel.textContent = open ? "Close navigation" : "Open navigation";
+    navIcon.textContent = open ? "close" : "menu";
+  }
+  navToggle.addEventListener("click", function () { setNav(navToggle.getAttribute("aria-expanded") !== "true"); });
+  nav.addEventListener("click", function (e) { if (e.target.closest("a")) setNav(false); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && navToggle.getAttribute("aria-expanded") === "true") { setNav(false); navToggle.focus(); }
+  });
+  window.matchMedia("(min-width: 1024px)").addEventListener("change", function (e) { if (e.matches) setNav(false); });
+
+  // ---- Highlight the current section in the navigation ----
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav-link"));
+  // A link covers the section it points to, plus any extra sections named in data-spy (Activities spans Included, Extras, Gatherings, Creators & Media and Movie Nights)
+  var spyLink = {};
+  navLinks.forEach(function (link) {
+    var ids = (link.getAttribute("data-spy") || link.getAttribute("href").slice(1)).split(/\s+/);
+    ids.forEach(function (id) { spyLink[id] = link; });
+  });
+  if ("IntersectionObserver" in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var current = spyLink[entry.target.id]; // undefined for sections with no nav link, which clears the highlight
+        navLinks.forEach(function (link) {
+          if (link === current) link.setAttribute("aria-current", "true");
+          else link.removeAttribute("aria-current");
+        });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    Object.keys(spyLink).concat(["hero", "the-story", "creators", "movie-nights"]).forEach(function (id) {
+      var target = document.getElementById(id);
+      if (target) spy.observe(target);
+    });
+
+    // ---- Gentle reveal on scroll ----
+    var revealer = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    document.querySelectorAll("[data-reveal]").forEach(function (el) { revealer.observe(el); });
+  } else {
+    document.querySelectorAll("[data-reveal]").forEach(function (el) { el.classList.add("is-visible"); });
+  }
+  root.setAttribute("data-reveal-ready", "1");
+
+  // ---- Extras: on desktop the panel pins and the page's own scrolling moves the cards ----
+  // The runway (the container around the grid) is made as tall as the panel plus the distance the cards have to travel, so scrolling
+  // down pins the panel while the cards slide up 1:1 with the page, scrolling up reverses it, and the panel unpins when the section ends.
+  // Below 1024px nothing is set up: the cards flow in the page. The bottom fade is hidden once the last card is reached.
+  var extrasSection = document.getElementById("extras");
+  var extrasRunway = extrasSection.querySelector(".extras-runway");
+  var extrasGrid = extrasSection.querySelector(".extras-grid");
+  var extrasScroll = document.getElementById("extras-scroll");
+  var extrasList = extrasScroll.querySelector("ul");
+  var extrasFade = document.getElementById("extras-fade");
+  var extrasDesktop = window.matchMedia("(min-width: 1024px)");
+  var extrasTravel = 0, extrasPinTop = 0, extrasFrame = 0;
+  function updateExtrasFade() {
+    if (extrasSection.classList.contains("extras-pinned")) return;
+    var atEnd = extrasScroll.scrollTop + extrasScroll.clientHeight >= extrasScroll.scrollHeight - 4;
+    extrasFade.classList.toggle("is-end", atEnd);
+  }
+  function moveExtras() {
+    extrasFrame = 0;
+    if (!extrasSection.classList.contains("extras-pinned")) return;
+    var y = Math.min(extrasTravel, Math.max(0, extrasPinTop - extrasRunway.getBoundingClientRect().top));
+    extrasList.style.transform = "translate3d(0," + (-y) + "px,0)";
+    extrasFade.classList.toggle("is-end", y >= extrasTravel - 4);
+  }
+  function queueExtras() { if (!extrasFrame) extrasFrame = requestAnimationFrame(moveExtras); }
+  function setupExtras() {
+    if (!extrasDesktop.matches) {
+      extrasSection.classList.remove("extras-pinned");
+      extrasRunway.style.height = "";
+      extrasList.style.transform = "";
+      extrasScroll.setAttribute("tabindex", "0");
+      extrasScroll.setAttribute("aria-label", "Optional extras. This list scrolls.");
+      updateExtrasFade();
+      return;
+    }
+    extrasSection.classList.add("extras-pinned");
+    extrasScroll.removeAttribute("tabindex"); // the page scrolls the cards now, so the list itself is not a scroll region
+    extrasScroll.setAttribute("aria-label", "Optional extras");
+    var cs = getComputedStyle(extrasScroll);
+    var contentHeight = extrasList.offsetHeight + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+    extrasTravel = Math.max(0, Math.round(contentHeight - extrasScroll.clientHeight));
+    extrasPinTop = parseFloat(getComputedStyle(extrasGrid).top) || 0;
+    extrasRunway.style.height = (extrasGrid.offsetHeight + extrasTravel) + "px";
+    moveExtras();
+  }
+  extrasScroll.addEventListener("scroll", updateExtrasFade, { passive: true });
+  window.addEventListener("scroll", queueExtras, { passive: true });
+  window.addEventListener("resize", function () { setupExtras(); updateExtrasFade(); });
+  window.addEventListener("load", setupExtras);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setupExtras);
+  if ("ResizeObserver" in window) new ResizeObserver(setupExtras).observe(extrasList);
+  extrasDesktop.addEventListener("change", setupExtras);
+  setupExtras();
+  updateExtrasFade();
+
+  // ---- 360 tour: the existing player.html is loaded only when asked for ----
+  // The player is not modified. It talks to its host page by postMessage for fullscreen,
+  // so this page answers the same messages the live Daddy's House page and the preview do.
+  var stage = document.querySelector("[data-tour-stage]");
+  var poster = stage.querySelector("[data-tour-poster]");
+  var closeButton = stage.querySelector("[data-tour-close]");
+  var messageOrigin = window.location.origin === "null" ? "*" : window.location.origin;
+  var tourFrame = null;
+  var tourFullscreen = false;
+  var scrollBeforeFullscreen = null;
+
+  // Loading screen. It lives inside the stage and is dismissed by the player's real video state, not by the iframe's load event.
+  // Timings: the first loader stays at least 600 ms; a room that stalls after the first start shows a small pill after 400 ms;
+  // after 20 s without playback the loader offers Retry and the host's WhatsApp link; if the video is ready but autoplay is blocked,
+  // the loader steps aside after a short grace period so the player's own play prompt is visible.
+  var LOADER_MIN_MS = 600, ROOM_STALL_MS = 400, SLOW_MS = 20000, BLOCKED_GRACE_MS = 1200, WATCH_MS = 200;
+  var loader = stage.querySelector("[data-tour-loader]");
+  var loaderTitle = loader.querySelector("[data-tour-loader-title]");
+  var loaderBar = loader.querySelector("[data-tour-loader-bar]");
+  var loaderActions = loader.querySelector("[data-tour-loader-actions]");
+  var roomPill = stage.querySelector("[data-tour-roompill]");
+  var roomPillText = stage.querySelector("[data-tour-roompill-text]");
+  var tourStatus = stage.querySelector("[data-tour-status]");
+  var pendingScene = null, sceneJumped = true;
+  var loaderOn = false, initialDone = false, slowShown = false, launchedAt = 0;
+  var boundVideo = null, watchTimer = null, dismissTimer = null, hideTimer = null;
+  var blockedSince = 0, stallSince = 0, pillOn = false, loaderKind = "";
+
+  function announce(text) { tourStatus.textContent = text; }
+  function setLoaderState(kind) {
+    if (kind === loaderKind) return;
+    loaderKind = kind;
+    loaderTitle.textContent = kind === "error" ? "We couldn’t load the tour just now" : kind === "slow" ? "This is taking longer than usual" : "Opening the front door…";
+    loaderBar.hidden = kind === "error";
+    loaderActions.hidden = kind === "loading";
+    if (kind !== "loading") announce(loaderTitle.textContent + ". You can retry or message the host.");
+  }
+  function showLoader() {
+    clearTimeout(hideTimer);
+    loader.classList.remove("is-leaving");
+    loader.hidden = false;
+    loaderOn = true; initialDone = false; slowShown = false; loaderKind = "";
+    setLoaderState("loading");
+    announce("Opening the front door…");
+  }
+  function hideLoader(message) {
+    if (!loaderOn) return;
+    loaderOn = false; initialDone = true;
+    announce(message);
+    if (reducedMotion.matches) { loader.hidden = true; return; }
+    loader.classList.add("is-leaving");
+    hideTimer = setTimeout(function () { if (!loaderOn) loader.hidden = true; }, 550);
+  }
+  function scheduleHide(message) {
+    if (dismissTimer) return;
+    var wait = Math.max(0, LOADER_MIN_MS - (performance.now() - launchedAt));
+    dismissTimer = setTimeout(function () { dismissTimer = null; hideLoader(message); }, wait);
+  }
+  function currentRoomName() {
+    try {
+      var label = tourFrame.contentDocument.getElementById("scene-label");
+      return label.textContent.replace(/^\d+\s*—\s*/, "").trim() || "room";
+    } catch (err) { return "room"; }
+  }
+  function setPill(on, text) {
+    if (on) { roomPillText.textContent = text; if (!pillOn) announce(text); }
+    roomPill.hidden = !on;
+    pillOn = on;
+  }
+
+  // The state check runs from the video's own events and from a light timer, and once straight after the listeners are attached
+  // (the video may already have fired its events before this page could listen).
+  function check() {
+    var v = boundVideo, now = performance.now();
+    if (loaderOn && !slowShown && now - launchedAt >= SLOW_MS) { slowShown = true; if (loaderKind !== "error") setLoaderState("slow"); }
+    if (!v) return;
+    var failed = !!v.error;
+    var playing = v.readyState >= 3 && v.currentTime > 0 && !v.paused && !v.ended;
+    if (loaderOn) {
+      if (failed) { setLoaderState("error"); return; }
+      var waitingForRoom = pendingScene && !sceneJumped; // the player first opens on Entrance; a room shortcut then switches scene
+      if (waitingForRoom) return;
+      if (playing) { blockedSince = 0; scheduleHide("The tour is ready."); return; }
+      if (v.readyState >= 3 && v.paused) {
+        if (!blockedSince) blockedSince = now;
+        if (now - blockedSince >= BLOCKED_GRACE_MS) scheduleHide("The tour is ready. Press play to start it.");
+      } else { blockedSince = 0; }
+    } else if (initialDone) {
+      var stalled = v.readyState < 3 || failed;
+      if (stalled) {
+        if (!stallSince) stallSince = now;
+        if (now - stallSince >= ROOM_STALL_MS) setPill(true, failed ? "Couldn’t load this room" : "Loading " + currentRoomName() + "…");
+      } else {
+        stallSince = 0;
+        if (pillOn) setPill(false);
+      }
+    }
+  }
+  function bindVideo(v) {
+    boundVideo = v;
+    ["playing", "waiting", "stalled", "canplay", "pause", "error"].forEach(function (name) { v.addEventListener(name, check); });
+    check();
+  }
+  function tick() {
+    if (!tourFrame) return;
+    try {
+      var v = tourFrame.contentDocument.getElementById("video");
+      if (v && v !== boundVideo) bindVideo(v);
+    } catch (err) { /* the player cannot be read from here */ }
+    check();
+  }
+
+  // sceneName (optional): the player opens on its first scene, so a room shortcut then clicks that scene in the player's own scene list.
+  // The player is on the same origin, so its list can be read; if it cannot be, the tour simply starts at the beginning.
+  function jumpToScene(sceneName) {
+    try {
+      var items = tourFrame.contentDocument.querySelectorAll(".scene-list-item");
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].textContent.replace(/^\d+\s*—\s*/, "") === sceneName) { items[i].click(); return; }
+      }
+    } catch (err) { /* stay on the first scene */ }
+  }
+  function buildFrame() {
+    var frame = document.createElement("iframe");
+    tourFrame = frame;
+    boundVideo = null; blockedSince = 0; stallSince = 0;
+    setPill(false);
+    frame.src = "player.html?id=daddys-airbnb";
+    frame.title = "Daddy's House 360° tour";
+    frame.allow = "autoplay; fullscreen; gyroscope; accelerometer";
+    frame.setAttribute("allowfullscreen", "");
+    frame.addEventListener("load", function () {
+      if (frame !== tourFrame) return;
+      if (pendingScene && !sceneJumped) { jumpToScene(pendingScene); }
+      sceneJumped = true;
+      try { tourFrame.contentDocument.getElementById("video"); }
+      catch (err) { scheduleHide("The tour is ready."); } // cannot read the player, so the frame loading is the best signal left
+      tick();
+    }, { once: true });
+    stage.insertBefore(frame, closeButton);
+    launchedAt = performance.now();
+    showLoader();
+    clearInterval(watchTimer);
+    watchTimer = setInterval(tick, WATCH_MS);
+  }
+  function startTour(sceneName) {
+    if (tourFrame) return;
+    pendingScene = sceneName || null;
+    sceneJumped = !pendingScene;
+    buildFrame();
+    poster.hidden = true;
+  }
+  stage.querySelector("[data-tour-retry]").addEventListener("click", function () {
+    clearTimeout(dismissTimer); dismissTimer = null;
+    if (tourFrame) tourFrame.remove();
+    sceneJumped = !pendingScene;
+    buildFrame();
+    tourFrame.focus();
+  });
+  // Size of the fullscreen window, from the visible viewport (clientWidth leaves out scrollbars; visualViewport follows mobile browser bars).
+  // Portrait screens get a 3:4 window, landscape 4:3, and short landscape screens (phones on their side) 16:10 so the width is not wasted.
+  // The window always keeps a 16px margin and never exceeds the viewport.
+  function sizeTourWindow() {
+    var vv = window.visualViewport;
+    var vw = root.clientWidth;
+    var vh = vv ? vv.height * vv.scale : window.innerHeight;
+    var margin = 16;
+    var maxW = Math.max(0, vw - 2 * margin), maxH = Math.max(0, vh - 2 * margin);
+    var ratio = vh > vw ? 3 / 4 : (vh <= 500 ? 16 / 10 : 4 / 3); // width / height
+    var w = Math.min(maxW, maxH * ratio);
+    stage.style.setProperty("--fs-w", Math.floor(w) + "px");
+    stage.style.setProperty("--fs-h", Math.floor(w / ratio) + "px");
+  }
+  function setTourFullscreen(next) {
+    if (next === tourFullscreen || !tourFrame) return;
+    tourFullscreen = next;
+    if (next) { sizeTourWindow(); scrollBeforeFullscreen = { x: window.scrollX, y: window.scrollY }; }
+    stage.classList.toggle("is-fullscreen", next);
+    root.classList.toggle("is-tour-fullscreen", next);
+    if (next) {
+      stage.setAttribute("role", "dialog");
+      stage.setAttribute("aria-modal", "true");
+      stage.setAttribute("aria-label", "Daddy's House 360° tour");
+    } else {
+      stage.removeAttribute("role");
+      stage.removeAttribute("aria-modal");
+      stage.removeAttribute("aria-label");
+      tourFrame.focus({ preventScroll: true }); // return focus to the player without moving the page
+    }
+    tourFrame.contentWindow.postMessage({ ugaversePlayer: "fullscreen-state", fullscreen: next }, messageOrigin);
+    if (!next && scrollBeforeFullscreen) {
+      // When told fullscreen has ended, the player moves focus to its own button, and the browser may scroll this page (smoothly) to
+      // reveal it. The page cannot scroll while the window is open, so hold it where it was for a moment, instantly and without
+      // the page's smooth scrolling.
+      var back = scrollBeforeFullscreen;
+      scrollBeforeFullscreen = null;
+      var until = performance.now() + 700;
+      var hold = function () { if (performance.now() < until && (window.scrollX !== back.x || window.scrollY !== back.y)) window.scrollTo(back.x, back.y); };
+      root.style.scrollBehavior = "auto";
+      window.addEventListener("scroll", hold);
+      hold();
+      setTimeout(function () { window.removeEventListener("scroll", hold); root.style.scrollBehavior = ""; }, 700);
+    }
+  }
+  poster.addEventListener("click", function (e) {
+    var room = e.target.closest("[data-tour-room]");
+    startTour(room ? room.getAttribute("data-tour-room") : null);
+    tourFrame.focus();
+  });
+  closeButton.addEventListener("click", function () { setTourFullscreen(false); });
+  stage.querySelector("[data-tour-backdrop]").addEventListener("click", function () { setTourFullscreen(false); });
+  // a drag or a mouse wheel on the backdrop must not scroll (or queue a scroll of) the page behind it
+  stage.querySelector("[data-tour-backdrop]").addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
+  stage.querySelector("[data-tour-backdrop]").addEventListener("wheel", function (e) { e.preventDefault(); }, { passive: false });
+  function refitTourWindow() { if (tourFullscreen) sizeTourWindow(); }
+  window.addEventListener("resize", refitTourWindow);
+  window.addEventListener("orientationchange", refitTourWindow);
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", refitTourWindow);
+  document.addEventListener("keydown", function (e) { if (tourFullscreen && e.key === "Escape") setTourFullscreen(false); });
+  document.addEventListener("focusin", function (e) { if (tourFullscreen && !stage.contains(e.target)) closeButton.focus(); });
+  window.addEventListener("message", function (event) {
+    if (!tourFrame || event.source !== tourFrame.contentWindow || event.origin !== window.location.origin) return;
+    var type = event.data && event.data.ugaversePlayer;
+    if (type === "fullscreen-toggle") setTourFullscreen(!tourFullscreen);
+    else if (type === "fullscreen-exit") setTourFullscreen(false);
+  });
+  // Every "360° tour" link or button scrolls to the tour (anchors natively) and starts it
+  document.querySelectorAll("[data-tour-trigger]").forEach(function (el) {
+    el.addEventListener("click", function () {
+      startTour();
+      if (el.hasAttribute("data-tour-scroll")) stage.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "center" });
+    });
+  });
+
+  // ---- Share this page ----
+  var shareButton = document.getElementById("share-page");
+  var shareStatus = document.getElementById("share-status");
+  function copyPageLink() {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(window.location.href).then(function () {
+        shareStatus.textContent = "Page link copied.";
+      }, function () {
+        shareStatus.textContent = "Couldn't copy automatically. You can copy the address from your browser instead.";
+      });
+    } else {
+      shareStatus.textContent = "Sharing isn't available in this browser. You can copy the address from your browser instead.";
+    }
+  }
+  shareButton.addEventListener("click", function () {
+    var data = { title: "Daddy's House", text: "Daddy's House: a home for short stays and good times in Naalya, Kampala.", url: window.location.href };
+    shareStatus.textContent = "";
+    if (navigator.share) {
+      navigator.share(data).catch(function (error) {
+        // closing the share sheet is not an error; anything else falls back to copying the link
+        if (error && error.name !== "AbortError") copyPageLink();
+      });
+      return;
+    }
+    copyPageLink();
+  });
+})();
+</script>
 </body>
 </html>
