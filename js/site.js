@@ -116,6 +116,14 @@ function initHeroSlideshows() {
 
         heroSlideshow.addEventListener("pointercancel", () => { swipePointerId = null; });
 
+        // the whole slideshow follows the caption link (not only the caption bar); swipes and the arrows do not
+        const captionLink = heroFrame?.querySelector(".hero-media-caption-link");
+
+        if (captionLink) {
+            heroSlideshow.style.cursor = "pointer";
+            heroSlideshow.addEventListener("click", () => captionLink.click());
+        }
+
         // a completed swipe can end in a click; keep it from following the slideshow link
         heroSlideshow.addEventListener("click", (event) => {
             if (Date.now() < heroSwipeBlockedUntil) {
@@ -257,3 +265,20 @@ if (stepsCarousel) {
         }, 250);
     }
 }
+
+// A touch screen wide enough for the desktop menu (an iPad held sideways) has no hover: the first tap on "Projects" opens its drop-down instead of jumping,
+// and a tap anywhere else closes it. A second tap on "Projects" follows the link.
+document.querySelectorAll(".site-nav__item--sub").forEach((item) => {
+    const link = item.querySelector(":scope > a");
+    const touch = window.matchMedia("(pointer: coarse)");
+
+    link?.addEventListener("click", (event) => {
+        if (!desktopNavigation.matches || !touch.matches || item.classList.contains("is-open")) return;
+        event.preventDefault();
+        item.classList.add("is-open");
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!item.contains(event.target)) item.classList.remove("is-open");
+    });
+});

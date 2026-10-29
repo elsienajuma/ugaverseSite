@@ -37,7 +37,7 @@
     }
 
     // the pill sits under the row that holds the link (the "host") and points up at the link
-    function showPill(host, link) {
+    function showPill(host, link, address) {
         let pill = host.querySelector(".copy-pill");
         if (!pill) {
             pill = document.createElement("span");
@@ -45,7 +45,8 @@
             pill.setAttribute("role", "status");
             host.appendChild(pill);
         }
-        pill.textContent = "Copied!";
+        // a row marked data-copy-show-address names the address, for buttons that do not show it (like "Email us")
+        pill.textContent = host.hasAttribute("data-copy-show-address") ? "Copied: " + address : "Copied!";
 
         const hostBox = host.getBoundingClientRect();
         const linkBox = link.getBoundingClientRect();
@@ -56,7 +57,10 @@
         // keep the pill on screen, and keep its pointer aimed at the icon
         const left = Math.min(Math.max(center - width / 2, margin), window.innerWidth - width - margin);
         pill.style.left = left - hostBox.left + "px";
-        pill.style.top = hostBox.height + 10 + "px";
+        // a row marked data-copy-above shows the pill over the row instead of under it (for a line at the very foot of a band)
+        const above = host.hasAttribute("data-copy-above");
+        pill.classList.toggle("copy-pill--above", above);
+        pill.style.top = (above ? -pill.offsetHeight - 10 : hostBox.height + 10) + "px";
         pill.style.setProperty("--pointer-x", center - left + "px");
 
         pill.classList.remove("is-visible");
@@ -68,7 +72,7 @@
 
     document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
         link.addEventListener("click", () => {
-            if (!hasMouse.matches) return;
+            if (!hasMouse.matches || link.hasAttribute("data-no-copy")) return;
 
             const address = link.getAttribute("href").slice("mailto:".length).split("?")[0];
             const host = link.closest("[data-copy-host]");
@@ -76,7 +80,7 @@
 
             copy(address).then((ok) => {
                 if (!ok) return;
-                if (host) showPill(host, link);
+                if (host) showPill(host, link, address);
                 else if (button) flashButton(button, true);
             });
         });

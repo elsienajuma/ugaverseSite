@@ -1,0 +1,2333 @@
+/* Buganda Palace tour page. Loaded AFTER css/style-system.css, only by this page. It uses the homepage's blue, gold and white theme
+   unchanged; everything here is layout for the tour stage, the expanded window and the placeholders. */
+
+.htour [hidden] {
+    display: none !important;
+}
+
+html.is-tour-fullscreen,
+html.is-tour-fullscreen body {
+    overflow: hidden;
+    overscroll-behavior: none;
+    scrollbar-gutter: stable;
+}
+
+/* ---------- Hero and stage ---------- */
+
+.hero.htour-hero h1 {
+    max-width: 24ch;
+}
+
+/* desktop: a smaller headline (the homepage uses 56px), and the text starts at the top of the picture instead of floating at its middle */
+@media (min-width: 64rem) {
+    .hero.htour-hero h1 {
+        font-size: 2.75rem;
+    }
+
+    .htour-hero .hero__content {
+        align-self: start;
+        padding-top: var(--space-4);
+    }
+}
+
+/* a smaller headline on phones (the homepage size is 40px there): 32px keeps the title on two lines without crowding the screen */
+@media (max-width: 39.999rem) {
+    .hero.htour-hero h1 {
+        font-size: 2rem;
+    }
+}
+
+.htour-hero .hero__copy {
+    max-width: 44rem;
+}
+
+/* Tablets: the slideshow photos are the home page hero's shape (16:10), so the two heroes line up in size. (Phones and desktop keep 4:3.) */
+@media (min-width: 40rem) and (max-width: 63.999rem) {
+    .htour-hero .hero-media-slideshow img {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+/* The poster box: the homepage's gold frame, with the Daddy's House tour's look inside (dark semi-transparent overlay, round play button,
+   pills) and its sizing: 5:4 on phones, 16:10 from 640px up, never taller than the screen. The game itself runs in the popup
+   (.htour-modal) further down. */
+.htour-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    max-height: 82vh;
+    overflow: hidden;
+    border: 4px solid var(--yellow);
+    border-radius: var(--radius-lg);
+    background: var(--blue-dark);
+    box-shadow: var(--shadow);
+}
+
+@media (min-width: 40rem) {
+    .htour-stage {
+        aspect-ratio: 16 / 10;
+        max-height: 76vh;
+    }
+}
+
+/* the tour section: the tour box (7 parts) beside the how-to-play cards (5 parts) on desktop, stacked below that.
+   It carries the "hero" class for the identical blue and pinned glow, so it joins the hero above it without a seam (the gold strip sits
+   between them, and nothing covers it). */
+/* The tour section's layout. On a phone it is one column: tag line, heading and intro, tour box, then the how-to-play cards.
+   On desktop the tag line sits alone on the first row of the left column, and the cards on the right start on the SECOND row, level with
+   the heading (not the tag line) and run down beside the tour box. */
+.htour-tour__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.htour-tour__eyebrow {
+    margin: 0 0 var(--space-4);
+}
+
+.htour-tour__title {
+    margin: 0 0 var(--space-4);
+}
+
+.htour-tour .htour-tour__lead {
+    margin: 0 0 var(--space-8);   /* no gap above (it belongs to the heading, so the cards can start level with the intro line itself); space below, before the tour box */
+}
+
+.htour-tour__lead {
+    max-width: 44rem;
+}
+
+.htour-tour__lead,
+.htour-tour__tour {
+    margin-bottom: var(--space-8);
+}
+
+.htour-tour__how {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+}
+
+.htour-tour .about-card {
+    padding: var(--space-6);
+}
+
+.htour-tour .about-card h3 {
+    font-size: 1.25rem;
+}
+
+@media (min-width: 64rem) {
+    .htour-tour__layout {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        column-gap: var(--space-12);
+        align-items: start;
+    }
+
+    .htour-tour__eyebrow {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .htour-tour__title {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .htour-tour__lead {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .htour-tour__tour {
+        grid-column: 1;
+        grid-row: 4;
+        margin-bottom: 0;
+    }
+
+    /* the cards: right column, from the intro line's row down (level with the top of the intro line, below the heading) */
+    .htour-tour__how {
+        grid-column: 2;
+        grid-row: 3 / span 2;
+    }
+}
+
+.htour-tour .htour-grid {
+    margin-top: var(--space-8);
+}
+
+/* Tablets (640px to just under desktop): the same stacked, centred layout as the home page's featured section (tag line, heading and intro
+   centred, the picture below), with the two how-to-play cards side by side instead of stacked. */
+@media (min-width: 40rem) and (max-width: 63.999rem) {
+    /* more room at the sides, like the Daddy's House immersive section (its tour sits about 72px in from the screen edge at 820px wide): the heading, intro,
+       tour box and cards all share it */
+    .htour-tour__layout {
+        padding-inline: 1.9rem;
+    }
+
+    .htour-tour__eyebrow,
+    .htour-tour__title,
+    .htour-tour .htour-tour__lead {
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    .htour-tour__tour {
+        width: min(100%, 46rem);
+        margin-inline: auto;
+    }
+
+    .htour-tour__tour .htour-fallback,
+    .htour-tour__tour .htour-hint {
+        text-align: center;
+    }
+
+    .htour-tour__how {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: min(100%, 46rem);
+        margin-inline: auto;
+    }
+
+    .htour-tour__how .htour-tip {
+        grid-column: 1 / -1;
+        justify-content: center;
+    }
+
+    /* smaller type and tighter cards, so each instruction fits on one line (the text shrinks with the screen, but never below 12px) */
+    .htour-tour__how .about-card {
+        padding: var(--space-5, 1.25rem);
+    }
+
+    .htour-tour__how .about-card ul.htour-list {
+        padding-left: 1.1rem;
+        font-size: clamp(0.75rem, 1.7vw, 0.9375rem);
+    }
+}
+
+.htour-poster {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: var(--space-4);
+    cursor: pointer;
+}
+
+.htour-poster picture {
+    position: absolute;   /* out of the poster's layout, like the photo itself: otherwise its empty row pushes the button and heading below the centre */
+    inset: 0;
+}
+
+.htour-poster img {
+    object-position: 50% 45%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms ease;
+}
+
+.htour-poster:hover img,
+.htour-poster:focus-within img {
+    transform: scale(1.04);
+}
+
+/* the dark, semi-transparent overlay: the photo stays calm and the button and text stay crisp */
+.htour-poster__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        radial-gradient(55% 55% at 50% 48%, rgba(8, 14, 32, 0.6), rgba(8, 14, 32, 0.38)),
+        linear-gradient(0deg, rgba(8, 14, 32, 0.7), transparent 55%);
+}
+
+.htour-poster__content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: center;
+    gap: 1.1rem;
+    width: 100%;
+    max-width: 30rem;
+}
+
+.htour-start {
+    display: grid;
+    justify-items: center;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.htour-play {
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--blue);
+    box-shadow: 0 0 0 10px rgba(242, 196, 15, 0.25);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.htour-play svg {
+    margin-left: 4px;   /* a play triangle looks centred when nudged right */
+}
+
+.htour-poster:hover .htour-play,
+.htour-poster:focus-within .htour-play {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 16px rgba(242, 196, 15, 0.2);
+}
+
+.htour-poster__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 3vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1.15;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* the two device pills: hidden on phones (the poster stays clean with just the play button), one centred row from 640px */
+.htour-rooms {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (min-width: 40rem) {
+    .htour-rooms {
+        display: flex;
+    }
+}
+
+.htour-rooms button {
+    min-height: 44px;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+    background: rgba(11, 23, 52, 0.78);
+    color: #f1f5fb;
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.htour-rooms button:hover {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: var(--blue-hover);
+    color: var(--yellow);
+}
+
+.htour-rooms button:active {
+    transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .htour-poster img {
+        transition: none;
+    }
+}
+
+.htour-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--blue-night);
+}
+
+.htour-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-4);
+    background: var(--blue-night);
+    color: var(--yellow);
+    text-align: center;
+    pointer-events: none;
+}
+
+.htour-fallback {
+    margin: 0.75rem 0 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+}
+
+.htour-fallback span,
+.htour-fallback a {
+    display: inline-block;
+}
+
+.htour-fallback a {
+    color: rgba(255, 255, 255, 0.78);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+}
+
+.htour-fallback a:hover,
+.htour-fallback a:focus-visible {
+    color: var(--white);
+}
+
+@media (max-width: 39.999rem) {
+    .htour-fallback {
+        color: rgba(255, 255, 255, 0.7);
+    }
+}
+
+.htour-hint {
+    margin: var(--space-4) 0 0;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid rgba(242, 196, 15, 0.6);
+    border-radius: var(--radius-sm);
+    background: rgba(242, 196, 15, 0.12);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+}
+
+/* ---------- Tour popup: sized exactly like the Daddy's House fullscreen tour (custom window, not the browser Fullscreen API).
+   A dark semi-transparent overlay with the game window centred in it and a 16px margin, so the page stays visible around it. Only the X closes it.
+   Portrait screens get a 3:4 window, landscape between 4:3 and 3:2 (3:2 in the fallback), and short landscape screens (phones on their side) 16:10. The script sets
+   --fs-w and --fs-h (px) from the real visible screen and keeps them current on resize and rotation; the values below are the fallback. ---------- */
+
+.htour-modal {
+    --fs-margin: 16px;
+    --fs-w: min(100vw - 2 * var(--fs-margin), (100vh - 2 * var(--fs-margin)) * 3 / 2);
+    --fs-h: calc(var(--fs-w) * 2 / 3);
+    position: fixed;
+    inset: 0;
+    z-index: 1500;
+}
+
+@media (min-width: 40rem) {
+    .htour-modal {
+        --fs-margin: 32px;   /* tablets and up: more room around the window (the script sets the real size) */
+    }
+}
+
+@media (orientation: portrait) {
+    .htour-modal {
+        --fs-w: min(100vw - 2 * var(--fs-margin), (100vh - 2 * var(--fs-margin)) * 3 / 4);
+        --fs-h: calc(var(--fs-w) * 4 / 3);
+    }
+}
+
+.htour-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.68);
+    touch-action: none;
+}
+
+.htour-window {
+    position: absolute;
+    inset: 0;
+    width: var(--fs-w);
+    height: var(--fs-h);
+    margin: auto;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #000;
+}
+
+.htour-close {
+    position: absolute;
+    z-index: 1;
+    top: calc(50% - var(--fs-h) / 2 + 10px);
+    right: calc(50% - var(--fs-w) / 2 + 10px);
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    cursor: pointer;
+}
+
+/* hidden (not removed) while a close-up is open in the game: it keeps its place, with a short fade; visibility takes it out of the
+   tab order and pointer-events lets a tap reach the game underneath */
+.htour-close {
+    transition: opacity 180ms ease, visibility 0s linear 0s;
+}
+
+.htour-modal.is-closeup .htour-close {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease, visibility 0s linear 180ms;
+}
+
+.htour-close:hover {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+@media (pointer: coarse) {
+    .htour-close {
+        width: 46px;
+        height: 46px;
+    }
+}
+
+/* ---------- Content sections ---------- */
+
+.htour-section__head {
+    max-width: 44rem;
+}
+
+.htour-section__head .eyebrow {
+    margin-bottom: var(--space-4);
+}
+
+.htour-lead {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-lead);
+    line-height: var(--lh-ui);
+}
+
+.htour-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+}
+
+@media (min-width: 48rem) {
+    .htour-grid--2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .htour-grid--3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* cards on the light sections */
+.htour-card {
+    padding: var(--space-8);
+    border: 1px solid rgba(21, 43, 102, 0.16);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    box-shadow: var(--shadow);
+}
+
+.htour-card h3 {
+    color: var(--blue);
+}
+
+.htour-card ul,
+.about-card ul.htour-list {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding-left: var(--space-6);
+    line-height: var(--lh-ui);
+}
+
+.htour-note {
+    margin: var(--space-6) 0 0;
+    padding: var(--space-4) var(--space-6);
+    border-left: 6px solid var(--yellow);
+    border-radius: var(--radius-sm);
+    background: rgba(242, 196, 15, 0.22);
+    line-height: var(--lh-ui);
+}
+
+.htour-note strong {
+    font-family: var(--font-display);
+}
+
+/* every piece of text still waiting for the owner is boxed and tagged, so it cannot be missed */
+.placeholder {
+    position: relative;
+    margin-top: var(--space-6);
+    padding: var(--space-8) var(--space-6) var(--space-6);
+    border: 2px dashed currentColor;
+    border-radius: var(--radius-md);
+    background: rgba(242, 196, 15, 0.08);
+    line-height: var(--lh-ui);
+}
+
+.placeholder p {
+    margin: 0;
+}
+
+.placeholder p + p,
+.placeholder ul {
+    margin-top: var(--space-3);
+}
+
+.placeholder__tag {
+    position: absolute;
+    top: -0.8rem;
+    left: var(--space-4);
+    padding: 0 var(--space-3);
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--blue-night);
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    line-height: 1.6rem;
+    text-transform: uppercase;
+}
+
+.htour-slot {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    margin: 0;
+    padding: var(--space-4);
+    border: 2px dashed rgba(242, 196, 15, 0.6);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.05);
+    font-size: var(--text-sm);
+    text-align: center;
+}
+
+.htour-sub {
+    margin-top: var(--space-12);
+    font-size: var(--text-sub);
+}
+
+.htour-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    margin-top: var(--space-6);
+}
+
+.htour-status {
+    min-height: 1.5em;
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-sm);
+}
+
+.htour-share {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.htour-share h3 {
+    color: var(--yellow);
+    font-size: var(--text-sub);
+}
+
+/* ---------- Like button and review link ---------- */
+
+.htour-like {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+    margin-top: var(--space-6);
+}
+
+.htour-like .button:disabled {
+    cursor: default;
+    opacity: 0.6;
+    transform: none;
+}
+
+.htour-like__status {
+    margin: 0;
+    font-size: var(--text-sm);
+}
+
+/* each statement stays whole when the line wraps: the break can only fall between statements */
+.htour-ask {
+    margin: var(--space-6) 0 0;
+    font-size: var(--text-lead);
+    line-height: var(--lh-ui);
+}
+
+.htour-ask span,
+.htour-ask__link {
+    display: inline-block;
+}
+
+.htour-ask__link {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
+}
+
+/* ---------- Light-section tweaks (sections swapped colour when "How we made it" and "Where next" were added) ---------- */
+
+/* the "Where should we go next?" photo strip: one row that scrolls sideways, and snaps card by card */
+.htour-strip {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    padding-bottom: var(--space-3);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+}
+
+.htour-strip > * {
+    flex: 0 0 min(16rem, 70vw);
+    scroll-snap-align: start;
+}
+
+.htour-strip .htour-slot {
+    border-color: rgba(21, 43, 102, 0.4);
+}
+
+.htour-strip img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+}
+
+/* ---------- Team and credits ---------- */
+
+.htour-person {
+    color: var(--text);   /* the cards are white, so their text stays dark even inside a dark section */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: 1px solid rgba(21, 43, 102, 0.16);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    box-shadow: var(--shadow);
+}
+
+.htour-person .htour-slot {
+    width: 100%;
+    border-color: rgba(21, 43, 102, 0.4);
+    border-radius: var(--radius-sm);
+}
+
+.htour-person h3 {
+    color: var(--blue);
+    font-size: 1.25rem;
+}
+
+.htour-person p {
+    margin: 0;
+    line-height: var(--lh-ui);
+}
+
+.htour-team {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0 var(--space-12);
+    padding: 0;
+    list-style: none;
+}
+
+@media (min-width: 64rem) {
+    .htour-team {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--space-6);
+    }
+}
+
+.htour-person .htour-slot {
+    aspect-ratio: 1 / 1;
+}
+
+.htour-person__link {
+    font-size: var(--text-sm);
+}
+
+.htour-card p {
+    margin: var(--space-3) 0 0;
+    line-height: var(--lh-ui);
+}
+
+.htour-card a {
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* the photo slots on light sections need a darker dashed border than on dark ones */
+.section--light .htour-slot {
+    border-color: rgba(21, 43, 102, 0.4);
+}
+
+/* the dark cards keep their light text when they sit on a light section */
+.section--light .about-card {
+    color: var(--white);
+}
+
+/* ---------- The three pills under the hero subheading ---------- */
+.htour-chips {
+    margin: var(--space-4) 0 0;
+}
+
+.htour-hero .hero__actions {
+    margin-top: var(--space-6);
+}
+
+/* on phones and tablets the hero stacks as: eyebrow, title, slideshow, then the rest in order (subheading 1, pills 2, buttons 3) */
+@media (max-width: 63.999rem) {
+    .htour-chips {
+        order: 2;
+    }
+}
+
+/* ---------- Slideshow: search bar and caption bar ---------- */
+
+/* the caption bar is the homepage's gold bar under its slideshow; it keeps one height so the frame does not jump between slides */
+.htour-hero .hero__media figcaption {
+    display: grid;
+    place-items: center;
+    min-height: 3rem;
+}
+
+/* the location badge above the title: a gold pill with a pin, like the badge on the Daddy's House hero */
+.htour-badge {
+    justify-self: start;   /* on phones the hero is a grid: keep the pill as wide as its text */
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-4);
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: var(--yellow);
+    box-shadow: 0 3px 8px -3px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+    color: var(--blue);
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.htour-badge svg {
+    flex: none;
+}
+
+/* the search bar on the slideshow: the homepage's, with a fixed width that fits the longest of the three names with a little room to spare,
+   so the bar does not grow and shrink while it types */
+.htour-hero .hero__chips {
+    z-index: 2;
+    pointer-events: none;
+}
+
+.htour-hero .hero__search {
+    flex: 0 0 16rem;
+    width: 16rem;
+}
+
+/* ---------- Search bar on the right (tablet and desktop) ---------- */
+@media (min-width: 40rem) {
+    .htour-hero .hero__chips {
+        justify-content: flex-end;
+    }
+}
+
+/* ---------- Phones only: hero changes (tablet and desktop are untouched) ---------- */
+
+/* the caption "Start the tour" link and the short button text are only for phones */
+.htour-cap-cta,
+.htour-cta-short {
+    display: none;
+}
+
+@media (max-width: 39.999rem) {
+    /* the caption bar becomes one link to the tour, instead of describing each photo */
+    .htour-hero [data-slide-caption] {
+        display: none;
+    }
+
+    .htour-cap-cta {
+        display: block;
+        width: 100%;
+        color: inherit;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .htour-cap-cta::after {
+        content: "";
+        position: absolute;
+        inset: 0;   /* the whole bar is the link */
+    }
+
+    .htour-cta-long {
+        display: none;
+    }
+
+    .htour-cta-short {
+        display: inline;
+    }
+
+    /* the subheading is there from the start, not faded in on scroll, so the top of it shows under the slideshow and tells people there is more below */
+    .js .htour-hero .hero__copy.reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* very narrow phones (about 360px): slightly smaller type so the badge stays on one line */
+@media (max-width: 24.999rem) {
+    .htour-badge {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.6875rem;
+        letter-spacing: 0.08em;
+    }
+}
+
+/* ---------- Type scale ----------
+   The hero heading is the biggest type on the page. The section headings here are a step smaller than on the homepage
+   (which uses up to 48px), so they never match or beat it: hero 32px / 52px / 44px (phone / tablet / desktop), sections 28 / 36 / 40px. */
+.htour .htour-section__head h2,
+.htour .htour-tour__title {
+    font-size: 1.75rem;
+}
+
+@media (min-width: 40rem) {
+    .htour .htour-section__head h2,
+    .htour .htour-tour__title {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .htour .htour-section__head h2,
+    .htour .htour-tour__title {
+        font-size: 2.5rem;
+    }
+}
+
+/* key caps in the how-to-play lists (the arrow keys and Esc) */
+.htour-list kbd {
+    display: inline-block;
+    min-width: 1.7em;
+    margin: 0 0.1em;
+    padding: 0.05em 0.45em;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    font: inherit;
+    font-size: 0.85em;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.htour-keys {
+    white-space: nowrap;   /* the four arrows stay together when the line wraps */
+}
+
+/* ---------- The headphones tip under the cards: quiet, like the "Can't play in this browser?" note, with an icon ---------- */
+.htour-tip {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    margin: var(--space-2) 0 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+}
+
+.htour-tip svg {
+    flex: none;
+    margin-top: 0.1em;
+    color: var(--yellow);
+    opacity: 0.85;
+}
+
+.htour-tour .htour-note {
+    max-width: 52rem;
+}
+
+/* ---------- The story, as pictures with captions ----------
+   Five pictures in a column, read as one sentence. The section stays pinned on the screen while the page scrolls past it: one picture is
+   fully in view at a time, with the one before and the one after peeking in at the top and bottom, and the caption for the current picture
+   sits under the stack. When the scrolling stops the page settles so a picture is never left half way. Desktop: the title sits near the
+   middle of the left column with the current number, big and faded, above it. Phone: the title and the step count stay at the top, the
+   pictures run edge to edge, and the number sits behind the caption. Without the script the pictures and their text simply sit in a column. */
+.htour-story {
+    --pin-top: 4rem;   /* the height of the page header */
+    --pin-h: calc(100vh - var(--pin-top));
+    --step: 50vh;   /* how far the page scrolls for each picture */
+    --card-h: max(13rem, min(115vw, calc(100vh - 25.5rem)));   /* a little taller than square on tall phones, never so tall that the title, picture and statement stop fitting */
+    --peek: 0rem;   /* how much of the next and the previous picture shows (none: one picture at a time) */
+    --gap: 0.75rem;
+    --edge: max(var(--gutter), calc((100vw - var(--container)) / 2));   /* the space between the screen edge and the page content */
+    position: relative;
+    margin-top: var(--space-2);
+    margin-inline: calc(50% - 50vw);   /* as wide as the screen, so the dark colour (below) can reach both edges */
+    padding-inline: var(--edge);
+    clip-path: inset(0);
+    color: var(--blue);
+    transition: color 600ms ease;
+}
+
+/* a hair wider than the page when the browser shows a scrollbar: clip that, so the page never scrolls sideways */
+#story {
+    overflow-x: clip;
+    padding-bottom: 0;   /* the dark last picture runs straight into the dark strip section, with no light band between them */
+}
+
+.htour-story > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* the dark colour: the same blue and purple glow as the dark sections, pinned to the screen (clipped to this section by clip-path above).
+   It fades in when the last picture is current, and the text colours follow. */
+.htour-story::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse 110% 100% at 50% 100%, rgba(88, 28, 160, 0.8) 0%, rgba(88, 28, 160, 0.45) 50%, transparent 90%) 0 100% / 100% var(--glow-h) no-repeat,
+        linear-gradient(to top, rgba(60, 20, 130, 0.55) 0%, transparent 75%) 0 100% / 100% var(--glow-h) no-repeat,
+        var(--blue);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 800ms ease;
+}
+
+@media (min-width: 64rem) {
+    .htour-story::after {
+        background:
+            radial-gradient(ellipse 110% 100% at 50% 100%, rgba(88, 28, 160, 0.95) 0%, rgba(88, 28, 160, 0.6) 50%, transparent 90%) 0 100% / 100% var(--glow-h) no-repeat,
+            linear-gradient(to top, rgba(60, 20, 130, 0.7) 0%, transparent 75%) 0 100% / 100% var(--glow-h) no-repeat,
+            var(--blue);
+    }
+}
+
+.htour-story--dark {
+    color: var(--white);
+}
+
+.htour-story--dark::after {
+    opacity: 1;
+}
+
+@supports (height: 100svh) {
+    .htour-story {
+        --pin-h: calc(100svh - var(--pin-top));
+        --card-h: max(13rem, min(115vw, calc(100svh - 25.5rem)));
+    }
+}
+
+@media (min-width: 48rem) {
+    .htour-story {
+        --pin-top: 5.5rem;
+        --card-h: clamp(14rem, calc(100vh - 23rem), 30rem);
+    }
+
+    @supports (height: 100svh) {
+        .htour-story {
+            --card-h: clamp(14rem, calc(100svh - 23rem), 30rem);
+        }
+    }
+}
+
+/* Phones and tablets (and any touch screen): the story is five pictures in a column, each with its statement under it, and the page scrolls as usual.
+   (The pinned, one-picture-at-a-time version below is only for wide screens with a mouse; the script leaves this layout alone otherwise.) */
+.htour-story:not(.htour-story--live) .htour-story__head {
+    padding-bottom: var(--space-6);
+}
+
+.htour-story:not(.htour-story--live) .htour-story__cards {
+    gap: var(--space-12);
+}
+
+/* on a wide touch screen (an iPad held sideways) the stacked column stays a comfortable reading width, centred, instead of stretching across the screen */
+@media (min-width: 48rem) {
+    .htour-story:not(.htour-story--live) .htour-story__head,
+    .htour-story:not(.htour-story--live) .htour-story__cards {
+        max-width: 46rem;
+        margin-inline: auto;
+    }
+}
+
+#story:not(.is-story-pinned) {
+    padding-bottom: 0;   /* the dark last picture (below) runs straight into the next dark band */
+}
+
+#story:not(.is-story-pinned) + .htour-making {
+    padding-top: 0;
+}
+
+/* The stacked story fades from the light section colour into the dark blue: it starts at the top of the last item ("We called it: Enju") and is fully dark
+   by about three quarters of the way down that item's picture (the script measures where that is, once, and sets --dark-from and --dark-to on the
+   section; nothing changes while scrolling). The section's own soft glow stays pinned over the whole background like in every light section, and over
+   the dark part the deep purple glow of the dark sections is pinned too: .htour-glow is a holder, as wide as the screen and as tall as the last item,
+   that clips a layer fixed to the foot of the screen (the same way every other section does it, with no script running while scrolling). The holder is
+   masked so the purple fades in over the same stretch as the dark blue. */
+#story:not(.is-story-pinned) {
+    background:
+        linear-gradient(to bottom, rgba(21, 43, 102, 0) var(--dark-from, 100%), var(--blue) var(--dark-to, 100%)),
+        linear-gradient(rgba(120, 190, 250, 0.40), rgba(120, 190, 250, 0.40)),
+        var(--off-white);
+}
+
+.htour-glow {
+    display: none;
+}
+
+.htour-story:not(.htour-story--live) .htour-story__cards > li:last-child {
+    position: relative;
+}
+
+.htour-story:not(.htour-story--live) .htour-glow {
+    position: absolute;
+    top: 0;
+    right: calc(50% - 50vw);   /* as wide as the screen, whatever width the column has (it is centred) */
+    bottom: 0;
+    left: calc(50% - 50vw);
+    display: block;
+    clip-path: inset(0);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 calc(var(--dark-to, 100%) - var(--dark-from, 0px)));
+    mask-image: linear-gradient(to bottom, transparent 0, #000 calc(var(--dark-to, 100%) - var(--dark-from, 0px)));
+    pointer-events: none;
+}
+
+.htour-story:not(.htour-story--live) .htour-glow::before {
+    content: "";
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: var(--glow-h);
+    background:
+        radial-gradient(ellipse 110% 100% at 50% 100%, rgba(88, 28, 160, 0.8) 0%, rgba(88, 28, 160, 0.45) 50%, transparent 90%),
+        linear-gradient(to top, rgba(60, 20, 130, 0.55) 0%, transparent 75%);
+}
+
+/* the last statement is on the dark blue, so its text is light */
+.htour-story:not(.htour-story--live) .htour-story__cards > li:last-child {
+    padding-bottom: var(--section);
+    color: var(--white);
+}
+
+.htour-story:not(.htour-story--live) .htour-scard--finale {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.htour-story:not(.htour-story--live) .htour-story__cards > li:last-child .htour-scard__pron {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.htour-story:not(.htour-story--live) .htour-story__cards > li:last-child .htour-scard__meaning {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.htour-story:not(.htour-story--live) .htour-story__cards > li:last-child .htour-word {
+    background: none;
+    color: var(--yellow);
+}
+
+@media (max-width: 39.999rem) {
+    .htour-story:not(.htour-story--live) .htour-scard img,
+    .htour-story:not(.htour-story--live) .htour-scard__slot {
+        aspect-ratio: 4 / 3;   /* taller on a phone, so the picture is not a thin strip */
+    }
+}
+
+/* ---- the title block ---- */
+.htour-story__head {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-4);
+    align-items: center;
+    padding-bottom: var(--space-3);
+}
+
+.htour-story__head .eyebrow {
+    grid-column: 1;
+    margin: 0;
+}
+
+/* a short gold bar before the eyebrow marks it as the start of the title block */
+.htour-story__head .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 1.75rem;
+    height: 3px;
+    margin-right: 0.6rem;
+    border-radius: 2px;
+    vertical-align: middle;
+    background: var(--yellow);
+}
+
+.htour-story__head h2 {
+    grid-column: 1;
+    margin: 0;
+    color: inherit;
+    font-size: 2.25rem;   /* the main heading is the biggest type in the section; the statements are much smaller and in the body face */
+    line-height: 1.05;
+}
+
+.htour-story__count {
+    display: none;
+    grid-column: 2;
+    grid-row: 1 / 3;
+    margin: 0;
+    color: var(--blue-outline);
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    letter-spacing: 0.14em;
+}
+
+/* a thin gold line along the bottom of the title shows how far through the story you are */
+.htour-story__head::after {
+    content: "";
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--yellow);
+    transform: scaleX(var(--progress, 0));
+    transform-origin: left center;
+}
+
+.htour-story__numbers {
+    display: none;
+}
+
+/* ---- the pictures ---- */
+.htour-story__cards {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.htour-scard {
+    position: relative;
+    overflow: hidden;   /* the picture's slow zoom stays inside its frame */
+    border-radius: var(--radius-lg);
+    background: var(--white);   /* shows through the light placeholder boxes; the last picture has its own dark fill */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.htour-scard img,
+.htour-scard__slot {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    border-radius: 0;
+    -webkit-user-drag: none;
+}
+
+/* the last picture is the dark placeholder for the Enju picture */
+.htour-scard--finale {
+    background: linear-gradient(150deg, var(--blue) 0%, var(--blue-night) 100%);
+    color: var(--white);
+}
+
+.section--light .htour-scard--finale .htour-slot {
+    border-color: rgba(242, 196, 15, 0.6);
+}
+
+/* ---- the text (shown under its picture without the script; with the script it is copied into the caption area under the stack) ---- */
+.htour-scard__text,
+.htour-story__caption {
+    position: relative;
+    isolation: isolate;
+    padding: var(--space-4) 0 0;
+}
+
+.htour-scard__text p,
+.htour-story__caption p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+/* the heading lines: the size of the page's main heading */
+.htour-scard__text p:first-child,
+.htour-story__caption p:first-child {
+    font-family: var(--font-display);   /* Roca Two, like the heading; the heading is set apart by its size and the gold highlight */
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);   /* 28px on a phone, 44px on desktop: "to document Ugandan cultural places…" sits on two lines */
+    font-weight: 700;
+    line-height: var(--lh-heading);}
+
+/* "Enju" gets a gold highlighter stroke */
+.htour-word {
+    background: linear-gradient(transparent 62%, var(--yellow) 62%);
+}
+
+.htour-scard__text .htour-scard__pron,
+.htour-story__caption .htour-scard__pron {
+    margin-top: var(--space-3);
+    color: rgba(21, 43, 102, 0.65);
+    font-family: var(--font-body);   /* the same look as the "Bonus tip" line */
+    font-size: var(--text-sm);
+    font-weight: 400;
+    line-height: var(--lh-ui);
+}
+
+.htour-scard__pron em,
+.htour-scard__meaning em {
+    font-style: italic;
+}
+
+.htour-scard__rule {
+    display: block;
+    width: 3.5rem;
+    height: 3px;
+    margin: var(--space-2) 0;
+    border-radius: 2px;
+    background: var(--yellow);
+}
+
+.htour-scard__text .htour-scard__meaning,
+.htour-story__caption .htour-scard__meaning {
+    font-family: var(--font-body);
+    font-size: var(--text-lead);
+    font-weight: 600;
+    line-height: var(--lh-ui);
+}
+
+/* on phones and tablets the big faded number sits behind the caption, on the right */
+.htour-story__caption::before {
+    content: attr(data-chapter);
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    color: var(--blue-outline);
+    font-family: var(--font-label);
+    font-size: 7.5rem;
+    line-height: 0.8;
+    letter-spacing: 0.02em;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.htour-story__captions {
+    display: none;
+}
+
+/* ---------- With the script on ---------- */
+.htour-story--live {
+    height: calc(var(--pin-h) + 4 * var(--step));   /* four picture changes */
+}
+
+.htour-story--live .htour-story__pin {
+    position: sticky;
+    top: var(--pin-top);
+    display: grid;
+    align-content: start;
+    row-gap: var(--space-4);
+    height: var(--pin-h);
+    padding-top: var(--space-3);   /* the title does not touch the page header */
+}
+
+.htour-story--live .htour-story__head::after,
+.htour-story--live .htour-story__count {
+    display: block;
+}
+
+.htour-story--live .htour-scard__text {
+    display: none;
+}
+
+/* the window the pictures slide in: as tall as one picture plus a peek of its neighbours above and below */
+.htour-story--live .htour-story__stage {
+    position: relative;
+    height: calc(var(--card-h) + 2 * var(--peek));
+    margin-inline: calc(var(--gutter) * -1);   /* phone: edge to edge */
+    overflow: hidden;
+}
+
+.htour-story--live .htour-story__cards {
+    display: block;
+    transform: translateY(calc(var(--peek) - var(--i, 0) * (var(--card-h) + var(--gap))));
+    transition: transform 800ms cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.htour-story--live .htour-story__cards > li {
+    height: var(--card-h);
+    margin-bottom: var(--gap);
+}
+
+.htour-story--live .htour-scard {
+    height: 100%;
+    border-radius: 0;
+    opacity: 0.5;
+    transition: opacity 500ms ease, scale 500ms ease;
+}
+
+.htour-story--live .htour-scard.is-current {
+    opacity: 1;
+}
+
+.htour-story--live .htour-scard img,
+.htour-story--live .htour-scard__slot {
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+/* phone: a thin gold frame laid over the current picture, a little in from its edges; it closes in when the picture arrives */
+.htour-story--live .htour-scard::after {
+    content: "";
+    position: absolute;
+    inset: var(--space-3);
+    border: 2px solid var(--yellow);
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 0 1px rgba(11, 23, 52, 0.25), inset 0 0 0 1px rgba(11, 23, 52, 0.2);   /* a hairline of shade, so the gold shows on bright sky too */
+    pointer-events: none;
+    transition: inset 700ms cubic-bezier(0.2, 0.7, 0.2, 1), opacity 500ms ease;
+}
+
+.htour-story--live .htour-scard:not(.is-current)::after {
+    inset: var(--space-6);
+    opacity: 0;
+}
+
+/* the five statements are laid out one under the other in a tall column behind a window that shows one of them (the script sets the
+   window height from the tallest one). The script moves the column up as the page scrolls, so the current statement is solid and the
+   one before and the one after show only a little, dimmed, at the top and bottom edges (--near is 1 for the current one and falls to 0
+   a statement away). */
+.htour-story--live .htour-story__captions {
+    display: block;
+    padding-block: 1.25rem;   /* the room for the little peek */
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+}
+
+.htour-story__strip {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    will-change: transform;
+}
+
+.htour-story--live .htour-story__caption {
+    flex: none;
+    height: var(--slot, auto);
+    min-width: 0;
+    padding: 0;
+    opacity: calc(0.22 + 0.78 * var(--near, 0));
+    cursor: pointer;
+}
+
+/* ---- tablets and up: rounded pictures inside the page's margins ---- */
+@media (min-width: 48rem) {
+    .htour-story--live .htour-story__stage {
+        margin-inline: 0;
+    }
+
+    /* a small gold tab with the picture's number, on its top-right corner */
+    .htour-story--live .htour-scard::before {
+        content: attr(data-number);
+        position: absolute;
+        top: var(--space-4);
+        right: var(--space-4);
+        z-index: 1;
+        padding: 0.3rem 0.8rem 0.2rem;
+        border-radius: 999px;
+        background: var(--yellow);
+        color: var(--blue-dark);
+        font-family: var(--font-label);
+        font-size: var(--text-sm);
+        letter-spacing: 0.14em;
+        line-height: 1.2;
+        box-shadow: 0 2px 8px rgba(11, 23, 52, 0.3);
+        pointer-events: none;
+    }
+
+    .htour-story--live .htour-story__stage {
+        --lift: 0.75rem;   /* how far the shadow reaches to the right and down */
+        height: calc(var(--card-h) + 2 * var(--peek) + var(--lift));
+        padding: 0 var(--lift) var(--lift) 0;
+    }
+
+    .htour-story--live .htour-scard {
+        border-radius: var(--radius-lg);
+        box-shadow: var(--lift) var(--lift) 0 rgba(6, 32, 126, 0.62);   /* a deep, saturated blue, darker than the eyebrow's blue (#1146bb), and a little more see-through */
+    }
+
+    .htour-story--live .htour-scard::after {
+        display: none;
+    }
+
+    .htour-story--live .htour-scard:not(.is-current) {
+        scale: 0.96;
+    }
+
+    .htour-story__caption::before {
+        font-size: 10rem;
+    }
+
+}
+
+/* ---- desktop: the title and the current number in the left column, near the middle; the pictures and captions in the right ---- */
+@media (min-width: 64rem) {
+    .htour-story--live .htour-story__pin {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        grid-template-rows: auto auto;
+        align-content: center;
+        column-gap: var(--space-16);
+        row-gap: var(--space-6);
+    }
+
+    .htour-story--live .htour-story__head {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        align-self: center;
+        display: block;
+        padding-bottom: 0;
+        margin-bottom: clamp(4rem, 14vh, 9rem);   /* a little above the true middle, where the eye expects the centre of a screen */
+    }
+
+    .htour-story--live .htour-story__head::after,
+    .htour-story--live .htour-story__count,
+    .htour-story__caption::before {
+        display: none;
+    }
+
+    .htour-story--live .htour-story__head .eyebrow {
+        margin-bottom: var(--space-4);   /* a little more room between the eyebrow and the heading */
+    }
+
+    .htour-story--live .htour-story__head h2 {
+        font-size: clamp(3rem, 1.5rem + 3.6vw, 4rem);   /* "Why we made / this project" on two lines */
+    }
+
+    /* the line under the heading is the story's progress: an invisible track with a gold fill that grows as the cards go by, as wide as the heading's last line (a fifth of it is
+       filled on the first card and all of it on the last). On phones the pinned title has its own progress line along its bottom edge. */
+    .htour-story--live .htour-story__head h2::after {
+        content: "";
+        display: block;
+        width: 3.83em;   /* as wide as the heading's last line ("project?"), at any heading size */
+        height: 4px;
+        margin-top: var(--space-6);   /* a little air between the heading and the line */
+        border-radius: 2px;
+        background:
+            linear-gradient(var(--yellow), var(--yellow)) left center / calc((0.2 + 0.8 * var(--progress, 0)) * 100%) 100% no-repeat;
+        /* a small shadow so the gold stands out on the light background (a drop-shadow follows the filled part only, not the empty track) */
+        filter: drop-shadow(0 2px 1.25px rgba(21, 43, 102, 0.58));
+    }
+
+    .htour-story--dark .htour-story__head h2::after {
+        filter: none;   /* on the dark last card the gold already stands out */
+        background:
+            linear-gradient(var(--yellow), var(--yellow)) left center / calc((0.2 + 0.8 * var(--progress, 0)) * 100%) 100% no-repeat;
+    }
+
+    .htour-story--live .htour-story__stage {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .htour-story--live .htour-story__captions {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    /* the current number: big and faded, above the title; the title overlaps its lower part a little */
+    .htour-story--live .htour-story__numbers {
+        position: relative;
+        display: grid;
+        height: 10.5rem;
+        margin-bottom: -1.5rem;
+        pointer-events: none;
+    }
+
+    .htour-story__numbers span {
+        grid-area: 1 / 1;
+        color: var(--blue-outline);
+        font-family: var(--font-label);
+        font-size: clamp(9rem, 5rem + 9vw, 15rem);
+        line-height: 0.8;
+        letter-spacing: 0.02em;
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 500ms ease, transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .htour-story__numbers span.is-current {
+        opacity: 0.12;
+        transform: none;
+    }
+
+    .htour-story--live .htour-story__head .eyebrow,
+    .htour-story--live .htour-story__head h2 {
+        position: relative;   /* above the number */
+    }
+}
+
+/* ---- the dark state (the last picture is current) ---- */
+.htour-story__head .eyebrow,
+.htour-story__count,
+.htour-story__numbers span,
+.htour-story__caption::before,
+.htour-scard__pron {
+    transition: color 600ms ease;
+}
+
+.htour-story--dark .htour-story__head .eyebrow,
+.htour-story--dark .htour-story__count {
+    color: var(--yellow);
+}
+
+.htour-story--dark .htour-story__numbers span,
+.htour-story--dark .htour-story__caption::before {
+    color: #c2e5ff;   /* pale sky blue, translucent (below): the big number is a quiet light shape, not another gold accent */
+}
+
+.htour-story--dark .htour-story__numbers span.is-current,
+.htour-story--dark .htour-story__caption::before {
+    opacity: 0.22;   /* brighter than on the light slides, but still behind the text */
+}
+
+.htour-story--dark .htour-story__caption .htour-scard__meaning {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.htour-story--dark .htour-story__caption .htour-scard__pron {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.htour-story--dark .htour-word {
+    background: none;
+    color: var(--yellow);
+}
+
+.htour-story--dark .htour-story__stage {
+    -webkit-mask-image: none;
+}
+
+.htour-story--dark .htour-scard--finale {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+@media (min-width: 48rem) {
+    .htour-story--dark .htour-story__stage .htour-scard {
+        box-shadow: var(--lift) var(--lift) 0 rgba(242, 196, 15, 0.4);   /* on the dark background the shadow is gold instead of blue (stronger now that there is no gold edge) */
+    }
+}
+
+/* ---- motion ---- */
+
+/* the current picture zooms in slowly; it is put back only after the stack has moved on, so there is no visible snap back */
+@media (prefers-reduced-motion: no-preference) {
+    .htour-story--live .htour-scard img,
+    .htour-story--live .htour-scard__slot {
+        scale: 1;
+        transition: scale 0s 900ms;
+    }
+
+    .htour-story--live .htour-scard.is-current img,
+    .htour-story--live .htour-scard.is-current .htour-scard__slot {
+        scale: 1.06;
+        transition: scale 7s cubic-bezier(0.25, 0.6, 0.3, 1);
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .htour-story--live .htour-story__cards,
+    .htour-story--live .htour-scard,
+    .htour-story--live .htour-scard::after,
+    .htour-story--live .htour-story__caption,
+    .htour-story--live .htour-story__caption.is-current,
+    .htour-story__numbers span {
+        transition: none;
+    }
+
+    .htour-story--live .htour-scard:not(.is-current) {
+        scale: 1;
+    }
+}
+
+/* ---------- How we made it: the photo strip ----------
+   The strip itself (the moving band, the arrows, the opened photo with its caption) is the home page's, from the shared style sheet and
+   js/photo-band.js. Here the label is part of the strip. */
+/* the eyebrow and the heading sit in the top of the strip and stay still while the photos move under them, lined up with the page's content edge */
+.htour-making__head {
+    margin: 0 0 var(--space-8);   /* room between the heading and the photos */
+    padding-inline: max(var(--gutter), calc((100% - var(--container)) / 2));
+}
+
+.htour-making__head .eyebrow {
+    margin: 0 0 var(--space-3);
+}
+
+.htour-making__head h2 {
+    margin: 0;
+    color: var(--white);
+    font-size: 1.75rem;   /* the same sizes as the other section headings on this page */
+}
+
+@media (min-width: 40rem) {
+    .htour-making__head h2 {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .htour-making__head {
+        margin-bottom: var(--space-12);
+    }
+
+    .htour-making__head h2 {
+        font-size: 2.5rem;
+    }
+}
+
+/* the next section already has its own space above it, so this one adds none under the strip (otherwise the gap above "Who it helps" is twice the gap below it) */
+.htour-making {
+    padding-bottom: 0;
+}
+
+.htour-making .photo-band {
+    margin-top: 0;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-16);   /* more room under the photos (they sit tilted, with a shadow) */
+}
+
+@media (min-width: 64rem) {
+    .htour-making .photo-band {
+        padding-bottom: 6rem;
+    }
+}
+
+/* desktop: the eyebrow and heading are centred over the strip (on phones they stay at the left, like the page's other headings) */
+@media (min-width: 64rem) {
+    .htour-making__head {
+        text-align: center;
+    }
+}
+
+/* the arrows sit level with the photos, not with the whole strip including its label */
+@media (hover: hover) and (pointer: fine) {
+    .htour-making .photo-band__arrow {
+        top: calc(50% + 2.1rem);
+    }
+}
+
+/* ---------- Footer notes: who supported the launch, then the copyright ---------- */
+.htour-footer-small {
+    display: grid;
+    gap: var(--space-2);
+}
+
+.site-footer__inner > .htour-footer-small p {
+    max-width: none;
+    margin: 0;
+    font-size: var(--text-sm);
+}
+
+@media (min-width: 64rem) {
+    .htour-footer-small {
+        grid-column: 1 / -1;
+    }
+}
+
+/* keeps the last word and the arrow of a link together, so the arrow never sits alone on a line */
+.htour-nowrap {
+    white-space: nowrap;
+}
+
+/* ---------- Who it helps: the word reel, the photo slideshow and the heritage pop-up ---------- */
+/* two columns on desktop (words left, photos right); stacked on phones. The page's normal dark blue and glow. */
+.htour-who__grid {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+}
+
+.htour-who__text {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
+    text-align: center;
+}
+
+@media (min-width: 64rem) {
+    .htour-who__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-16);
+    }
+}
+
+/* the heading: its word changes by itself. All the words sit in the same spot (so the heading is as wide as the longest one and nothing jumps),
+   and one is shown at a time. Without JavaScript they just show one under another. */
+.htour-who__words {
+    margin: 0;
+    color: var(--white);
+    font-size: clamp(2rem, 8.5vw, 3.5rem);
+    line-height: var(--lh-heading);
+}
+
+.htour-who__words span {
+    display: block;
+}
+
+.htour-who__words.is-live {
+    display: grid;
+    justify-items: center;
+}
+
+.htour-who__words.is-live span {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(0.45em);
+    filter: blur(8px);
+    transition: opacity 600ms ease, transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1), filter 600ms ease;
+}
+
+.htour-who__words.is-live span.is-active {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+.htour-who__words.is-live span.is-leaving {
+    transform: translateY(-0.45em);
+}
+
+.htour-who__text .eyebrow {
+    margin: 0;
+}
+
+.htour-who__lead {
+    max-width: 30rem;
+    margin: var(--space-2) 0 var(--space-2);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+@media (min-width: 40rem) {
+    .htour-who__lead {
+        font-size: 1.25rem;
+    }
+}
+
+.htour-who__actions {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
+}
+
+.htour-who__link {
+    padding: var(--space-2) 0;
+    border: 0;
+    background: none;
+    color: var(--yellow);
+    font: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+    cursor: pointer;
+}
+
+.htour-who__link:hover {
+    color: var(--white);
+}
+
+.htour-who__link:focus-visible {
+    outline: 3px solid var(--white);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* the slideshow: the site's framed photo look, photos fading into each other */
+.htour-who__slides {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    width: min(100%, 24rem);
+    justify-self: center;
+    overflow: hidden;
+    border: 3px solid var(--yellow);
+    border-radius: 20px;
+    background: var(--blue-night);
+    box-shadow: 6px 6px 0 var(--blue-dark);
+}
+
+.htour-who__slides img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 900ms ease;
+}
+
+.htour-who__slides img.is-active {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .htour-who__slides img {
+        transition: none;
+    }
+}
+
+/* the pop-up */
+.htour-heritage {
+    width: min(92vw, 36rem);
+    max-height: 88dvh;
+    margin: auto;
+    padding: var(--space-8) var(--space-6);
+    border: 3px solid var(--yellow);
+    border-radius: 20px;
+    background: var(--blue-dark);
+    box-shadow: 6px 6px 0 var(--blue-night);
+    color: var(--white);
+    text-align: left;
+    overflow-y: auto;
+}
+
+.htour-heritage::backdrop {
+    background: rgba(6, 12, 30, 0.85);
+}
+
+.htour-heritage h3 {
+    margin: 0 0 var(--space-6);
+    padding-right: 3rem;
+    font-size: 1.75rem;
+}
+
+.htour-heritage p {
+    margin: 0 0 var(--space-6);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.75;
+}
+
+.htour-heritage .htour-heritage__line {
+    margin-top: var(--space-8);
+    margin-bottom: 0;
+    color: var(--yellow);
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: var(--lh-heading);
+}
+
+.htour-heritage__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 3px solid var(--yellow);
+    border-radius: 50%;
+    background: var(--blue-night);
+    color: var(--yellow);
+    cursor: pointer;
+}
+
+.htour-heritage__close:hover,
+.htour-heritage__close:focus-visible {
+    background: var(--yellow);
+    color: var(--blue);
+}
+
+@media (min-width: 40rem) {
+    .htour-heritage {
+        padding: var(--space-12) var(--space-8);
+    }
+}
+
+/* ---------- Your reviews: light, centred like the home page's call to action ---------- */
+.htour-reviews__inner {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
+    text-align: center;
+}
+
+.htour-reviews__inner .eyebrow {
+    margin: 0;
+}
+
+.htour-reviews__inner h2 {
+    color: var(--blue);
+    font-size: 1.75rem;
+}
+
+@media (min-width: 40rem) {
+    .htour-reviews__inner h2 {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .htour-reviews__inner h2 {
+        font-size: 2.5rem;
+    }
+}
+
+.htour-reviews__lead {
+    max-width: 36rem;
+    margin: 0;
+    color: var(--blue);
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+@media (min-width: 40rem) {
+    .htour-reviews__lead {
+        font-size: 1.25rem;
+    }
+}
+
+.htour-reviews__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4) var(--space-8);
+    margin-top: var(--space-4);
+}
+
+.htour-reviews__link {
+    padding: var(--space-2) 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+    color: var(--blue);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+}
+
+.htour-reviews__link:hover {
+    color: var(--blue-dark);
+}
+
+/* ---------- Contact and share ---------- */
+/* On desktop the picture sits in the right column and stands in front of the line that runs under "Email us" (that line is the top edge of the share row) */
+.htour-contact__grid {
+    display: grid;
+}
+
+.htour-contact__visual {
+    display: none;
+}
+
+@media (min-width: 64rem) {
+    .htour-contact__grid {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        grid-template-rows: 1fr auto;
+        column-gap: var(--space-12);
+    }
+
+    .htour-contact__main {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+    }
+
+    /* the picture stands on the bottom edge of the section (the footer), so the section has no space under it; the left side keeps its own */
+    .htour-contact {
+        padding-bottom: 0;
+    }
+
+    .htour-contact__share {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        padding-bottom: var(--space-12);
+    }
+
+    .htour-contact__visual {
+        position: relative;
+        z-index: 2;   /* in front of the line */
+        display: block;
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        align-self: end;
+        justify-self: center;   /* centred in its column, not pushed to the right edge */
+        width: min(100%, 22rem);
+        margin: 0;
+        aspect-ratio: 900 / 1282;
+    }
+
+    .htour-contact__slideshow {
+        display: grid;
+        width: 100%;
+        height: 100%;
+    }
+
+    .htour-contact__slideshow img {
+        grid-area: 1 / 1;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 350ms ease;
+    }
+
+    .htour-contact__slideshow img.is-active {
+        opacity: 1;
+    }
+}
+
+.htour-share__copy {
+    padding: var(--space-2) 0;
+    border: 0;
+    background: none;
+    color: var(--yellow);
+    font: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+    cursor: pointer;
+}
+
+.htour-share__copy:hover {
+    color: var(--white);
+}
+
+.htour-share__copy:focus-visible {
+    outline: 3px solid var(--white);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* ---------- Reviews: two columns on desktop (text left, the form behind a cover on the right), a full-screen pop-up elsewhere ---------- */
+.htour-reviews__grid {
+    display: grid;
+    gap: var(--space-8);
+}
+
+.htour-reviews__box {
+    display: none;   /* phones and tablets use the pop-up instead */
+}
+
+@media (min-width: 64rem) {
+    .htour-reviews__grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--space-16);
+        align-items: center;
+    }
+
+    .htour-reviews__box {
+        display: block;
+        width: min(100%, 34rem);
+        justify-self: center;
+    }
+
+    /* in two columns the text is left-aligned */
+    .htour-reviews__inner {
+        justify-items: start;
+        text-align: left;
+    }
+
+    .htour-reviews__actions {
+        justify-content: flex-start;
+    }
+}
+
+.htour-reviews__frame {
+    position: relative;
+    height: min(34rem, 75dvh);
+    overflow: hidden;
+    border: 3px solid var(--yellow);
+    border-radius: 20px;
+    background: var(--blue-night);
+    box-shadow: 6px 6px 0 var(--blue-dark);
+}
+
+.htour-reviews__iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--white);
+}
+
+.htour-reviews__cover img {
+    object-position: 50% 0;
+    filter: blur(2px) saturate(0.7);   /* the form is a hint behind the button, not something to read */
+    transform: scale(1.03);   /* hides the soft edge the blur leaves */
+}
+
+.htour-reviews__cover .htour-poster__shade {
+    background: rgba(28, 36, 54, 0.72);
+}
+
+.htour-reviews__cover:hover img {
+    transform: scale(1.06);
+}
+
+.htour-reviews__cover {
+    color: var(--white);   /* the section is light, the cover is dark */
+}
+
+.htour-reviews__cover[hidden] {
+    display: none;
+}
+
+.htour-reviews__cover .htour-play svg {
+    margin-left: 0;
+}
+
+.htour-reviews__cover-note {
+    max-width: 22rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+    text-align: center;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.htour-reviews__box .htour-fallback {
+    margin-top: var(--space-3);
+    color: rgba(21, 36, 74, 0.7);
+    text-align: center;
+}
+
+.htour-reviews__box .htour-fallback a {
+    color: var(--blue);
+}
+
+/* the pop-up */
+.htour-review-dialog {
+    position: fixed;
+    width: min(94vw, 42rem);
+    height: min(92dvh, 56rem);
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 3px solid var(--yellow);
+    border-radius: 20px;
+    background: var(--white);
+    color: var(--text);
+    overscroll-behavior: contain;   /* scrolling the form never carries on into the page behind */
+}
+
+.htour-review-dialog[open] {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.htour-review-dialog::backdrop {
+    background: rgba(6, 12, 30, 0.85);
+}
+
+.htour-review__note {
+    margin: 0;
+    padding: var(--space-4) 4.5rem var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+}
+
+.htour-review__form {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.htour-review-dialog .htour-fallback {
+    margin: 0;
+    padding: var(--space-2) var(--space-4);
+    background: var(--off-white);
+    color: rgba(21, 36, 74, 0.75);
+    text-align: center;
+}
+
+.htour-review-dialog .htour-fallback a {
+    color: var(--blue);
+}
+
+@media (max-width: 39.999rem) {
+    .htour-review-dialog {
+        width: 100vw;
+        height: 100dvh;
+        border: 0;
+        border-radius: 0;
+    }
+}
+
+/* The call to action under the photo strip: a small centred line in the style of the "Bonus tip" line, where only the last part is a link.
+   It sits in the space under the photos (the strip's bottom padding), so the strip does not get any taller and the arrows stay level with the photos. */
+.htour-making__cta {
+    position: absolute;
+    right: var(--space-4);
+    bottom: var(--space-5, 1.25rem);
+    left: var(--space-4);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;   /* centred even when the line wraps and the link drops under the question */
+    column-gap: 0.4em;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+    text-align: center;
+}
+
+.htour-making__cta a {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
+}
+
+.htour-making__cta a:hover {
+    color: var(--white);
+}
+
+@media (max-width: 63.999rem) {
+    /* a little more room under the photos for the line on phones and tablets (the arrows are not shown there) */
+    .htour-making .photo-band {
+        padding-bottom: 5rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .htour-making__cta {
+        bottom: var(--space-8);
+    }
+}

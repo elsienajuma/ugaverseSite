@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Placeholder picture of the Buganda Palace of Mengo">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1734"/>
+      <stop offset="0.7" stop-color="#152b66"/>
+      <stop offset="1" stop-color="#1a387f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1230" cy="250" r="90" fill="#f2c40f" opacity="0.85"/>
+  <path d="M0 720 Q400 640 800 700 T1600 680 V900 H0Z" fill="#0e1d42" opacity="0.7"/>
+  <g fill="none" stroke="#f2c40f" stroke-width="6" stroke-linejoin="round" opacity="0.8">
+    <path d="M560 700 V500 L800 330 L1040 500 V700Z"/>
+    <path d="M700 700 V560 H900 V700"/>
+  </g>
+  <text x="800" y="800" text-anchor="middle" font-family="Georgia, serif" font-size="40" fill="#f2c40f" opacity="0.9">Placeholder: replace with a picture of the palace</text>
+</svg>

@@ -15,6 +15,30 @@
     if (!band) return;
 
     const track = band.querySelector(".photo-band__track");
+
+    // A page may list its photos just once. Then the script numbers them and adds the second, hidden set that makes the loop seamless
+    // (the home page lists both sets by hand, so it does not need this).
+    if (!track.querySelector("[data-band-clone]")) {
+        const listed = Array.from(track.querySelectorAll(".photo-band__item"));
+        listed.forEach((item, index) => {
+            item.dataset.bandIndex = index;
+            item.setAttribute("aria-label", "Open photo " + (index + 1) + " of " + listed.length);
+        });
+        listed.forEach((item) => {
+            const copy = item.cloneNode(true);
+            copy.setAttribute("data-band-clone", "");
+            copy.setAttribute("aria-hidden", "true");
+            copy.setAttribute("tabindex", "-1");
+            copy.removeAttribute("aria-label");
+            const copyImage = copy.querySelector("img");
+            copyImage.alt = "";
+            copyImage.removeAttribute("data-full");
+            copyImage.removeAttribute("data-caption");
+            copyImage.removeAttribute("data-project");
+            track.appendChild(copy);
+        });
+    }
+
     const items = Array.from(track.querySelectorAll(".photo-band__item"));
     const lightbox = document.querySelector(".photo-lightbox");
     if (!items.length || !lightbox) return;
@@ -219,9 +243,12 @@
         lightboxCount.textContent = current + 1 + " of " + originals.length;
     }
 
+    let openedAt = 0;
+
     function openItem(item) {
         show(Number(item.dataset.bandIndex));
         paused = true;
+        openedAt = performance.now();
         lightbox.showModal();
     }
 
@@ -235,9 +262,10 @@
     lightbox.querySelector("[data-lightbox-next]").addEventListener("click", () => show(current + 1));
     lightbox.querySelector("[data-lightbox-close]").addEventListener("click", () => lightbox.close());
 
-    // a click on the dark area around the photo closes it
+    // a click on the dark area around the photo closes it. (Not in the first moments after opening: the viewer opens on the release of a tap, and the
+    // click the browser then sends to that same spot lands on the dark area when the photo was near the edge of the screen. It must not close the viewer.)
     lightbox.addEventListener("click", (event) => {
-        if (event.target === lightbox) lightbox.close();
+        if (event.target === lightbox && performance.now() - openedAt > 500) lightbox.close();
     });
 
     lightbox.addEventListener("keydown", (event) => {

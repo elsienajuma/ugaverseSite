@@ -43,8 +43,7 @@
 
     /* layout */
     --glow-h: 70vh;
-    /* every light section: a flat light-blue tint with a purple-blue fade only in the lower part of the screen (--glow-sky-h tall), fixed to the screen, kept light enough for the dark text */
-    --glow-sky: linear-gradient(to bottom, rgba(124, 112, 232, 0) 0%, rgba(124, 112, 232, 0.34) 100%) 0 100% / 100% var(--glow-sky-h) no-repeat fixed, linear-gradient(rgba(120, 190, 250, 0.40), rgba(120, 190, 250, 0.40));
+    /* every light section: a flat light-blue tint with a purple-blue fade only in the lower part of the screen (--glow-sky-h tall), pinned to the screen, kept light enough for the dark text */
     --glow-sky-h: 45vh;
     --glow-fill:
         radial-gradient(ellipse 110% 100% at 50% 100%, rgba(88, 28, 160, 0.8) 0%, rgba(88, 28, 160, 0.45) 50%, transparent 90%) 0 100% / 100% var(--glow-h) no-repeat fixed,
@@ -205,7 +204,7 @@ a {
 }
 
 .section--light {
-    background: var(--glow-sky), var(--off-white);
+    background: linear-gradient(rgba(120, 190, 250, 0.40), rgba(120, 190, 250, 0.40)), var(--off-white);
     color: var(--text);
 }
 
@@ -448,6 +447,18 @@ h3 {
     color: var(--yellow);
 }
 
+/* the Projects drop-down. In the phone and tablet menu its link simply sits under "Projects", a little indented. */
+.site-nav__sub {
+    margin: 0;
+    padding: 0 0 0 var(--space-4);
+    list-style: none;
+}
+
+.site-nav__sub a {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
 /* "Get me online" in the header: a gold pill with a soft glow, a slow shine that sweeps across it, and an arrow that nudges on hover */
 .site-nav__list .site-nav__cta {
     position: relative;
@@ -563,6 +574,57 @@ h3 {
         margin: 0 0 0 var(--space-2);
         padding: var(--space-3) var(--space-6);
     }
+
+    /* the drop-down opens on hover or keyboard focus (and, on a touch screen, on the first tap of "Projects") */
+    .site-nav__item--sub {
+        position: relative;
+    }
+
+    .site-nav__sub {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 20;
+        min-width: 100%;
+        padding: var(--space-2);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: var(--radius-sm);
+        background: var(--blue-dark);
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-4px);
+        transition: opacity 160ms ease, transform 160ms ease;
+        visibility: hidden;
+    }
+
+    /* an invisible bridge, so the pointer can travel from "Projects" to the drop-down without it closing */
+    .site-nav__sub::before {
+        position: absolute;
+        right: 0;
+        bottom: 100%;
+        left: 0;
+        height: var(--space-3);
+        content: "";
+    }
+
+    .site-nav__item--sub:hover .site-nav__sub,
+    .site-nav__item--sub:focus-within .site-nav__sub,
+    .site-nav__item--sub.is-open .site-nav__sub {
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+        visibility: visible;
+    }
+
+    .site-nav__sub a {
+        white-space: nowrap;
+        border-radius: 8px;
+    }
+
+    .site-nav__sub a:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
 }
 
 /* ---------- Hero ---------- */
@@ -570,8 +632,8 @@ h3 {
 .hero {
     padding: var(--space-16) 0 var(--space-16);
     overflow: hidden;
-    /* the purple glow is painted on the blue (fixed to the screen) */
-    background: var(--glow-fill), var(--blue);
+    /* the purple glow is drawn by the pinned layer in the block below */
+    background: var(--blue);
 }
 
 /* Purple glow: ONE layer fixed to the bottom edge of the screen, behind all content. It does not scroll.
@@ -588,6 +650,66 @@ h3 {
         radial-gradient(ellipse 110% 100% at 50% 100%, rgba(88, 28, 160, 0.8) 0%, rgba(88, 28, 160, 0.45) 50%, transparent 90%),
         linear-gradient(to top, rgba(60, 20, 130, 0.55) 0%, transparent 75%);
     pointer-events: none;
+}
+
+/* Pinned glow for the hero, the light sections and the closing band.
+   The glow stays fixed to the bottom of the screen while the page scrolls past it. It is a position: fixed layer clipped to its own
+   section (clip-path), not background-attachment: fixed, because iPhone Safari ignores fixed backgrounds and showed only a weak band
+   at the bottom of each section. The clip-path also keeps the layer inside the section, as the background did. */
+.hero,
+.section--light,
+.conversion-cta {
+    position: relative;
+    clip-path: inset(0);
+}
+
+/* the closing band has a 24px gold border: clip inside it, so the glow stays under the border as the fixed background did */
+.conversion-cta {
+    clip-path: inset(24px 0);
+}
+
+.hero > *,
+.section--light > *,
+.conversion-cta > * {
+    position: relative;
+}
+
+.hero::before,
+.section--light::before,
+.conversion-cta::before {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+    pointer-events: none;
+}
+
+.hero::before {
+    height: var(--glow-h);
+    background:
+        radial-gradient(ellipse 110% 100% at 50% 100%, rgba(88, 28, 160, 0.8) 0%, rgba(88, 28, 160, 0.45) 50%, transparent 90%),
+        linear-gradient(to top, rgba(60, 20, 130, 0.55) 0%, transparent 75%);
+}
+
+.section--light::before,
+.conversion-cta::before {
+    height: var(--glow-sky-h);
+    background: linear-gradient(to bottom, rgba(124, 112, 232, 0) 0%, rgba(124, 112, 232, 0.34) 100%);
+}
+
+/* a stronger glow on desktop, where the screen is large and the effect reads as faint */
+@media (min-width: 64rem) {
+    .hero::before {
+        background:
+            radial-gradient(ellipse 110% 100% at 50% 100%, rgba(88, 28, 160, 0.95) 0%, rgba(88, 28, 160, 0.6) 50%, transparent 90%),
+            linear-gradient(to top, rgba(60, 20, 130, 0.7) 0%, transparent 75%);
+    }
+
+    .section--light::before,
+    .conversion-cta::before {
+        background: linear-gradient(to bottom, rgba(124, 112, 232, 0) 0%, rgba(124, 112, 232, 0.55) 100%);
+    }
 }
 
 .hero__grid {
@@ -655,6 +777,14 @@ h3 {
     border-block: 3px solid var(--blue-night);
     background: var(--yellow);
     color: var(--blue);
+    cursor: grab;
+    touch-action: pan-y;   /* sideways drags move the strip (strip-system.js); up and down still scroll the page */
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.strip.is-dragging {
+    cursor: grabbing;
 }
 
 .strip__track {
@@ -2427,7 +2557,7 @@ a.dh__phone-caption:hover {
 
 .conversion-cta {
     border-block: 24px solid var(--yellow);
-    background: var(--glow-sky), var(--off-white);
+    background: linear-gradient(rgba(120, 190, 250, 0.40), rgba(120, 190, 250, 0.40)), var(--off-white);
     color: var(--blue);
 }
 
@@ -2632,6 +2762,14 @@ a.dh__phone-caption:hover {
 }
 
 /* narrow phones: use the full width so the caption and link stay on two lines */
+/* tablets: the opened photo is a little smaller, so there is clear space around it, and it stays well clear of the previous and next arrows (they sit
+   16px from each edge and are 48px wide) */
+@media (min-width: 30.0625rem) and (max-width: 63.999rem) {
+    .photo-lightbox__img {
+        width: min(100vw - 8rem, 34rem);
+    }
+}
+
 @media (max-width: 30rem) {
     .photo-lightbox {
         padding-inline: var(--space-2);
@@ -2978,9 +3116,17 @@ a.dh__phone-caption:hover {
 }
 
 .site-footer__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4) var(--space-6);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    align-content: start;
+    gap: var(--space-3) var(--space-8);
+}
+
+/* on a wide screen the footer has three columns (brand, links, contact), so the links stack in one column */
+@media (min-width: 64rem) {
+    .site-footer__links {
+        grid-template-columns: minmax(0, max-content);
+    }
 }
 
 .site-footer__links a {
@@ -3065,6 +3211,15 @@ a.dh__phone-caption:hover {
     transform: translateX(-50%) rotate(45deg);
 }
 
+.copy-pill--above {
+    transform: translateY(4px);
+}
+
+.copy-pill--above::before {
+    top: auto;
+    bottom: -5px;
+}
+
 .copy-pill.is-visible {
     opacity: 1;
     transform: none;
@@ -3083,6 +3238,12 @@ a.dh__phone-caption:hover {
 
 .site-footer__social {
     margin-top: var(--space-1);
+}
+
+/* the WhatsApp group sits under the email, with room for the small "Copied" message between them */
+.site-footer__whatsapp {
+    margin-top: var(--space-8);
+    text-underline-offset: 4px;
 }
 
 .site-footer__legal {
