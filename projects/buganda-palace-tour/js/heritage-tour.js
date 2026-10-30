@@ -44,6 +44,12 @@
         const maxH = Math.max(0, height - 2 * margin);
         // landscape follows the screen's own shape, between 4:3 and 3:2, so the window is never shorter than 4:3 would make it
         const ratio = height > width ? 3 / 4 : (height <= 500 ? 16 / 10 : Math.min(3 / 2, Math.max(4 / 3, maxW / maxH)));   // width / height
+        // phones held upright use the whole visible height (inside the margin) so the xylophone has room; everything else keeps its ratio
+        if (height > width && width < 640) {
+            modal.style.setProperty("--fs-w", Math.floor(maxW) + "px");
+            modal.style.setProperty("--fs-h", Math.floor(maxH) + "px");
+            return;
+        }
         const w = Math.min(maxW, maxH * ratio);
         modal.style.setProperty("--fs-w", Math.floor(w) + "px");
         modal.style.setProperty("--fs-h", Math.floor(w / ratio) + "px");

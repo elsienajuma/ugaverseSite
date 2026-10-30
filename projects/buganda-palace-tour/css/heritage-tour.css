@@ -434,6 +434,14 @@ html.is-tour-fullscreen body {
     }
 }
 
+/* phones held upright: the window fills the visible height inside the margin (the script sets the real size) */
+@media (orientation: portrait) and (max-width: 39.999rem) {
+    .htour-modal {
+        --fs-w: calc(100vw - 2 * var(--fs-margin));
+        --fs-h: calc(100vh - 2 * var(--fs-margin));
+    }
+}
+
 .htour-backdrop {
     position: absolute;
     inset: 0;
