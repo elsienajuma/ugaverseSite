@@ -3157,6 +3157,9 @@ a.dh__phone-caption:hover {
 }
 
 .site-footer__copy {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
     padding: var(--space-1) var(--space-3);
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 999px;
@@ -3240,9 +3243,8 @@ a.dh__phone-caption:hover {
     margin-top: var(--space-1);
 }
 
-/* the WhatsApp group sits under the email, with room for the small "Copied" message between them */
-.site-footer__whatsapp {
-    margin-top: var(--space-8);
+/* the links under the email (Enju VR download, WhatsApp group, Learn more); the small "Copied" message floats over the first one for a moment */
+.site-footer__contact > a {
     text-underline-offset: 4px;
 }
 

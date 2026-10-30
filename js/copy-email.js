@@ -29,11 +29,13 @@
 
     // a "Copy" button shows "Copied" for a moment
     function flashButton(button, ok) {
-        const label = button.dataset.label || button.textContent;
+        // a button with a [data-copy-label] part (the footer's, which has a mail icon) changes only that text, so the icon stays
+        const target = button.querySelector("[data-copy-label]") || button;
+        const label = button.dataset.label || target.textContent;
         button.dataset.label = label;
-        button.textContent = ok ? "Copied" : "Press Ctrl+C to copy";
+        target.textContent = ok ? "Copied" : "Press Ctrl+C to copy";
         clearTimeout(button._timer);
-        button._timer = setTimeout(() => { button.textContent = label; }, 2200);
+        button._timer = setTimeout(() => { target.textContent = label; }, 2200);
     }
 
     // the pill sits under the row that holds the link (the "host") and points up at the link
