@@ -295,6 +295,15 @@ html.is-tour-fullscreen body {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* a quiet note under the pills (under the title on phones, where the pills are hidden), so nobody thinks the tour is broken while it loads */
+.htour-poster__note {
+    margin: 0;
+    color: rgba(241, 245, 251, 0.85);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
 /* the two device pills: hidden on phones (the poster stays clean with just the play button), one centred row from 640px */
 .htour-rooms {
     display: none;
@@ -365,6 +374,45 @@ html.is-tour-fullscreen body {
     color: var(--yellow);
     text-align: center;
     pointer-events: none;
+    justify-items: center;
+}
+
+.htour-loading p {
+    margin: 0;
+}
+
+.htour-loading__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.htour-loading__note {
+    color: rgba(241, 245, 251, 0.8);
+    font-size: var(--text-sm);
+    line-height: var(--lh-ui);
+}
+
+.htour-loading__spinner {
+    width: 36px;
+    height: 36px;
+    margin-bottom: var(--space-2);
+    border: 3px solid rgba(242, 196, 15, 0.25);
+    border-top-color: var(--yellow);
+    border-radius: 50%;
+    animation: htour-spin 900ms linear infinite;
+}
+
+@keyframes htour-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .htour-loading__spinner {
+        animation: none;
+        border-top-color: rgba(242, 196, 15, 0.25);
+    }
 }
 
 .htour-fallback {

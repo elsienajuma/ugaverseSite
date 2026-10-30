@@ -27,15 +27,15 @@
         document.documentElement.classList.add("js");
         setTimeout(function () { if (!document.documentElement.hasAttribute("data-reveal-ready")) document.documentElement.classList.remove("js"); }, 3000);
     </script>
-    <link rel="stylesheet" href="/css/style-system.css?v=20261030g">
-    <link rel="stylesheet" href="/projects/buganda-palace-tour/css/heritage-tour.css?v=20261030g">
-    <script src="/js/site.js?v=20261030g" defer></script>
-    <script src="/js/reveal-system.js?v=20261030g" defer></script>
-    <script src="/js/strip-system.js?v=20261030g" defer></script>
-    <script src="/js/copy-email.js?v=20261030g" defer></script>
-    <script src="/js/photo-band.js?v=20261030g" defer></script>
-    <script src="/projects/buganda-palace-tour/js/heritage-tour.js?v=20261030g" defer></script>
-    <script src="/projects/buganda-palace-tour/js/who-reel.js?v=20261030g" defer></script>
+    <link rel="stylesheet" href="/css/style-system.css?v=20261030i">
+    <link rel="stylesheet" href="/projects/buganda-palace-tour/css/heritage-tour.css?v=20261030i">
+    <script src="/js/site.js?v=20261030i" defer></script>
+    <script src="/js/reveal-system.js?v=20261030i" defer></script>
+    <script src="/js/strip-system.js?v=20261030i" defer></script>
+    <script src="/js/copy-email.js?v=20261030i" defer></script>
+    <script src="/js/photo-band.js?v=20261030i" defer></script>
+    <script src="/projects/buganda-palace-tour/js/heritage-tour.js?v=20261030i" defer></script>
+    <script src="/projects/buganda-palace-tour/js/who-reel.js?v=20261030i" defer></script>
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -164,6 +164,7 @@
                                         <li><button type="button" aria-label="Play the tour on a phone or tablet">Phone/Tablet</button></li>
                                         <li><button type="button" aria-label="Play the tour on a laptop or PC">Laptop/PC</button></li>
                                     </ul>
+                                    <p class="htour-poster__note">Takes a few seconds to load</p>
                                 </div>
                             </div>
                         </div>
@@ -443,7 +444,11 @@
     <div class="htour-modal" data-tour-modal role="dialog" aria-modal="true" aria-label="TOUR: The Buganda Palace of Mengo" hidden>
         <div class="htour-backdrop" data-tour-backdrop></div>
         <div class="htour-window" data-tour-window>
-            <div class="htour-loading" data-tour-loading aria-hidden="true"></div>
+            <div class="htour-loading" data-tour-loading role="status">
+                <span class="htour-loading__spinner" aria-hidden="true"></span>
+                <p class="htour-loading__title">Loading the tour&hellip;</p>
+                <p class="htour-loading__note">Please wait. This can take a few seconds.</p>
+            </div>
         </div>
         <button class="htour-close" type="button" data-tour-close aria-label="Close the tour" title="Close">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
