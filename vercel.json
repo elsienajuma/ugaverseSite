@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "ugaverse.vercel.app" }],
+      "destination": "https://www.ugaverse.com/$1",
+      "permanent": true
+    }
+  ]
+}
