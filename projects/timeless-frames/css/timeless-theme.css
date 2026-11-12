@@ -1,0 +1,90 @@
+/* Timeless Frames tour page: the colour theme. Loaded AFTER css/style-system.css and gallery-tour.css.
+   The page layout is the same as the homepage and the Buganda Palace tour page; only the colours change, from blue to a deep forest green with a soft gold.
+   Both stylesheets read their colours from these variables (the "--c-..." ones hold red, green, blue numbers). To tune the look, change them here. */
+:root {
+    /* the dark sections */
+    --blue: #113e2b;
+    --blue-dark: #0c3021;
+    --blue-night: #08241a;
+    --blue-hover: #18513a;
+    --blue-outline: #196f43;   /* the small green labels on light sections (contrast 6:1 on the light background) */
+
+    /* the gold accent: a little softer than the homepage's yellow */
+    --yellow: #e3b94a;
+    --yellow-soft: #edcc72;
+
+    /* light sections: warm cream and deep green text */
+    --off-white: #d8d7d0;      /* the cream base, about 12% darker (same hue and saturation) */
+    --text: #17281f;
+
+    /* the glows that sit at the bottom of every section (the homepage's purple, here a calm green) */
+    --c-glow-a: 21, 118, 72;
+    --c-glow-b: 12, 89, 54;
+    --c-lav: 134, 169, 84;     /* the fade at the bottom of each light section: a yellower green, about 12% darker */
+    --c-tint: 180, 194, 132;   /* the flat tint over the cream: a soft yellow-green, about 12% darker */
+
+    --c-gold: 227, 185, 74;
+    --c-shade: 3, 16, 10;
+    --c-shade2: 3, 14, 9;
+    --c-shadow: 6, 28, 18;
+    --c-edge: 16, 62, 41;
+    --c-hard: 11, 78, 45;
+    --c-ink: 12, 28, 20;
+    --c-text: 23, 40, 31;
+}
+
+/* With no second picture column, the contact text stays in one column on desktop */
+@media (min-width: 64rem) {
+    .htour-contact__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .htour-contact {
+        padding-bottom: var(--section);
+    }
+
+    .htour-contact__share {
+        grid-column: 1;
+        padding-bottom: 0;
+    }
+}
+
+/* The story: a short paragraph beside one framed picture (stacked on phones). It replaces the Buganda page's scrolling story. */
+.tf-story__grid {
+    display: grid;
+    gap: var(--space-8);
+    align-items: center;
+}
+
+.tf-story__text p:not(.eyebrow) {
+    max-width: 36rem;
+    margin-top: var(--space-4);
+    font-size: var(--text-lead);
+    line-height: var(--lh-body);
+}
+
+.tf-story__photo {
+    margin: 0;
+}
+
+.tf-story__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 4px solid var(--yellow);
+    border-radius: var(--radius-md);
+    box-shadow: 0.75rem 0.75rem 0 rgba(var(--c-hard), 0.55);
+}
+
+.tf-story__photo figcaption {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: rgba(var(--c-text), 0.75);
+}
+
+@media (min-width: 64rem) {
+    .tf-story__grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--space-16);
+    }
+}

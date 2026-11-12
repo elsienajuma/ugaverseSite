@@ -1,0 +1,887 @@
+/* Ugaverse Studios homepage (index-studio.html).
+   Built on css/style-system.css: same colours, fonts, gold strips, glow, buttons, photo band and footer.
+   Only the new pieces live here: the slideshow hero, the intro, the work cards, the journey, VR Corner. */
+
+/* ---------- Hero slideshow ---------- */
+
+.studio-hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: clamp(28rem, 72svh, 42rem);
+    overflow: hidden;
+    background: var(--blue-night);
+    color: var(--white);
+}
+
+.studio-hero__slides,
+.studio-hero__slide,
+.studio-hero__shade {
+    position: absolute;
+    inset: 0;
+}
+
+.studio-hero__slide {
+    opacity: 0;
+    transition: opacity 1400ms ease;
+}
+
+.studio-hero__slide.is-active {
+    opacity: 1;
+}
+
+.studio-hero__slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .studio-hero__slide.is-active img {
+        animation: studio-drift 9s ease-out both;
+    }
+}
+
+@keyframes studio-drift {
+    from { transform: scale(1.08); }
+    to { transform: scale(1); }
+}
+
+.studio-hero__shade {
+    /* phones: the text sits in the lower two thirds, so the scrim is nearly solid there and thins out toward the top */
+    background:
+        linear-gradient(to top, rgba(11, 23, 52, 0.96) 0%, rgba(11, 23, 52, 0.9) 45%, rgba(11, 23, 52, 0.6) 70%, rgba(11, 23, 52, 0.2) 100%);
+}
+
+/* a soft shadow behind every piece of hero text, so it holds up on bright parts of a photo */
+.studio-hero__inner {
+    text-shadow: 0 2px 14px rgba(11, 23, 52, 0.75), 0 1px 3px rgba(11, 23, 52, 0.6);
+}
+
+.studio-hero__inner .button {
+    text-shadow: none;
+}
+
+.studio-hero__inner {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-12) var(--space-6);
+}
+
+.studio-hero__eyebrow {
+    margin-bottom: var(--space-4);
+}
+
+.studio-hero h1 {
+    max-width: 14ch;
+    /* the width is in ch, so it shrinks with the type and the line breaks stay: Immersive / storytelling, made / in Uganda. */
+    font-size: clamp(2.125rem, 1.1rem + 4vw, 3.75rem);
+}
+
+.studio-hero__lines {
+    display: grid;
+    margin: var(--space-4) 0 var(--space-6);
+}
+
+.studio-hero__line {
+    grid-area: 1 / 1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1rem + 1.6vw, 2.125rem);
+    line-height: var(--lh-heading);
+    opacity: 0;
+    transform: translateY(0.6rem);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.studio-hero__line.is-active {
+    opacity: 1;
+    transform: none;
+}
+
+.studio-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-8);
+}
+
+.studio-hero__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding-top: var(--space-2);
+    border-top: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.studio-hero__now {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.studio-hero__now a {
+    color: var(--yellow);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.studio-hero__now a:hover {
+    text-decoration: underline;
+}
+
+.studio-hero__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.studio-hero__dot {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.studio-hero__dot::before {
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 2px solid var(--yellow);
+    border-radius: 50%;
+    transition: background 200ms ease, transform 200ms ease;
+}
+
+.studio-hero__dot.is-active::before {
+    background: var(--yellow);
+    transform: scale(1.25);
+}
+
+.studio-hero__dot:focus-visible,
+.studio-hero__pause:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 2px;
+}
+
+.studio-hero__pause {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-left: var(--space-2);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    background: none;
+    color: var(--white);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.studio-hero__pause .i-play { display: none; }
+.studio-hero__pause[aria-pressed="true"] .i-play { display: block; }
+.studio-hero__pause[aria-pressed="true"] .i-pause { display: none; }
+
+@media (min-width: 48rem) {
+    .studio-hero__shade {
+        background:
+            linear-gradient(90deg, rgba(11, 23, 52, 0.95) 0%, rgba(11, 23, 52, 0.86) 38%, rgba(11, 23, 52, 0.45) 68%, rgba(11, 23, 52, 0.1) 100%),
+            linear-gradient(to top, rgba(11, 23, 52, 0.75) 0%, transparent 40%);
+    }
+}
+
+/* ---------- Section headings shared by the new sections ---------- */
+
+.studio-head {
+    max-width: 44rem;
+    margin-bottom: var(--space-12);
+}
+
+.studio-head--center {
+    margin-inline: auto;
+    text-align: center;
+}
+
+.studio-head h2 {
+    margin-bottom: var(--space-4);
+}
+
+.studio-lead {
+    margin: 0;
+    font-size: var(--text-lead);
+    line-height: var(--lh-body);
+}
+
+.section--light .studio-head h2 {
+    color: var(--blue);
+}
+
+.section--light .eyebrow {
+    color: var(--blue-outline);
+}
+
+/* ---------- Intro (on the blue with the glow showing through) ---------- */
+
+.studio-intro {
+    color: var(--white);
+}
+
+.studio-intro__grid {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+}
+
+.studio-intro h2 {
+    margin-bottom: var(--space-6);
+    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.5rem);
+}
+
+.studio-intro__copy {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-lead);
+    line-height: var(--lh-body);
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.studio-intro__list {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    list-style: none;
+}
+
+.studio-intro__list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+    line-height: var(--lh-heading);
+}
+
+.studio-intro__list li::before {
+    flex: none;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--yellow);
+    content: "";
+}
+
+.principles__intro {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sub);
+}
+
+.principles {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.principle {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-6);
+    border: 2px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.07);
+    transition: transform 220ms ease, border-color 220ms ease;
+}
+
+.principle:hover {
+    transform: translateX(6px);
+    border-color: var(--yellow);
+}
+
+.principle__num {
+    grid-row: span 2;
+    align-self: start;
+    color: var(--yellow);
+    font-family: var(--font-label);
+    font-size: var(--text-lead);
+    letter-spacing: 0.08em;
+}
+
+.principle h3 {
+    font-size: 1.375rem;
+}
+
+.principle p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+@media (min-width: 64rem) {
+    .studio-intro__grid {
+        grid-template-columns: 1.1fr 1fr;
+        gap: var(--space-16);
+    }
+}
+
+/* ---------- Work ---------- */
+
+.work-grid {
+    display: grid;
+    gap: var(--space-6);
+}
+
+.work-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 3px solid var(--blue-night);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    box-shadow: 0.625rem 0.625rem 0 var(--blue-night);
+    color: var(--text);
+    text-decoration: none;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.work-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 0.875rem 0.875rem 0 var(--blue-night);
+}
+
+.work-card:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 4px;
+}
+
+.work-card__media {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--blue-night);
+}
+
+.work-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms ease;
+}
+
+.work-card:hover .work-card__media img {
+    transform: scale(1.05);
+}
+
+.work-card__tag {
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+    padding: var(--space-1) var(--space-4);
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--blue);
+    font-family: var(--font-label);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.work-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-6);
+}
+
+.work-card h3 {
+    color: var(--blue);
+}
+
+.work-card p {
+    margin: 0;
+}
+
+.work-card__go {
+    margin-top: auto;
+    padding-top: var(--space-4);
+    color: var(--blue-outline);
+    font-weight: 700;
+}
+
+.work-card__go span {
+    display: inline-block;
+    transition: transform 180ms ease;
+}
+
+.work-card:hover .work-card__go span {
+    transform: translateX(5px);
+}
+
+@media (min-width: 40rem) {
+    .work-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .work-card--feature {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 64rem) {
+    .work-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-8);
+    }
+
+    .work-card--feature {
+        flex-direction: row;
+    }
+
+    /* desktop: shorter pictures, tighter text, so the four cards read as a set rather than a wall */
+    .work-card__media {
+        aspect-ratio: 16 / 10;
+    }
+
+    .work-card__body {
+        padding: var(--space-4) var(--space-6) var(--space-6);
+    }
+
+    .work-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .work-card p {
+        font-size: 0.9375rem;
+        line-height: 1.5;
+    }
+
+    .work-card--feature .work-card__media {
+        flex: 1.5;
+        aspect-ratio: auto;
+        height: 16rem;
+    }
+
+    .work-card--feature .work-card__media img {
+        position: absolute;
+        inset: 0;
+        object-position: 50% 10%;   /* a little lower than before: some sky above the tower, most of the building still in view */
+    }
+
+    .studio-head {
+        max-width: 60rem;
+    }
+
+    .work-card--feature .work-card__body {
+        flex: 1;
+        justify-content: center;
+        padding: var(--space-8);
+    }
+
+    .work-card--feature h3 {
+        font-size: 1.75rem;
+    }
+
+    .work-card--feature p {
+        font-size: 1.0625rem;
+    }
+}
+
+/* the 360° film */
+
+.film {
+    display: grid;
+    gap: var(--space-6);
+    margin-top: var(--space-12);
+    align-items: center;
+}
+
+.film__player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 3px solid var(--blue-night);
+    border-radius: var(--radius-md);
+    background: var(--blue-night);
+    box-shadow: 0.625rem 0.625rem 0 var(--blue-night);
+}
+
+.film__poster,
+.film__player iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.film__poster {
+    padding: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.film__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.film__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    width: 5rem;
+    height: 5rem;
+    place-items: center;
+    border: 3px solid var(--blue-night);
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--blue);
+    transform: translate(-50%, -50%);
+    transition: transform 200ms ease;
+}
+
+.film__poster:hover .film__play {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.film__poster:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: -6px;
+}
+
+.film h3 {
+    color: var(--blue);
+    font-size: var(--text-sub);
+}
+
+.film__text p {
+    margin: var(--space-3) 0 var(--space-6);
+    font-size: var(--text-lead);
+}
+
+.film__button span {
+    margin-left: var(--space-2);
+}
+
+.film__button,
+.film__button:hover {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--yellow);
+}
+
+@media (min-width: 64rem) {
+    .film {
+        grid-template-columns: 1.4fr 1fr;
+        gap: var(--space-12);
+    }
+}
+
+/* ---------- Journey (idea to finished experience) ---------- */
+
+.journey {
+    color: var(--white);
+}
+
+.journey .studio-lead {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.journey__steps {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.journey__step {
+    overflow: hidden;
+    border: 3px solid var(--yellow);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0.625rem 0.625rem 0 rgba(242, 196, 15, 0.28);
+}
+
+.journey__media {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--blue-night);
+}
+
+.journey__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.journey__num {
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 3px solid var(--blue-night);
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--blue);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.journey__body {
+    padding: var(--space-4) var(--space-6) var(--space-6);
+}
+
+.journey__step h3 {
+    margin-bottom: var(--space-2);
+    color: var(--yellow);
+    font-size: 1.5rem;
+}
+
+.journey__step p {
+    margin: 0;
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.journey__note {
+    margin: var(--space-8) 0 0;
+    text-align: center;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.journey__note a {
+    color: var(--yellow);
+    font-weight: 700;
+}
+
+@media (min-width: 48rem) {
+    .journey__steps {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ---------- VR Corner ---------- */
+
+/* no background of its own: the glow pinned to the bottom of the screen shows through, as in the sections above */
+.vrc {
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    color: var(--white);
+}
+
+.vrc::before {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 70% at 85% 20%, rgba(var(--c-glow-a, 88, 28, 160), 0.6), transparent 70%);
+    content: "";
+    pointer-events: none;
+}
+
+.vrc__grid {
+    position: relative;
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+}
+
+.vrc__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    padding: var(--space-2) var(--space-6) var(--space-2) var(--space-2);
+    border: 3px solid var(--blue-night);
+    border-radius: 999px;
+    background: var(--yellow);
+    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.25);
+    color: var(--blue);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    transform: rotate(-3deg);
+}
+
+.vrc__badge svg {
+    padding: 0.35rem;
+    border-radius: 50%;
+    background: var(--blue);
+    color: var(--yellow);
+}
+
+.vrc h2 {
+    margin-bottom: var(--space-4);
+}
+
+.vrc__copy {
+    margin: 0 0 var(--space-6);
+    font-size: var(--text-lead);
+    line-height: var(--lh-body);
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.vrc__uses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-8);
+    padding: 0;
+    list-style: none;
+}
+
+.vrc__uses li {
+    padding: var(--space-2) var(--space-4);
+    border: 2px solid var(--yellow);
+    border-radius: 999px;
+    color: var(--yellow);
+    font-weight: 700;
+}
+
+.vrc__how {
+    margin: 0 0 var(--space-6);
+    font-size: 1.0625rem;
+    line-height: var(--lh-body);
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.vrc__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-6);
+}
+
+.vrc__mail {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.vrc__mail a {
+    color: var(--white);
+    font-weight: 700;
+}
+
+.vrc__photos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.vrc__photo {
+    margin: 0;
+    overflow: hidden;
+    border: 3px solid var(--yellow);
+    border-radius: var(--radius-sm);
+    box-shadow: 0.625rem 0.625rem 0 rgba(242, 196, 15, 0.28);
+}
+
+.vrc__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 3 / 2;
+}
+
+.vrc__photo--lead {
+    grid-column: 1 / -1;
+}
+
+.vrc__photo--lead img {
+    aspect-ratio: 16 / 10;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .vrc__photo:nth-child(2) { transform: rotate(-1.5deg); }
+    .vrc__photo:nth-child(3) { transform: rotate(1.5deg); }
+}
+
+@media (min-width: 64rem) {
+    .vrc__grid {
+        grid-template-columns: 1fr 1.05fr;
+        gap: var(--space-16);
+    }
+}
+
+/* ---------- Photo band section ---------- */
+
+/* no background of its own: the glow pinned to the bottom of the screen shows through, as in the sections above */
+.studio-band {
+    padding-bottom: 0;
+    background: transparent;
+    color: var(--white);
+}
+
+.studio-band .photo-band {
+    margin-top: 0;
+    padding-bottom: var(--space-12);
+    background: transparent;
+}
+
+.studio-band .studio-head {
+    margin-bottom: var(--space-4);
+}
+
+/* ---------- Footer titles: the "Get in touch" heading in yellow, the section links in bold ---------- */
+
+.site-footer__contact .site-footer__label {
+    color: var(--yellow);
+    font-family: var(--font-label);
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.site-footer__links a {
+    font-weight: 700;
+}
+
+/* ---------- Community: the button with a small link under it ---------- */
+
+.studio-community__actions {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+}
+
+.studio-community__more {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.studio-community__more a {
+    color: var(--white);
+    font-weight: 700;
+}
+
+/* ---------- Closing line ---------- */
+
+.studio-close__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4) var(--space-8);
+    margin-top: var(--space-8);
+}
+
+.studio-close__mail {
+    color: var(--blue);
+    font-weight: 700;
+}
