@@ -73,6 +73,45 @@
         start();
     }
 
+    // Menu highlight: the link for the section you are in turns gold.
+    // A section counts as "current" while it covers a line a little way down the screen (below the sticky header).
+    // Sections with no menu link (the hero, the photo band, the closing line) leave every link plain.
+    const navLinks = Array.from(document.querySelectorAll('.site-nav__list a[href^="#"]'))
+        .filter((link) => link.getAttribute("href").length > 1 && !link.classList.contains("site-nav__cta"));
+    const watched = navLinks
+        .map((link) => ({ link, section: document.getElementById(link.getAttribute("href").slice(1)) }))
+        .filter((item) => item.section);
+
+    if (watched.length) {
+        let waiting = false;
+
+        function markCurrent() {
+            waiting = false;
+            const line = window.innerHeight * 0.4;
+            let current = null;
+            watched.forEach((item) => {
+                const box = item.section.getBoundingClientRect();
+                if (box.top <= line && box.bottom > line) current = item;
+            });
+            watched.forEach((item) => {
+                const on = item === current;
+                item.link.classList.toggle("is-current", on);
+                if (on) item.link.setAttribute("aria-current", "true");
+                else item.link.removeAttribute("aria-current");
+            });
+        }
+
+        function queue() {
+            if (waiting) return;
+            waiting = true;
+            requestAnimationFrame(markCurrent);
+        }
+
+        window.addEventListener("scroll", queue, { passive: true });
+        window.addEventListener("resize", queue);
+        markCurrent();
+    }
+
     // 360° film: show the poster, load the YouTube player only when it is clicked
     document.querySelectorAll("[data-film]").forEach((button) => {
         button.addEventListener("click", () => {

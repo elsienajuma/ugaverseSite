@@ -48,9 +48,10 @@
 }
 
 .studio-hero__shade {
-    /* phones: the text sits in the lower two thirds, so the scrim is nearly solid there and thins out toward the top */
+    /* phones: the text fills almost the whole hero, from the eyebrow near the top to the dots at the bottom,
+       so the scrim is dark all the way up and only eases off at the very top edge */
     background:
-        linear-gradient(to top, rgba(11, 23, 52, 0.96) 0%, rgba(11, 23, 52, 0.9) 45%, rgba(11, 23, 52, 0.6) 70%, rgba(11, 23, 52, 0.2) 100%);
+        linear-gradient(to top, rgba(11, 23, 52, 0.97) 0%, rgba(11, 23, 52, 0.93) 40%, rgba(11, 23, 52, 0.82) 75%, rgba(11, 23, 52, 0.6) 100%);
 }
 
 /* a soft shadow behind every piece of hero text, so it holds up on bright parts of a photo */
@@ -195,6 +196,12 @@
     }
 }
 
+/* ---------- Header: the menu link for the section you are in turns gold (js/studio.js sets is-current) ---------- */
+
+.site-nav__list a.is-current {
+    color: var(--yellow);
+}
+
 /* ---------- Section headings shared by the new sections ---------- */
 
 .studio-head {
@@ -247,6 +254,31 @@
     font-size: var(--text-lead);
     line-height: var(--lh-body);
     color: rgba(255, 255, 255, 0.92);
+}
+
+/* the photo above the heading: phones and tablets only, framed like the VR Corner photos */
+.studio-intro__photo {
+    max-width: 36rem;
+    margin: 0 0 var(--space-6);
+    overflow: hidden;
+    border: 3px solid var(--yellow);
+    border-radius: var(--radius-sm);
+    box-shadow: 0.625rem 0.625rem 0 rgba(242, 196, 15, 0.28);
+}
+
+.studio-intro__photo img {
+    display: block;
+    width: 100%;
+    height: auto;   /* the height attribute would otherwise win over the aspect ratio */
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: 50% 40%;
+}
+
+@media (min-width: 64rem) {
+    .studio-intro__photo {
+        display: none;
+    }
 }
 
 .studio-intro__list {
@@ -810,6 +842,24 @@
 @media (prefers-reduced-motion: no-preference) {
     .vrc__photo:nth-child(2) { transform: rotate(-1.5deg); }
     .vrc__photo:nth-child(3) { transform: rotate(1.5deg); }
+}
+
+/* two copies of the photos: one under the badge (phones and tablets), one in the right-hand column (desktop) */
+.vrc__photos--stack {
+    max-width: 36rem;
+    margin-bottom: var(--space-8);
+}
+
+@media (max-width: 63.999rem) {
+    .vrc__photos--side {
+        display: none;
+    }
+}
+
+@media (min-width: 64rem) {
+    .vrc__photos--stack {
+        display: none;
+    }
 }
 
 @media (min-width: 64rem) {

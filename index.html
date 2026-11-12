@@ -25,13 +25,13 @@
         setTimeout(function () { if (!document.documentElement.hasAttribute("data-reveal-ready")) document.documentElement.classList.remove("js"); }, 3000);
     </script>
     <link rel="stylesheet" href="css/style-system.css?v=20261113k">
-    <link rel="stylesheet" href="css/studio.css?v=20261113k">
+    <link rel="stylesheet" href="css/studio.css?v=20261113p">
     <script src="js/site.js?v=20261113k" defer></script>
     <script src="js/reveal-system.js?v=20261113k" defer></script>
     <script src="js/strip-system.js?v=20261113k" defer></script>
     <script src="js/photo-band.js?v=20261113k" defer></script>
     <script src="js/copy-email.js?v=20261113k" defer></script>
-    <script src="js/studio.js?v=20261113k" defer></script>
+    <script src="js/studio.js?v=20261113p" defer></script>
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -130,6 +130,10 @@
             <div class="container studio-intro__grid">
                 <div class="reveal">
                     <p class="eyebrow">Ugaverse - a creative studio</p>
+                    <!-- shown only where the section stacks (phones and tablets); on desktop the rule cards sit beside the text instead -->
+                    <figure class="studio-intro__photo">
+                        <img src="projects/buganda-palace-tour/images/story-3.webp" width="1600" height="1200" alt="A group watching a man explain the colourful paintings that cover the walls of a thatched hut" loading="lazy">
+                    </figure>
                     <h2>We bring Ugandan stories to the world, the way they are meant to be told.</h2>
                     <ul class="studio-intro__list">
                         <li>Virtual tours</li>
@@ -271,6 +275,12 @@
             <div class="container vrc__grid">
                 <div class="reveal">
                     <span class="vrc__badge"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-3.2l-1.6-2.5h-4.4L8.2 16.5H5a2 2 0 0 1-2-2z"/></svg>VR Corner</span>
+                    <!-- the same photos again, shown only where the section stacks (phones and tablets): they sit just under the badge there, and in the right-hand column on desktop -->
+                    <div class="vrc__photos vrc__photos--stack">
+                        <figure class="vrc__photo vrc__photo--lead"><img src="images/web/enju-launch.webp" width="840" height="560" alt="A man using a VR headset and hand controllers at the Enju Heritage launch" loading="lazy"></figure>
+                        <figure class="vrc__photo"><img src="images/web/keepers-vr.webp" width="840" height="560" alt="A guide helping a guest in a VR headset at the Keepers VR experience" loading="lazy"></figure>
+                        <figure class="vrc__photo"><img src="images/web/timeless-frames-vr.webp" width="840" height="560" alt="A guest being fitted with a VR headset in front of the Timeless Frames banner" loading="lazy"></figure>
+                    </div>
                     <h2>Share your stories in person.</h2>
                     <p class="vrc__copy">Bring your audience into your world with branded VR setups at your next event.</p>
                     <ul class="vrc__uses" aria-label="VR Corner is for">
@@ -282,7 +292,7 @@
                         <p class="vrc__mail">or write to <a href="mailto:hello@ugaverse.com">hello@ugaverse.com</a></p>
                     </div>
                 </div>
-                <div class="vrc__photos reveal" style="--d: 120ms">
+                <div class="vrc__photos vrc__photos--side reveal" style="--d: 120ms">
                     <figure class="vrc__photo vrc__photo--lead"><img src="images/web/enju-launch.webp" width="840" height="560" alt="A man using a VR headset and hand controllers at the Enju Heritage launch" loading="lazy"></figure>
                     <figure class="vrc__photo"><img src="images/web/keepers-vr.webp" width="840" height="560" alt="A guide helping a guest in a VR headset at the Keepers VR experience" loading="lazy"></figure>
                     <figure class="vrc__photo"><img src="images/web/timeless-frames-vr.webp" width="840" height="560" alt="A guest being fitted with a VR headset in front of the Timeless Frames banner" loading="lazy"></figure>
