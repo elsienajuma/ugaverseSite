@@ -157,6 +157,17 @@
         showCaption();
     }
 
+    // ---- Phones and tablets (the slideshow is stacked above the text): the whole slideshow is a link to the tour, like the caption bar.
+    // Swipes and the arrows still work: site.js blocks the click that ends a swipe, and the arrows sit outside the slideshow. ----
+    const stackedHero = window.matchMedia("(max-width: 63.999rem)");
+    const tourLink = document.querySelector(".htour-cap-cta");
+    if (slideshow && tourLink) {
+        slideshow.addEventListener("click", () => { if (stackedHero.matches) tourLink.click(); });
+        const setPointer = () => { slideshow.style.cursor = stackedHero.matches ? "pointer" : ""; };
+        setPointer();
+        stackedHero.addEventListener("change", setPointer);
+    }
+
     // ---- The search bar on the slideshow types three names in turn: it types one, holds it, erases it, and types the next.
     // It only runs while the hero is on screen. With reduced motion (or no script) the first name just stays there. ----
     const searchText = document.querySelector("[data-search-phrases]");
